@@ -33,7 +33,7 @@ These design considerations have the following advantages:
 
 ```javascript
 
-var config = {
+var cfg = {
 	fields: {
 		field1: {
 			selector: '', //any jquery selector, defaults to '[name="field1"]'
@@ -61,16 +61,16 @@ var config = {
 };
 
 var form = $('form');
-form.jevValidate(config);
+form.prove(cfg);
 
 //monitor all validation events
-var allEvents = $.jevValidate.allEvents; //array of event names
+var allEvents = $.prove.allEvents; //array of event names
 form.on(allEvents, function(event, data){
 	console.log(event, data)
 });
 
 //decorate the form
-form.on(['jev.form.success', 'jev.form.failure'], function(event, data){
+form.on(['prove.success', 'prove.failure'], function(event, data){
 	console.log(event, data)
 	//todo: decorate form/inputs here
 });
@@ -80,13 +80,13 @@ form.on(['jev.form.success', 'jev.form.failure'], function(event, data){
 
 The following events are emitted by the plugin on the form container.
 
-- 'jev.form.success', {values: values}
-- 'jev.form.failure', {failures: [{message: '', value: '', element: ''}], success: [{value: '', element: ''}]}
-- 'jev.field.success', {value: value, element: element}
-- 'jev.field.failure', {value: value, element: element, validator: validator}
-- 'jev.field.enabled', {validator: validator}
-- 'jev.field.disabled', {validator: validator}
-- 'jev.field.initalized', {field data}
+- 'prove.success', {values: values}
+- 'prove.failure', {failures: [{message: '', value: '', element: ''}], success: [{value: '', element: ''}]}
+- 'prove.field.success', {value: value, element: element}
+- 'prove.field.failure', {value: value, element: element, validator: validator}
+- 'prove.field.enabled', {validator: validator}
+- 'prove.field.disabled', {validator: validator}
+- 'prove.field.initalized', {field data}
 
 ## Others
 
