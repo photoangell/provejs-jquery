@@ -1,33 +1,42 @@
-# jquery-event-validate
+# jquery-prove
 
 An event based validation plugin used for client-side validation of html forms.
 
 ## Design Considerations
 
-**Validations** Unlike all other form validations this plugin primary focus is the validation rules and not the form inputs. During validations the plugin will loop the defined fields config looking for any inputs which might exist and if and only if the form input exists validate the input's value. All other plugins loop the inputs and validate the form inputs. This plugin loops the validations and could careless if a form input exists or not.
+How is this validator plugin different than other jquery plugin form validators?
 
-**Decoupled Decoration**  Form and input decorations should not be part of a validation plugin (e.g. seperation of concerns). See jquery-event-decoration. The validation code should be loosely coupled with the decoration code by DOM events. The validation code triggers events and the decoration code listens to these events and decorates the DOM accordingly.
+###Validations 
 
-**Delagated Events** All other form validation plugins attach keyup events directly to the form inputs to provide live validation to the user. These event listens should be delegated to the plugin container (ie normally the form tag) to allow for changes to the form DOM from the insertions, removals and modifications of form inputs via form control plugins and dynamic HTML features.
+Unlike all other form validations this plugin primary focus is the validation rules and not the form inputs. During validations the plugin will loop the defined fields config looking for any inputs which might exist and if and only if the form input exists validate the input's value. All other plugins loop the inputs and validate the form inputs. This plugin loops the validations and could careless if a form input exists or not.
+
+This plugin will validate only what you specify. If you do not define a field to be validated it will be not be validated. Also, if you define a field to be validated it will be validated event if the input is hidden, disabled, or readonly. All other plugins will validate what you don't want them to and expect you figure out how to exclude/ignore these inputs you did not ask be validated from being validated. They will also ignore inputs you explictly asked to be validated with no reasonable way to force the validation to happen. For example, try validating a form which uses jquery-multiselect on it using any of the other validation plugins.  
+
+###Decoration  
+
+Form and input decorations should not be part of a validation plugin (e.g. seperation of concerns). The validation code should be loosely coupled with the decoration code by DOM events. The validation code triggers events and the decoration code listens to these events and decorates the DOM accordingly. See jquery-decorator.
+
+###Delagated Events 
+
+All other form validation plugins attach keyup events directly to the form inputs to provide live validation to the user. These event listens should be **delegated** to the plugin container (ie normally the form tag) to allow for dynamic changes to the form DOM. Changes to the form DOM are common with most advanced form control plugins, dynamic HTML features.
 
 ## Advantages
 
 These design considerations have the following advantages:
 
-* You can change the form DOM at anypoint. It does not matter if you invoke this plugin before form control plugins or after form control plugins which might modify the DOM.
+* The form DOM can change at anypoint in time.
 * You can define validation fields and validators in advance of the form inputs actually entering the DOM.
-* If your app code removes a form control and later re-inserts the form control no change is required to be made to the validation configuration.
-
+* Form control plugins can be instateated before or after the prove plugin.
+* When form control plugins modify events you do not need to invoke the prove to validate any inputs.
 
 ## Usage
 
 ```javascript
 
-var config = {
+var cfg = {
 	fields: {
 		field1: {
 			selector: '', //any jquery selector, defaults to '[name="field1"]'
-			container: '.form-group', //any jquery selector
 			validators: {
 				required: {
 					enabled: true, //true, false, selector (radio#other:checked), callback
@@ -45,22 +54,29 @@ var config = {
 					},
 					message: 'Some string or function'
 				}
+			},
+			decoration: {
+				classPlacement: '.error-class-placement', //any jquery selector
+				errorPlacement: '.error-message-placement'
 			}
 		},
+		field2: {
 		...
+		}
+	}
 };
 
 var form = $('form');
-form.jevValidate(config);
+form.prove(cfg);
 
 //monitor all validation events
-var allEvents = $.jevValidate.allEvents; //array of event names
+var allEvents = $.prove.allEvents; //array of event names
 form.on(allEvents, function(event, data){
 	console.log(event, data)
 });
 
 //decorate the form
-form.on(['jev.form.success', 'jev.form.failure'], function(event, data){
+form.on(['prove.success', 'prove.failure'], function(event, data){
 	console.log(event, data)
 	//todo: decorate form/inputs here
 });
@@ -70,13 +86,12 @@ form.on(['jev.form.success', 'jev.form.failure'], function(event, data){
 
 The following events are emitted by the plugin on the form container.
 
-- 'jev.form.success', {values: values}
-- 'jev.form.failure', {failures: [{message: '', value: '', element: ''}], success: [{value: '', element: ''}]}
-- 'jev.field.success', {value: value, element: element}
-- 'jev.field.failure', {value: value, element: element, validator: validator}
-- 'jev.field.enabled', {validator: validator}
-- 'jev.field.disabled', {validator: validator}
-- 'jev.field.initalized', {field data}
+- 'prove.success', {values: values}
+- 'prove.failure', {failures: [{message: '', value: '', element: ''}], success: [{value: '', element: ''}]}
+- 'prove.field.success', {value: value, element: element}
+- 'prove.field.failure', {value: value, element: element, validator: validator}
+- 'prove.field.reset', {...}
+- 'prove.field.initalized', {field data}
 
 ## Others
 
