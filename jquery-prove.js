@@ -22,6 +22,10 @@
 		this.setupFields();
 	}
 
+	//$.Prove = Prove;
+	//$.Prove.xxx = function(){};
+
+	//$.Prove.prototype.defaults = {
 	Prove.prototype = {
 
 		defaults: {
