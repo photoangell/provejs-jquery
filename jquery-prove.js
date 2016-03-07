@@ -19,21 +19,7 @@
 
 		console.log('Prove()', this.options);
 
-		//handle fields
 		this.setupFields();
-
-		// Initialization.
-		// We have to clone to create a new reference.
-		//this.originalOptions = this.$element.clone()[0].options; //todo: why?
-		//this.options.onChange = $.proxy(this.options.onChange, this);
-		//this.options.onInitialized = $.proxy(this.options.onInitialized, this);
-
-		// modify DOM
-		//this.buildContainer();
-		//this.updateButtonText();
-
-		//this.$element.hide().after(this.$container);
-		//this.options.onInitialized(this.$element, this.$container);
 	}
 
 	Prove.prototype = {
@@ -204,7 +190,7 @@
 			console.log('setupFields()');
 
 			$.each(fields, function(name, field){
-				that.bindDomEvents(name, field);
+				that.bindDomEvent(name, field);
 			});
 		},
 		teardownFields: function(options){
@@ -216,11 +202,11 @@
 			console.log('teardownFields()');
 
 			$.each(fields, function(name, field){
-				that.unbindDomEvents(name, field);
+				that.unbindDomEvent(name, field);
 			});
 		},
 		//delagate events on form form for specific field
-		bindDomEvents: function(name, field){
+		bindDomEvent: function(name, field){
 
 			var el = this.$element;
 			var events = this.domEvents(name, field);
@@ -231,22 +217,27 @@
 			// http://api.jquery.com/on/
 			el.on(events, selector, field, this.validateFieldHandler);
 		},
-		unbindDomEvents: function(name, field){
+		unbindDomEvent: function(name, field){
 			var el = this.$element;
 			var events = this.domEvents(name, field);
 			var selector = this.domSelector(name, field);
 
 			console.log('unbindDomEvents()', events, selector);
 
-			// http://api.jquery.com/on/
+			// http://api.jquery.com/off/
 			el.off(events, selector);
 		},
-		validateFieldHandler: function(event, field){
+		validateFieldHandler: function(event){
 
 			var input = $(event.target);
 			var value = input.val();
+			var field = event.data;
+			//var normalizer = event.data.normalizer;
 
-			console.log('validateFieldHandler()', input, value);
+			//todo: add data normalizer
+			//value = normalizer(value);
+
+			console.log('validateFieldHandler()', field);
 		}
 	};
 
