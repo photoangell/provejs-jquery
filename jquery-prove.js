@@ -17,13 +17,16 @@
 
 		this.options = this.mergeOptions($.extend({}, options, this.$element.data()));
 
-		console.log('Prove()');
+		console.log('Prove()', this.options);
+
+		//handle fields
+		this.setupFields();
 
 		// Initialization.
 		// We have to clone to create a new reference.
-		this.originalOptions = this.$element.clone()[0].options; //todo: why?
-		this.options.onChange = $.proxy(this.options.onChange, this);
-		this.options.onInitialized = $.proxy(this.options.onInitialized, this);
+		//this.originalOptions = this.$element.clone()[0].options; //todo: why?
+		//this.options.onChange = $.proxy(this.options.onChange, this);
+		//this.options.onInitialized = $.proxy(this.options.onInitialized, this);
 
 		// modify DOM
 		//this.buildContainer();
@@ -88,6 +91,9 @@
 
 			var el = this.$element;
 			el.data('prove', false);
+
+			this.teardownFields();
+
 			el.trigger('prove.destroyed');
 		},
 
@@ -179,13 +185,68 @@
 			return $.extend(true, {}, this.defaults, this.options, options);
 		},
 
-		/**
-		 * Get all selected options.
-		 *
-		 * @returns {jQUery}
-		 */
-		getSelected: function() {
+		//return jquery selector that represents the element in the DOM
+		domSelector: function(name, field){
+			return (field.selector)
+				? field.selector
+				: '[name="' + name + '"]';
+		},
+		//return string of space seperated events used to detect change to the DOM element
+		domEvents: function(name, field){
+			return 'change keyup click blur';
+		},
+		setupFields: function(options){
 
+			var opts = options || this.options;
+			var fields = opts.fields || {};
+			var that = this;
+
+			console.log('setupFields()');
+
+			$.each(fields, function(name, field){
+				that.bindDomEvents(name, field);
+			});
+		},
+		teardownFields: function(options){
+
+			var opts = options || this.options;
+			var fields = opts.fields || {};
+			var that = this;
+
+			console.log('teardownFields()');
+
+			$.each(fields, function(name, field){
+				that.unbindDomEvents(name, field);
+			});
+		},
+		//delagate events on form form for specific field
+		bindDomEvents: function(name, field){
+
+			var el = this.$element;
+			var events = this.domEvents(name, field);
+			var selector = this.domSelector(name, field);
+
+			console.log('bindDomEvents()', events, selector);
+
+			// http://api.jquery.com/on/
+			el.on(events, selector, field, this.validateFieldHandler);
+		},
+		unbindDomEvents: function(name, field){
+			var el = this.$element;
+			var events = this.domEvents(name, field);
+			var selector = this.domSelector(name, field);
+
+			console.log('unbindDomEvents()', events, selector);
+
+			// http://api.jquery.com/on/
+			el.off(events, selector);
+		},
+		validateFieldHandler: function(event, field){
+
+			var input = $(event.target);
+			var value = input.val();
+
+			console.log('validateFieldHandler()', input, value);
 		}
 	};
 
