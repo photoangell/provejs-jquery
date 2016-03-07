@@ -17,6 +17,8 @@
 
 		this.options = this.mergeOptions($.extend({}, options, this.$element.data()));
 
+		console.log('Prove()');
+
 		// Initialization.
 		// We have to clone to create a new reference.
 		this.originalOptions = this.$element.clone()[0].options; //todo: why?
@@ -51,7 +53,7 @@
 			 * @param {jQuery} $select
 			 * @param {jQuery} $container
 			 */
-			onInitialized: function($select, $container) {
+			onInitialized: function($element, $container) {
 
 			},
 			option1: false,
@@ -79,9 +81,14 @@
 		 * Unbinds the whole plugin.
 		 */
 		destroy: function() {
+			console.log('destroy()');
 			//this.$container.remove();
 			//this.$element.show();
 			//this.$element.data('prove', null);
+
+			var el = this.$element;
+			el.data('prove', false);
+			el.trigger('prove.destroyed');
 		},
 
 		/**
@@ -183,24 +190,26 @@
 	};
 
 	$.fn.prove = function(option, parameter, extraOptions) {
+		//console.log('prove()', option);
 
 		return this.each(function() {
-			var data = $(this).data('prove');
+
+			var el = $(this);
+			var data = el.data('prove');
 			var options = typeof option === 'object' && option;
+			var isInitialized = (data);
 
-			// Initialize the prove.
-			if (!data) {
+			// either initialize or call public method
+			if (!isInitialized) {
+				// initialize new instance
 				data = new Prove(this, options);
-				$(this).data('prove', data);
-			}
-
-			// Call public methods.
-			if (typeof option === 'string') {
+				el.data('prove', data);
+				el.trigger('prove.initialized');
+			} else if (typeof option === 'string') {
+				// call public method
 				data[option](parameter, extraOptions);
-
-				if (option === 'destroy') {
-					$(this).data('prove', false);
-				}
+			} else {
+				throw new Error('invalid invocation.');
 			}
 		});
 	};

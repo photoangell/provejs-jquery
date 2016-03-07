@@ -59,7 +59,19 @@
 			<script>
 			(function() {
 				var form = $('form');
-				form.prove();
+
+				form.on('prove.initialized', function(event, data){
+					console.log('prove.initialized');
+				});
+				form.on('prove.destroyed', function(event, data){
+					console.log('prove.destroyed');
+				});
+				form.prove({
+					foo: 'bar'
+				});
+
+				form.prove('destroy');
+
 			})();
 			</script>
 		</div>
