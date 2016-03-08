@@ -65,6 +65,7 @@
 				var cfg = {
 					fields: {
 						email: {
+							trigger: 'blur',
 							selector: null,
 							validators: {
 								required: true, // true, false, selector string, callback, object literal specific to validator
@@ -88,7 +89,7 @@
 				});
 
 				form.on('field.prove', function(event, data){
-					//console.warn('field.prove', data.validator.state);
+					console.warn('field.prove', data.validator.state);
 				});
 				form.prove(cfg);
 

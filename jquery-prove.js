@@ -13,11 +13,18 @@
 	*/
 	var _validators = {
 		//returns true, false, null
-		required: function( param, value, values) {
+		required: function( required, value, values) {
 
-			console.log('required()', param, value, values);
+			console.groupCollapsed('Validator.required()')
+				console.log('required', required);
+				console.log('value', value);
+				console.log('values', values);
+			console.groupEnd();
 
-			return false;
+			// if not required, than nothing to do
+			if (!required) return true;
+
+			return true;
 
 			if (param === false) {
 
@@ -40,7 +47,13 @@
 		//returns true, false, null
 		pattern: function( param, value, values ) {
 
-			return true;
+			console.groupCollapsed('Validator.pattern()')
+				console.log('param', param);
+				console.log('value', value);
+				console.log('values', values);
+			console.groupEnd();
+
+			return false;
 
 			if ( this.optional( element ) ) {
 				return true;
@@ -111,7 +124,8 @@
 		},
 		//return string of space seperated events used to detect change to the DOM element
 		domEvents: function(name, field){
-			return 'change keyup click blur';
+			var events = field.trigger || 'change keyup click blur';
+			return events;
 		},
 		setupFields: function(options){
 
@@ -143,7 +157,7 @@
 			var el = this.$form;
 			var events = this.domEvents(name, field);
 			var selector = this.domSelector(name, field);
-			var handler = $.proxy(this.validateFieldHandler, this);
+			var handler = $.proxy(this.checkValidators, this);
 
 			//console.log('bindDomEvents()', events, selector);
 
@@ -160,16 +174,23 @@
 			// http://api.jquery.com/off/
 			el.off(events, selector);
 		},
-		validateFieldHandler: function(event){
+		checkValidators: function(event){
 
 			var that = this;
 			var input = $(event.target);
-			//var value = input.val();
 			var field = event.data;
 			var validators = field.validators || {};
 			var values = this.serializeObject(); //get all values a single time
+			//var value = values[field]; //todo: will this work on checkboxes, etc
+			var value = input.val();
+			var data = {
+				input: input
+			};
+			var isValid = null;
 
-			//console.log('validateFieldHandler()', field);
+			console.groupCollapsed('Prove.checkValidators()');
+			console.log('value', value);
+			console.groupEnd();
 
 			//todo:
 			// - return immediately (without any more validations) if false
@@ -177,35 +198,21 @@
 			// - return state of final validator?
 			//
 
-			$.each(validators, function(name, param){
-				that.checkValidator(input, name, param, values);
-			});
+			$.each(validators, function(validatorName, config){
 
-			// todo: trigger events here rather than in checkValidator() below
-		},
-		checkValidator: function(input, name, param, values){
+				//only check next validator if the previous validator did not return false
+				if (isValid === null || isValid === true) {
+					var state = that.checkValidator(validatorName, config, value, values);
+					data.validator = {
+						name: name,
+						state: state,
+						config: config
+					}
 
-			console.log('checkValidator()', name, param, values);
-
-			// setup
-			var validator = $.proxy(_validators[name], this) || function(){
-				console.warn("Validator '%s' not found. Please use $.Prove.addValidator().", name);
-			};
-
-				//todo: augment param by evaluating selector dependency
-				//param = (typeof param === 'string')? this.depends(param);
-
-			var value = values[name]; //todo: not sure how this will work with checkboxes, radio, and select (multiple)
-			var isValid = validator(param, value, values);
-			var data = {
-				input: input,
-				validator:{
-					name: name,
-					config: param,
-					state: isValid
+					// setup for next loop
+					if (state === false) isValid = false;
 				}
-			};
-
+			});
 
 			//trigger event indicating validation state
 			if (isValid === true) {
@@ -216,6 +223,26 @@
 				this.$form.trigger('reset.field.prove', data);
 			}
 			this.$form.trigger('field.prove', data);
+		},
+		checkValidator: function(validator, param, value, values){
+
+/*			console.groupCollapsed('Prove.checkValidator()'); //, name, param, values
+			console.log('validator', validator);
+			console.log('param', param);
+			console.log('value', value);
+			console.log('values', values);
+			console.groupEnd();*/
+
+			// setup
+			var validator = $.proxy(_validators[validator], this) || function(){
+				console.warn("Validator '%s' not found. Please use $.Prove.addValidator().", validator);
+			};
+
+			//todo: augment param by evaluating selector dependency
+			//param = (typeof param === 'string')? this.depends(param);
+
+			var isValid = validator(param, value, values);
+			return isValid;
 		},
 		isSelector: function(str){
 			return
