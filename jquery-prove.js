@@ -1,5 +1,5 @@
 /**
- * jQuery Prove (https://github.com/dhollenbecl/jquery-prove)
+ * jQuery Prove (https://github.com/dhollenbeck/jquery-prove)
  */
 !function ($) {
 	"use strict";
@@ -11,6 +11,7 @@
 	 * @param {Object} options
 	 * @returns {Prove}
 	 */
+	//$.Prove = function(element, options){
 	function Prove(element, options) {
 
 		this.$element = $(element);
@@ -19,36 +20,21 @@
 
 		console.log('Prove()', this.options);
 
+		//proxy any options callbacks
+		//this.options.onSomething = $.proxy(this.options.onSomething, this);
+
 		this.setupFields();
 	}
 
-	//$.Prove = Prove;
-	//$.Prove.xxx = function(){};
+	$.Prove = Prove;
+	$.Prove.prototype.addValidator = function(name, method){
+		this._validators[ name ] = method;
+	};
 
 	//$.Prove.prototype.defaults = {
 	Prove.prototype = {
 
 		defaults: {
-			/**
-			 * Triggered on change of the prove.
-			 *
-			 * Not triggered when selecting/deselecting options manually.
-			 *
-			 * @param {jQuery} option
-			 * @param {Boolean} checked
-			 */
-			onChange : function(option, checked) {
-
-			},
-			/**
-			 * Triggered after initializing.
-			 *
-			 * @param {jQuery} $select
-			 * @param {jQuery} $container
-			 */
-			onInitialized: function($element, $container) {
-
-			},
 			option1: false,
 			option2: 'btn btn-default',
 			templates: {
@@ -58,6 +44,12 @@
 		},
 
 		constructor: Prove,
+
+		_validators: {},
+
+/*		addValidator: function(name, method){
+			_validators[ name ] = method;
+		},*/
 
 		/**
 		 * Builds the container of the prove.
@@ -215,11 +207,12 @@
 			var el = this.$element;
 			var events = this.domEvents(name, field);
 			var selector = this.domSelector(name, field);
+			var handler = $.proxy(this.validateFieldHandler, this); //todo: do in constructor?
 
 			console.log('bindDomEvents()', events, selector);
 
 			// http://api.jquery.com/on/
-			el.on(events, selector, field, this.validateFieldHandler);
+			el.on(events, selector, field, handler);
 		},
 		unbindDomEvent: function(name, field){
 			var el = this.$element;
@@ -233,15 +226,30 @@
 		},
 		validateFieldHandler: function(event){
 
+			var that = this;
 			var input = $(event.target);
 			var value = input.val();
 			var field = event.data;
-			//var normalizer = event.data.normalizer;
-
-			//todo: add data normalizer
-			//value = normalizer(value);
+			var validators = field.validators || {};
 
 			console.log('validateFieldHandler()', field);
+
+			$.each(validators, function(name, param){
+				that.checkValidator(name, param, value);
+			});
+		},
+		checkValidator: function(name, param, value){
+			var validator = this._validators[name];
+
+			// return early with warning
+			if (!validator) return console.warn("Validator '%s' not found. Please use $.Prove.addValidator().", name);
+
+			console.log('checkValidator()', name, param, value);
+
+			//change the scope of this inside the validator
+			validator = $.proxy(validator, this);
+
+			validator(value, element, param);
 		}
 	};
 
