@@ -4,7 +4,15 @@
 !function ($) {
 	"use strict";
 
+	//todo: move thiese validators to jquery-prove-validators
+	/*
+		All validators can return either:
+		- * (Bool) true: on successful validation
+		- * (Bool) false: on unsuccessful validation
+		- * (Null) null: on blank or otherwise empty
+	*/
 	var _validators = {
+		//returns true, false, null
 		required: function( param, value, values) {
 
 			console.log('required()', param, value, values);
@@ -29,7 +37,19 @@
 			}
 			return value.length > 0;
 		},
+		//returns true, false, null
+		pattern: function( param, value, values ) {
 
+			return true;
+
+			if ( this.optional( element ) ) {
+				return true;
+			}
+			if ( typeof param === "string" ) {
+				param = new RegExp( "^(?:" + param + ")$" );
+			}
+			return param.test( value );
+		}
 	};
 
 	// Prove constructor
@@ -149,11 +169,19 @@
 			var validators = field.validators || {};
 			var values = this.serializeObject(); //get all values a single time
 
-			console.log('validateFieldHandler()', field);
+			//console.log('validateFieldHandler()', field);
+
+			//todo:
+			// - return immediately (without any more validations) if false
+			// - continue if true or null
+			// - return state of final validator?
+			//
 
 			$.each(validators, function(name, param){
 				that.checkValidator(input, name, param, values);
 			});
+
+			// todo: trigger events here rather than in checkValidator() below
 		},
 		checkValidator: function(input, name, param, values){
 
@@ -163,6 +191,10 @@
 			var validator = $.proxy(_validators[name], this) || function(){
 				console.warn("Validator '%s' not found. Please use $.Prove.addValidator().", name);
 			};
+
+				//todo: augment param by evaluating selector dependency
+				//param = (typeof param === 'string')? this.depends(param);
+
 			var value = values[name]; //todo: not sure how this will work with checkboxes, radio, and select (multiple)
 			var isValid = validator(param, value, values);
 			var data = {
@@ -174,6 +206,7 @@
 				}
 			};
 
+
 			//trigger event indicating validation state
 			if (isValid === true) {
 				this.$form.trigger('valid.field.prove', data);
@@ -183,6 +216,9 @@
 				this.$form.trigger('reset.field.prove', data);
 			}
 			this.$form.trigger('field.prove', data);
+		},
+		isSelector: function(str){
+			return
 		},
 		serializeObject: function(){
 			//https://raw.githubusercontent.com/cowboy/jquery-misc/master/jquery.ba-serializeobject.js
@@ -198,6 +234,11 @@
 			});
 
 			return obj;
+		},
+		depends: function(selector){
+			var selectors = selector.split(':');
+			var is = this.$form.find(selectors[0]).is(selectors[1]);
+			return is;
 		}
 	};
 
