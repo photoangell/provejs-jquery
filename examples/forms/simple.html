@@ -86,8 +86,11 @@
 					//console.warn('prove.destroyed');
 				});
 
-				form.on('valid.field.prove', function(event, data){
-					console.warn('valid.field.prove', event, data);
+/*				form.on('valid.field.prove', function(event, data){
+					console.warn('valid.field.prove', data.validator.state);
+				});*/
+				form.on('field.prove', function(event, data){
+					console.warn('field.prove', data.validator.state);
 				});
 				form.prove(cfg);
 

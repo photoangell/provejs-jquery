@@ -95,6 +95,7 @@ The following events are emitted by the plugin on the form container.
 - `valid.field.prove`, {...}
 - `invalid.field.prove`, {...}
 - `reset.field.prove`, {...}
+- `field.prove`, {event.data.validator.state}
 
 ## Others
 

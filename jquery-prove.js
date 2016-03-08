@@ -9,7 +9,7 @@
 
 			console.log('required()', param, value, values);
 
-			return true;
+			return false;
 
 			if (param === false) {
 
@@ -125,7 +125,7 @@
 			var selector = this.domSelector(name, field);
 			var handler = $.proxy(this.validateFieldHandler, this);
 
-			console.log('bindDomEvents()', events, selector);
+			//console.log('bindDomEvents()', events, selector);
 
 			// http://api.jquery.com/on/
 			el.on(events, selector, field, handler);
@@ -135,7 +135,7 @@
 			var events = this.domEvents(name, field);
 			var selector = this.domSelector(name, field);
 
-			console.log('unbindDomEvents()', events, selector);
+			//console.log('unbindDomEvents()', events, selector);
 
 			// http://api.jquery.com/off/
 			el.off(events, selector);
@@ -144,25 +144,26 @@
 
 			var that = this;
 			var input = $(event.target);
-			var value = input.val();
+			//var value = input.val();
 			var field = event.data;
 			var validators = field.validators || {};
+			var values = this.serializeObject(); //get all values a single time
 
 			console.log('validateFieldHandler()', field);
 
 			$.each(validators, function(name, param){
-				that.checkValidator(input, name, param, value);
+				that.checkValidator(input, name, param, values);
 			});
 		},
-		checkValidator: function(input, name, param, value){
+		checkValidator: function(input, name, param, values){
 
-			console.log('checkValidator()', input, name, param, value);
+			console.log('checkValidator()', name, param, values);
 
 			// setup
 			var validator = $.proxy(_validators[name], this) || function(){
 				console.warn("Validator '%s' not found. Please use $.Prove.addValidator().", name);
 			};
-			var values = {}; //todo: pass all form values to the validator
+			var value = values[name]; //todo: not sure how this will work with checkboxes, radio, and select (multiple)
 			var isValid = validator(param, value, values);
 			var data = {
 				input: input,
@@ -181,6 +182,22 @@
 			} else {
 				this.$form.trigger('reset.field.prove', data);
 			}
+			this.$form.trigger('field.prove', data);
+		},
+		serializeObject: function(){
+			//https://raw.githubusercontent.com/cowboy/jquery-misc/master/jquery.ba-serializeobject.js
+			var obj = {};
+
+			$.each( this.$form.serializeArray(), function(i,o){
+				var n = o.name;
+				var v = o.value;
+
+				obj[n] = obj[n] === undefined ? v
+					: $.isArray( obj[n] ) ? obj[n].concat( v )
+					: [ obj[n], v ];
+			});
+
+			return obj;
 		}
 	};
 
