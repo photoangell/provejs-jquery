@@ -4,7 +4,7 @@
 !function ($) {
 	"use strict";
 
-	//todo: move thiese validators to jquery-prove-validators
+	//todo: move these validators to jquery-prove-validators
 	/*
 		All validators can return either:
 		- * (Bool) true: on successful validation
@@ -12,8 +12,15 @@
 		- * (Null) null: on blank or otherwise empty
 	*/
 	var _validators = {
-		//returns true, false, null
-		required: function( required, value, values) {
+
+		/**
+		* Required validator.
+		* @param {bool} required The validator configuration.
+		* @param {string or array} num2 The input value to validate.
+		* @param {object} values All input values.
+		* @return {bool or null} The result of the validation.
+		*/
+		required: function( required, value, values ) {
 
 			console.groupCollapsed('Validator.required()')
 				console.log('required', required);
@@ -21,47 +28,37 @@
 				console.log('values', values);
 			console.groupEnd();
 
-			// if not required, than nothing to do
-			if (!required) return true;
+			var hasValue = this.hasValue(value);
 
-			return true;
-
-			if (param === false) {
-
-			}
-			// Check if dependency is met
-			if ( !this.depend( param, element ) ) {
-				return "dependency-mismatch";
-			}
-			if ( element.nodeName.toLowerCase() === "select" ) {
-
-				// Could be an array for select-multiple or a string, both are fine this way
-				var val = $( element ).val();
-				return val && val.length > 0;
-			}
-			if ( this.checkable( element ) ) {
-				return this.getLength( value, element ) > 0;
-			}
-			return value.length > 0;
+			return (!required)? true : hasValue;
 		},
-		//returns true, false, null
-		pattern: function( param, value, values ) {
+		/**
+		* Regex validator.
+		* @param {regex} regex The validator configuration.
+		* @param {string or array} num2 The input value to validate.
+		* @param {object} values All input values.
+		* @return {bool or null} The result of the validation.
+		*/
+		pattern: function( parttern, value, values ) {
 
 			console.groupCollapsed('Validator.pattern()')
-				console.log('param', param);
+				console.log('parttern', parttern);
 				console.log('value', value);
 				console.log('values', values);
 			console.groupEnd();
 
-			return false;
+			var hasValue = this.hasValue(value);
+			var regex = new RegExp( "^(?:" + parttern + ")$" );
 
-			if ( this.optional( element ) ) {
+			if (!hasValue) {
 				return true;
+			} else if(regex instanceof RegExp) {
+				console.log('testing regex')
+				return regex.test(value);
+			} else {
+				console.log('skipping regex')
+				return false;
 			}
-			if ( typeof param === "string" ) {
-				param = new RegExp( "^(?:" + param + ")$" );
-			}
-			return param.test( value );
 		}
 	};
 
@@ -97,6 +94,15 @@
 
 		constructor: Prove,
 
+		hasValue: function(value){
+			var isString, isArray, hasValue;
+
+			isString = (typeof value === 'string');
+			isArray = $.isArray(value);
+			value = (isString)? $.trim(value) : value;
+			hasValue = ((isString && !!value.length) || (isArray && !!value.length && !!value[0].length));
+			return hasValue;
+		},
 		destroy: function() {
 			console.log('destroy()');
 			//this.$container.remove();
