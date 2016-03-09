@@ -192,28 +192,22 @@
 			var field = event.data;
 			var validators = field.validators || {};
 			var values = this.serializeObject(); //get all values a single time
-			//var value = values[field]; //todo: will this work on checkboxes, etc
-			var value = input.val();
+			var value = input.val(); //todo: will this work on checkboxes, etc
 			var data = {
 				input: input
 			};
-			var isValid = null;
+			var isValid, state;
 
 			console.groupCollapsed('Prove.checkValidators()');
 			console.log('value', value);
 			console.groupEnd();
 
-			//todo:
-			// - return immediately (without any more validations) if false
-			// - continue if true or null
-			// - return state of final validator?
-			//
-
 			$.each(validators, function(validatorName, config){
 
-				//only check next validator if the previous validator did not return false
+				// only check next validator if there was not
+				// a problem with the previous validator
 				if (isValid === null || isValid === true) {
-					var state = that.checkValidator(validatorName, config, value, values);
+					state = that.checkValidator(validatorName, config, value, values);
 					data.validator = {
 						name: name,
 						state: state,
@@ -237,7 +231,7 @@
 		},
 		checkValidator: function(validator, param, value, values){
 
-/*			console.groupCollapsed('Prove.checkValidator()'); //, name, param, values
+			/*console.groupCollapsed('Prove.checkValidator()');
 			console.log('validator', validator);
 			console.log('param', param);
 			console.log('value', value);
