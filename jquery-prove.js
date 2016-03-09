@@ -208,11 +208,6 @@
 			});
 
 			return obj;
-		},
-		depends: function(selector){
-			var selectors = selector.split(':');
-			var is = this.$form.find(selectors[0]).is(selectors[1]);
-			return is;
 		}
 	};
 
