@@ -13,14 +13,15 @@
 
 		this.options = this.mergeOptions($.extend({}, options, this.$form.data()));
 
-		console.log('Prove()');
+		console.groupCollapsed('Prove()');
+		console.log('options', options);
+		console.groupEnd();
 
 		this.setupFields();
 	}
 
 	//add public method to constructor
 	Prove.addValidator = function(name, method){
-		console.log('existing validators', _validators);
 		_validators[ name ] = method;
 	};
 
@@ -83,7 +84,7 @@
 			var fields = opts.fields || {};
 			var that = this;
 
-			console.log('setupFields()');
+			//console.log('setupFields()');
 
 			$.each(fields, function(name, field){
 				that.bindDomEvent(name, field);
@@ -96,7 +97,7 @@
 			var fields = opts.fields || {};
 			var that = this;
 
-			console.log('teardownFields()');
+			//console.log('teardownFields()');
 
 			$.each(fields, function(name, field){
 				that.unbindDomEvent(name, field);
@@ -175,20 +176,17 @@
 		},
 		checkValidator: function(validator, param, value, values){
 
-			/*console.groupCollapsed('Prove.checkValidator()');
+			console.groupCollapsed('Prove.checkValidator()');
 			console.log('validator', validator);
 			console.log('param', param);
 			console.log('value', value);
 			console.log('values', values);
-			console.groupEnd();*/
+			console.groupEnd();
 
 			// setup
 			var validator = $.proxy(_validators[validator], this) || function(){
 				console.warn("Validator '%s' not found. Please use $.Prove.addValidator().", validator);
 			};
-
-			//todo: augment param by evaluating selector dependency
-			//param = (typeof param === 'string')? this.depends(param);
 
 			var isValid = validator(param, value, values);
 			return isValid;

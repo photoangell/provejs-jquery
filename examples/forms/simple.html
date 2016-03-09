@@ -49,6 +49,8 @@
 				<button type="submit" class="btn btn-default">Submit</button>
 			</form>
 
+			<div id="test" style="display:none;">Test me</div>
+
 			<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 			<!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -70,6 +72,7 @@
 							selector: null,
 							validators: {
 								required: false, // true, false, selector string, callback, object literal specific to validator
+								//required: function(value, values){return true;}
 								pattern: '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,63}'
 							}
 						},
@@ -90,7 +93,12 @@
 				});
 
 				form.on('field.prove', function(event, data){
-					console.warn('field.prove', data.validator.state);
+					var isValid = data.validator.state;
+					if (isValid) {
+						console.warn('field.prove, has-success');
+					} else {
+						console.warn('field.prove, has-error');
+					}
 				});
 				form.prove(cfg);
 

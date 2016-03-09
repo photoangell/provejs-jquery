@@ -11,15 +11,40 @@
 	*/
 	$.Prove.addValidator('required', function( required, value, values ) {
 
+		var hasValue = this.hasValue(value);
+		var isValid;
+
+		function evalSelector(selector){
+			try {
+				return !!$(required).length;
+			} catch (e) {
+				console.error('Invalid `required` jquery selector (`%s`) param for required validator.', selector);
+				return false;
+			}
+		}
+
+		if (hasValue) {
+			isValid = true;
+		} else if (required === false) {
+			isValid = true;
+		} else if (required === true){
+			isValid = false;
+		} else if (typeof required === 'string'){
+			isValid = evalSelector(required);
+		} else if (typeof required === 'function'){
+			isValid = !required(value, values);
+		} else {
+			throw new Error('Invalid `required` param for required validator.');
+		}
+
 		console.groupCollapsed('Validator.required()')
 			console.log('required', required);
 			console.log('value', value);
 			console.log('values', values);
+			console.log('isValid', isValid);
 		console.groupEnd();
 
-		var hasValue = this.hasValue(value);
-
-		return (!required)? true : hasValue;
+		return isValid;
 	});
 
 	/**
@@ -31,23 +56,28 @@
 	*/
 	$.Prove.addValidator('pattern', function( parttern, value, values ) {
 
+		var hasValue = this.hasValue(value);
+		var regex = new RegExp( "^(?:" + parttern + ")$" );
+		var isValid;
+
+		if (!hasValue) {
+			// all validators should return true (or perhaps null)
+			// when there is no value. Otherwise, there is no purpose
+			// for the 'required' validator.
+			isValid = true;
+		} else if(regex instanceof RegExp) {
+			isValid = regex.test(value);
+		} else {
+			isValid = false;
+		}
+
 		console.groupCollapsed('Validator.pattern()')
 			console.log('parttern', parttern);
 			console.log('value', value);
 			console.log('values', values);
+			console.log('isValid', isValid);
 		console.groupEnd();
 
-		var hasValue = this.hasValue(value);
-		var regex = new RegExp( "^(?:" + parttern + ")$" );
-
-		if (!hasValue) {
-			return true;
-		} else if(regex instanceof RegExp) {
-			console.log('testing regex')
-			return regex.test(value);
-		} else {
-			console.log('skipping regex')
-			return false;
-		}
+		return isValid;
 	});
 }(window.jQuery);
