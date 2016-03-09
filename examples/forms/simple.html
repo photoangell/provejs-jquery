@@ -68,12 +68,17 @@
 				var cfg = {
 					fields: {
 						email: {
-							trigger: 'blur',
-							selector: null,
+							trigger: 'blur', //live validation event triffers
+							selector: null, // tbd
 							validators: {
-								required: false, // true, false, selector string, callback, object literal specific to validator
-								//required: function(value, values){return true;}
-								pattern: '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,63}'
+								//validator configurations
+								required: { //required, needed, essential
+									state: false, // true, false, selector string, callback
+									message: 'test message' //(optiona) string passed to decorator
+								},
+								pattern: {
+									regex: '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,63}'
+								}
 							}
 						},
 						password: {
@@ -85,19 +90,14 @@
 					}
 				};
 
-				form.on('initialized.prove', function(event, data){
-					//console.warn('prove.initialized');
-				});
-				form.on('destroyed.prove', function(event, data){
-					//console.warn('prove.destroyed');
-				});
-
 				form.on('field.prove', function(event, data){
 					var isValid = data.validator.state;
 					if (isValid) {
 						console.warn('field.prove, has-success');
+						//console.warn('data', data);
 					} else {
 						console.warn('field.prove, has-error');
+						//console.warn('data', data);
 					}
 				});
 				form.prove(cfg);

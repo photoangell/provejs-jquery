@@ -154,7 +154,7 @@
 				if (isValid === null || isValid === true) {
 					state = that.checkValidator(validatorName, config, value, values);
 					data.validator = {
-						name: name,
+						name: validatorName,
 						state: state,
 						config: config
 					}
@@ -174,11 +174,11 @@
 			}
 			this.$form.trigger('field.prove', data);
 		},
-		checkValidator: function(validator, param, value, values){
+		checkValidator: function(validator, config, value, values){
 
 			console.groupCollapsed('Prove.checkValidator()');
 			console.log('validator', validator);
-			console.log('param', param);
+			console.log('config', config);
 			console.log('value', value);
 			console.log('values', values);
 			console.groupEnd();
@@ -188,7 +188,7 @@
 				console.warn("Validator '%s' not found. Please use $.Prove.addValidator().", validator);
 			};
 
-			var isValid = validator(param, value, values);
+			var isValid = validator(config, value, values);
 			return isValid;
 		},
 		isSelector: function(str){
