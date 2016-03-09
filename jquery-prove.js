@@ -138,25 +138,28 @@
 			var validators = field.validators || {};
 			var values = this.serializeObject(); //get all values a single time
 			var value = input.val(); //todo: will this work on checkboxes, etc
-			var data = {
-				input: input
-			};
-			var isValid = null, state;
+			var data, isValid, state;
 
-			console.groupCollapsed('Prove.checkValidators()');
+/*			console.groupCollapsed('Prove.checkValidators()');
 			console.log('value', value);
-			console.groupEnd();
+			console.groupEnd();*/
 
 			$.each(validators, function(validatorName, config){
 
 				// only check next validator if there was not
 				// a problem with the previous validator
-				if (isValid === null || isValid === true) {
+				if (isValid !== false) {
 					state = that.checkValidator(validatorName, config, value, values);
-					data.validator = {
-						name: validatorName,
-						state: state,
-						config: config
+
+					// Compose data the decorator will be interested in
+					data = {
+						input: input,
+						validator: {
+							name: validatorName,
+							state: state,
+							config: config,
+							message: config.message
+						}
 					}
 
 					// setup for next loop
@@ -176,12 +179,12 @@
 		},
 		checkValidator: function(validator, config, value, values){
 
-			console.groupCollapsed('Prove.checkValidator()');
+/*			console.groupCollapsed('Prove.checkValidator()');
 			console.log('validator', validator);
 			console.log('config', config);
 			console.log('value', value);
 			console.log('values', values);
-			console.groupEnd();
+			console.groupEnd();*/
 
 			// setup
 			var validator = $.proxy(_validators[validator], this) || function(){
