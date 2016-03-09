@@ -1,7 +1,6 @@
 !function ($) {
 	"use strict";
 
-
 	/**
 	* Required validator.
 	* @param {bool} config The validator configuration.

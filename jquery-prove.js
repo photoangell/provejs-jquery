@@ -11,7 +11,8 @@
 
 		this.$form = $(form);
 
-		this.options = this.mergeOptions($.extend({}, options, this.$form.data()));
+		//todo: clean this up
+		this.options = $.extend(this.defaults, options);
 
 		console.groupCollapsed('Prove()');
 		console.log('options', options);
@@ -28,15 +29,7 @@
 	//$.Prove.prototype.defaults = {
 	Prove.prototype = {
 
-		defaults: {
-			option1: false,
-			option2: 'btn btn-default',
-			templates: {
-				button: '<button type="button" class="prove dropdown-toggle" data-toggle="dropdown"><span class="prove-selected-text"></span> <b class="caret"></b></button>',
-				liGroup: '<li class="prove-item prove-group"><label></label></li>'
-			}
-		},
-
+		defaults: {},
 		constructor: Prove,
 
 		hasValue: function(value){
@@ -60,12 +53,6 @@
 			this.teardownFields();
 
 			el.trigger('destroyed.prove');
-		},
-		setOptions: function(options) {
-			this.options = this.mergeOptions(options);
-		},
-		mergeOptions: function(options) {
-			return $.extend(true, {}, this.defaults, this.options, options);
 		},
 		//return jquery selector that represents the element in the DOM
 		domSelector: function(name, field){
@@ -136,7 +123,7 @@
 			var input = $(event.target);
 			var field = event.data;
 			var validators = field.validators || {};
-			var values = this.serializeObject(); //get all values a single time
+			var values = this.serializeObject(); //get all values
 			var value = input.val(); //todo: will this work on checkboxes, etc
 			var data, isValid, state;
 
@@ -157,7 +144,7 @@
 						validator: {
 							name: validatorName,
 							state: state,
-							config: config,
+							config: $.extend({},config), //clone
 							message: config.message
 						}
 					}
@@ -168,13 +155,6 @@
 			});
 
 			//trigger event indicating validation state
-			if (isValid === true) {
-				this.$form.trigger('valid.field.prove', data);
-			} else if (isValid === false) {
-				this.$form.trigger('invalid.field.prove', data);
-			} else {
-				this.$form.trigger('reset.field.prove', data);
-			}
 			this.$form.trigger('field.prove', data);
 		},
 		checkValidator: function(validator, config, value, values){
@@ -211,6 +191,10 @@
 			});
 
 			return obj;
+		},
+		valid: function(){
+			console.log('Prove.valid()');
+			return false;
 		}
 	};
 

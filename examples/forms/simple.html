@@ -29,12 +29,12 @@
 
 			<form>
 				<div class="form-group">
-					<label for="exampleInputEmail1">Email address</label>
-					<input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+					<label for="email">Email address</label>
+					<input type="email" name="email" class="form-control" id="email" placeholder="Email">
 				</div>
 				<div class="form-group">
-					<label for="exampleInputPassword1">Password</label>
-					<input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+					<label for="password">Password</label>
+					<input type="password" name="password" class="form-control" id="password" placeholder="Password">
 				</div>
 				<div class="form-group">
 					<label for="exampleInputFile">File input</label>
@@ -62,32 +62,31 @@
 			<script src="../../jquery-prove-decorators.js"></script>
 			<script>
 
-			//$.Prove.addValidator('required', function(){});
-
 			(function() {
 				var form = $('form');
 				var cfg = {
 					fields: {
 						email: {
-							trigger: 'blur', //live validation event triffers
-							selector: null, // tbd
+							trigger: 'blur',
+							//selector: null, // tbd
 							validators: {
-								//validator configurations
-								required: { //required, needed, essential
+								required: {
 									state: true, // true, false, selector string, callback
-									message: 'Your email is required.', //(optiona) string passed to decorator
-									foo: 'bar' //the entire validator config is passed to the decorator
+									message: 'Your email is required.', //optional, passed to decorator
 								},
 								pattern: {
 									regex: '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,63}',
-									message: 'Invalid email address.'
+									message: 'Invalid email address.' //optional, passed to decorator
 								}
 							}
 						},
 						password: {
-							selector: null,
+							//selector: null,
 							validators: {
-								required: true
+								required: {
+									state: true, // true, false, selector string, callback
+									message: 'Your email is required.', //optional, passed to decorator
+								}
 							}
 						}
 					}
@@ -95,26 +94,31 @@
 
 				form.on('field.prove', function(event, data){
 
-/*					console.groupCollapsed('decorator');
-					console.log('data', data)
-					console.groupEnd();*/
-
 					var input = data.input;
 
+					//add some classes to decorate the input
 					input.tinsel({
 						state: data.validator.state,
-						placement: '.form-group', //closest selector, selectors array, or filter fnc
+						placement: '.form-group, td, .checkbox, .radio',
 						classSuccess: 'has-success',
 						classFailure: 'has-error'
-					})
+					});
 
+					//show message on error, clear error message on success
 					input.garland({
-						state: data.validator.state,
+						state: !data.validator.state,
 						wrapper: '<span class="help-block"></span>',
-						placement: '.form-group', //closest selector, selectors array, or filter fnc
+						placement: '.form-group, td, .checkbox, .radio',
 						message: data.validator.message
-					})
+					});
+				});
 
+				form.submit(function(event){
+					event.preventDefault();
+
+					var ok = form.data('prove').valid();
+
+					console.log('submit', ok);
 				});
 
 				//validator form
