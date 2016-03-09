@@ -59,6 +59,7 @@
 
 			<script src="../../jquery-prove.js"></script>
 			<script src="../../jquery-prove-validators.js"></script>
+			<script src="../../jquery-prove-decorators.js"></script>
 			<script>
 
 			//$.Prove.addValidator('required', function(){});
@@ -94,23 +95,26 @@
 
 				form.on('field.prove', function(event, data){
 
-					console.groupCollapsed('decorator');
+/*					console.groupCollapsed('decorator');
 					console.log('data', data)
-					console.groupEnd();
+					console.groupEnd();*/
 
-					input.decorator({
+					var input = data.input;
+
+					input.tinsel({
 						state: data.validator.state,
-						tinsel:{
-							placement: '.form-group'
-							success: 'has-success',
-							failure: 'has-error',
-							reset: ''
-						},
-						message: {
-							placement: '.form-group',
-							html: data.validator.message
-						}
+						placement: '.form-group', //closest selector, selectors array, or filter fnc
+						classSuccess: 'has-success',
+						classFailure: 'has-error'
 					})
+
+					input.garland({
+						state: data.validator.state,
+						wrapper: '<span class="help-block"></span>',
+						placement: '.form-group', //closest selector, selectors array, or filter fnc
+						message: data.validator.message
+					})
+
 				});
 
 				//validator form
