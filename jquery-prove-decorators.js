@@ -36,13 +36,13 @@
 
 		var input = $(this);
 
-		console.groupCollapsed('Decorators.tinsel()')
+/*		console.groupCollapsed('Decorators.tinsel()')
 			console.log('input', input);
 			console.log('state', options.state);
 			console.log('placement', options.placement);
 			console.log('classSuccess', options.classSuccess);
 			console.log('classFailure', options.classFailure);
-		console.groupEnd();
+		console.groupEnd();*/
 
 		function setup(input, state){
 			var container = input.closest(options.placement);
@@ -65,13 +65,13 @@
 
 		var input = $(this);
 
-		console.groupCollapsed('Decorators.garland()')
+/*		console.groupCollapsed('Decorators.garland()')
 			console.log('input', input);
 			console.log('state', options.state);
 			console.log('wrapper', options.wrapper);
 			console.log('placement', options.placement);
 			console.log('message', options.message);
-		console.groupEnd();
+		console.groupEnd();*/
 
 		function setup(input){
 			var container = input.closest(options.placement);

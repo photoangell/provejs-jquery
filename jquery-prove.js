@@ -100,7 +100,7 @@
 			var el = this.$form;
 			var events = this.domEvents(name, field);
 			var selector = this.domSelector(name, field);
-			var handler = $.proxy(this.checkValidators, this);
+			var handler = $.proxy(this.checkHandler, this);
 
 			//console.log('bindDomEvents()', events, selector);
 
@@ -117,26 +117,27 @@
 			// http://api.jquery.com/off/
 			el.off(events, selector);
 		},
-		checkValidators: function(event){
+		checkHandler: function(event){
 
-			var that = this;
 			var input = $(event.target);
 			var field = event.data;
-			var validators = field.validators || {};
 			var values = this.serializeObject(); //get all values
-			var value = input.val(); //todo: will this work on checkboxes, etc
-			var data, isValid, state;
 
-/*			console.groupCollapsed('Prove.checkValidators()');
-			console.log('value', value);
-			console.groupEnd();*/
+			this.checkValidators(field, input, values);
+		},
+		checkValidators: function(field, input, values){
+
+			var data, isValid = true, state;
+			var validators = field.validators || {};
+			var value = input.val(); //todo: will this work on checkboxes, etc
+			var checkValidator = $.proxy(this.checkValidator, this);
 
 			$.each(validators, function(validatorName, config){
 
 				// only check next validator if there was not
 				// a problem with the previous validator
 				if (isValid !== false) {
-					state = that.checkValidator(validatorName, config, value, values);
+					state = checkValidator(validatorName, config, value, values);
 
 					// Compose data the decorator will be interested in
 					data = {
@@ -156,6 +157,8 @@
 
 			//trigger event indicating validation state
 			this.$form.trigger('field.prove', data);
+
+			return isValid;
 		},
 		checkValidator: function(validator, config, value, values){
 
@@ -192,9 +195,31 @@
 
 			return obj;
 		},
+
+		//validate entire form
 		valid: function(){
 			console.log('Prove.valid()');
-			return false;
+
+			var fields = this.options.fields;
+			var checkValidators = $.proxy(this.checkValidators, this);
+			var values = this.serializeObject();
+			var isValid = true;
+			var that = this;
+
+			$.each(fields, function(fieldName, fieldConfig){
+
+				//todo: encapsulate
+				var selector = '[name="' + fieldName + '"]';
+				var input = that.$form.find(selector);
+
+
+				var isValidField = checkValidators(fieldConfig, input, values);
+
+				console.log('isValidField', isValidField);
+				if (!isValidField) isValid = false;
+			});
+
+			return isValid;
 		}
 	};
 
