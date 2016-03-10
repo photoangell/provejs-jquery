@@ -39,13 +39,13 @@
 			el.trigger('destroyed.prove');
 		},
 		//return jquery selector that represents the element in the DOM
-		domSelector: function(name, field){
+		domSelector: function(field){
 			return (field.selector)
 				? field.selector
-				: '[name="' + name + '"]';
+				: '[name="' + field.name + '"]';
 		},
 		//return string of space seperated events used to detect change to the DOM element
-		domEvents: function(name, field){
+		fieldDomEvents: function(field){
 			var events = field.trigger || 'change keyup click blur';
 			return events;
 		},
@@ -58,7 +58,12 @@
 			//console.log('setupFields()');
 
 			$.each(fields, function(name, field){
-				that.bindDomEvent(name, field);
+
+				//copy field name inside field config
+				field.name = name;
+
+				that.bindDomFieldEvents(field);
+				that.bindFieldProveEvent(field);
 				that.html5NoValidate(true);
 			});
 		},
@@ -71,52 +76,92 @@
 			//console.log('teardownFields()');
 
 			$.each(fields, function(name, field){
-				that.unbindDomEvent(name, field);
+				that.unbindDomFieldEvents(field);
+				that.unbindFieldProveEvent(field);
 				this.html5NoValidate(false);
 			});
 		},
 		html5NoValidate: function(state){
 			this.$form.attr("novalidate", state);
 		},
-		//delegate DOM events to form
-		bindDomEvent: function(name, field){
+		// ***************************
+		// ***** Bind DOM Events *****
+		// ***************************
+		bindDomFieldEvents: function(field){
 
 			var el = this.$form;
-			var domEvents = this.domEvents(name, field);
-			var selector = this.domSelector(name, field);
-			var handler = $.proxy(this.domInputEventHandler, this);
-			var data = $.extend({}, field); //clone
-
-			// Put field name in field config, so downstream
-			// event handlers know what field triggered the event.
-			data.name = name;
+			var domEvents = this.fieldDomEvents(field);
+			var selector = this.domSelector(field);
+			var handler = $.proxy(this.domFieldEventsHandler, this);
+			var data = clone(field);
 
 			// http://api.jquery.com/on/
 			el.on(domEvents, selector, data, handler);
 		},
-		unbindDomEvent: function(name, field){
-			var el = this.$form;
-			var domEvents = this.domEvents(name, field);
-			var selector = this.domSelector(name, field);
+		unbindDomFieldEvents: function(field){
 
-			//console.log('unbindDomEvents()', events, selector);
+			var el = this.$form;
+			var domEvents = this.fieldDomEvents(field);
+			var selector = this.domSelector(field);
 
 			// http://api.jquery.com/off/
 			el.off(domEvents, selector);
 		},
-		domInputEventHandler: function(event){
+		domFieldEventsHandler: function(event){
 
 			var input = $(event.target);
 			var field = event.data;
 			var name = field.name;
-			var values = this.serializeObject(); //get all values
 
-			this.checkField(name, field, input, values);
+			this.checkField(field, input);
 		},
-		checkField: function(fieldName, fieldConfig, input, values){
+
+		/**
+		* Bind Prove Events
+		*
+		* Allow javascript code to trigger field validation on
+		* input.trigger('validate.field.prove');
+		*
+		*/
+		bindFieldProveEvent: function(field){
+
+			var el = this.$form;
+			var proveEvents = 'validate.field.prove';
+			var selector = this.domSelector(field);
+			var handler = $.proxy(this.proveInputEventHandler, this);
+			var data = clone(field);
+
+			// http://api.jquery.com/on/
+			el.on(proveEvents, selector, data, handler);
+		},
+		unbindFieldProveEvent: function(field){
+
+			var el = this.$form;
+			var proveEvent = 'validate.field.prove';
+			var selector = this.domSelector(field);
+
+			// http://api.jquery.com/off/
+			el.off(domEvent, selector);
+		},
+		proveInputEventHandler: function(event){
+
+			var input = $(event.target);
+			var field = event.data;
+
+			this.checkField(field, input);
+		},
+
+		/**
+		* Required validator.
+		* @param {object} options The validator configuration.
+		* @option {string or array} state The input value to validate.
+		* @option {object} values All input values.
+		* @return {bool or null} The result of the validation.
+		*/
+		checkField: function(field, input){
 
 			var data, isValid = true, state;
-			var validators = fieldConfig.validators || {};
+			var validators = field.validators || {};
 
 			$.each(validators, function(validatorName, validatorConfig){
 
@@ -130,14 +175,14 @@
 
 					// Compose data the decorator will be interested in
 					data = {
-						field: fieldName,
+						field: field.name,
 						state: state,
 						message: validatorConfig.message,
 						// todo: do we return an array of validators and their data?
 						// We would need to do this on the `validated.form.prove` event.
 						validator: {
 							name: validatorName,
-							config: $.extend({}, validatorConfig) //clone
+							config: clone(validatorConfig)
 						}
 					}
 
@@ -153,7 +198,9 @@
 			return isValid;
 		},
 
-		serializeObject: function(){
+		//todo: jquery plugin	form.serializeObject()
+		//
+/*		serializeObject: function(){
 			//https://raw.githubusercontent.com/cowboy/jquery-misc/master/jquery.ba-serializeobject.js
 			var obj = {};
 
@@ -167,7 +214,7 @@
 			});
 
 			return obj;
-		},
+		},*/
 
 		//validate entire form
 		validate: function(){
@@ -175,18 +222,17 @@
 
 			var fields = this.options.fields;
 			var checkField = $.proxy(this.checkField, this);
-			var values = this.serializeObject();
 			var isValid = true;
 			var that = this;
 
-			$.each(fields, function(fieldName, fieldConfig){
+			$.each(fields, function(index, field){
 
 				//todo: encapsulate
-				var selector = '[name="' + fieldName + '"]';
+				var selector = '[name="' + field.name + '"]';
 				var input = that.$form.find(selector);
 
 
-				var isValidField = checkField(fieldName, fieldConfig, input, values);
+				var isValidField = checkField(field, input);
 
 				console.log('isValidField', isValidField);
 				if (!isValidField) isValid = false;
@@ -223,5 +269,9 @@
 	};
 
 	$.fn.prove.Constructor = Prove;
+
+	function clone(obj){
+		return $.extend({}, obj);
+	}
 
 }(window.jQuery);
