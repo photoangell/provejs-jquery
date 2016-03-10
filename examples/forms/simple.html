@@ -54,7 +54,7 @@
 					<div class="form-group">
 						<div class="checkbox">
 							<label>
-								<input type="checkbox" name="fruit" value="apple"> Apple
+								<input type="checkbox" name="fruit" value="apple" id="apple"> Apple
 							</label>
 						</div>
 						<div class="checkbox">
@@ -75,6 +75,8 @@
 			<!-- Latest compiled and minified JavaScript -->
 			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
+
+			<script src="../../../jquery-custom-selectors/jquery-custom-selectors.js"></script>
 			<script src="../../jquery-prove.js"></script>
 			<script src="../../jquery-prove-validators.js"></script>
 			<script src="../../jquery-prove-decorators.js"></script>
@@ -89,8 +91,8 @@
 							//selector: null, // tbd
 							validators: {
 								required: {
-									state: true, // true, false, selector string, callback
-									message: 'Your email is required.', //optional, passed to decorator
+									state: '#apple:checked', // true, false, selector string, callback
+									message: 'Your email is required if you has a password.', //optional, passed to decorator
 								},
 								pattern: {
 									regex: '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,63}',

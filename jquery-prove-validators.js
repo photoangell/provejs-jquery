@@ -15,7 +15,7 @@
 
 		function evalSelector(selector){
 			try {
-				return !!$(required).length;
+				return !!$(selector).length;
 			} catch (e) {
 				console.error('Invalid `required` jquery selector (`%s`) param for required validator.', selector);
 				return false;
