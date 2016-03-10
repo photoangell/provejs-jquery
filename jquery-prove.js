@@ -4,8 +4,6 @@
 !function ($) {
 	"use strict";
 
-	var _validators = {};
-
 	// Prove constructor
 	function Prove(form, options) {
 
@@ -21,26 +19,12 @@
 		this.setupFields();
 	}
 
-	//add public method to constructor
-	Prove.addValidator = function(name, method){
-		_validators[ name ] = method;
-	};
-
 	//$.Prove.prototype.defaults = {
 	Prove.prototype = {
 
 		defaults: {},
 		constructor: Prove,
 
-		hasValue: function(value){
-			var isString, isArray, hasValue;
-
-			isString = (typeof value === 'string');
-			isArray = $.isArray(value);
-			value = (isString)? $.trim(value) : value;
-			hasValue = ((isString && !!value.length) || (isArray && !!value.length && !!value[0].length));
-			return hasValue;
-		},
 		destroy: function() {
 			console.log('destroy()');
 			//this.$container.remove();
@@ -133,15 +117,16 @@
 
 			var data, isValid = true, state;
 			var validators = fieldConfig.validators || {};
-			var value = this.inputValue(input);
-			var checkValidator = $.proxy(this.checkValidator, this);
 
 			$.each(validators, function(validatorName, validatorConfig){
 
 				// Only check next validator if there was
 				// not a problem with the previous one.
 				if (isValid !== false) {
-					state = checkValidator(validatorName, validatorConfig, value, values);
+
+					//todo: show warning if validator plugin is not defined
+					//invoke validator plugin
+					state = input[validatorName](validatorConfig);
 
 					// Compose data the decorator will be interested in
 					data = {
@@ -167,70 +152,6 @@
 
 			return isValid;
 		},
-		checkValidator: function(validator, config, value, values){
-
-/*			console.groupCollapsed('Prove.checkValidator()');
-			console.log('validator', validator);
-			console.log('config', config);
-			console.log('value', value);
-			console.log('values', values);
-			console.groupEnd();*/
-
-			// setup
-			var validator = $.proxy(_validators[validator], this) || function(){
-				console.warn("Validator '%s' not found. Please use $.Prove.addValidator().", validator);
-			};
-
-			var isValid = validator(config, value, values);
-			return isValid;
-		},
-		inputValue: function( input ) {
-
-			var type = input.attr('type');
-			var isCheckbox = (type === 'checkbox');
-			var isRadio = (type === 'radio');
-			var isNumber = (type === 'number');
-			var isFile = (type === 'file');
-			var val, idx;
-
-/*			console.groupCollapsed('Prove.inputValue()');
-			console.log('type', type);
-			console.log('c', config);
-			console.log('value', value);
-			console.log('values', values);
-			console.groupEnd();*/
-
-			if ( isRadio || isCheckbox ) {
-				//todo: find other inputs with the same name?
-				return input.filter(':checked').val();
-			} else if ( isNumber && typeof input.validity !== 'undefined' ) {
-				return input.validity.badInput ? NaN : input.val();
-			} else if ( isFile ) {
-
-				val = input.val();
-
-				// Modern browser (chrome & safari)
-				if ( val.substr( 0, 12 ) === 'C:\\fakepath\\' ) return val.substr( 12 );
-
-				// Legacy browsers, unix-based path
-				idx = val.lastIndexOf( '/' );
-				if ( idx >= 0 ) return val.substr( idx + 1 );
-
-				// Windows-based path
-				idx = val.lastIndexOf( '\\' );
-				if ( idx >= 0 ) return val.substr( idx + 1 );
-
-				return val;
-			} else if ( input[0].hasAttribute( 'contenteditable' ) ) {
-				val = input.text();
-			} else {
-				val = input.val();
-			}
-
-			if ( typeof val === 'string' ) return val.replace( /\r/g, '' );
-
-			return val;
-		},
 
 		serializeObject: function(){
 			//https://raw.githubusercontent.com/cowboy/jquery-misc/master/jquery.ba-serializeobject.js
@@ -249,7 +170,7 @@
 		},
 
 		//validate entire form
-		valid: function(){
+		validate: function(){
 			console.log('Prove.valid()');
 
 			var fields = this.options.fields;
@@ -284,7 +205,6 @@
 			var data = el.data('prove');
 			var options = typeof option === 'object' && option;
 			var isInitialized = (data);
-			var Prove = $.Prove;
 
 			// either initialize or call public method
 			if (!isInitialized) {
@@ -302,7 +222,6 @@
 		});
 	};
 
-	$.Prove = Prove;
 	$.fn.prove.Constructor = Prove;
 
 }(window.jQuery);

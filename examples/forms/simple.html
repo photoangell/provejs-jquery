@@ -75,7 +75,6 @@
 			<!-- Latest compiled and minified JavaScript -->
 			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
-
 			<script src="../../../jquery-custom-selectors/jquery-custom-selectors.js"></script>
 			<script src="../../jquery-prove.js"></script>
 			<script src="../../jquery-prove-validators.js"></script>
@@ -88,22 +87,20 @@
 					fields: {
 						email: {
 							trigger: 'blur validate',
-							//selector: null, // tbd
 							validators: {
-								required: {
+								proveRequired: {
 									state: '#apple:checked', // true, false, selector string, callback
-									message: 'Your email is required if you has a password.', //optional, passed to decorator
+									message: 'Your email is required if you has a password.',
 								},
-								pattern: {
+								provePattern: {
 									regex: '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,63}',
 									message: 'Invalid email address.' //optional, passed to decorator
 								}
 							}
 						},
 						password: {
-							//selector: null,
 							validators: {
-								required: {
+								proveRequired: {
 									state: true, // true, false, selector string, callback
 									message: 'Your password is required.', //optional, passed to decorator
 								}
@@ -111,7 +108,8 @@
 						},
 						fruit: {
 							validators: {
-								required: {
+								proveRequired: {
+									debug: true,
 									state: true,
 									message: 'A fruit is required.',
 								}
@@ -123,7 +121,6 @@
 				form.on('field.prove', function(event, data){
 
 					var input = $(event.target);
-					console.log('data', data);
 
 					//add some classes to decorate the input
 					input.tinsel({
@@ -145,7 +142,7 @@
 				form.submit(function(event){
 					event.preventDefault();
 
-					var ok = form.data('prove').valid();
+					var ok = form.data('prove').validate();
 					//form.trigger('validate.prove');
 
 					console.log('submit', ok);
@@ -154,7 +151,7 @@
 				/* todo:
 					//form validate
 					form.trigger('validate.prove');
-					var ok = form.data('prove').valid();
+					form.data('prove').validate();
 
 					//input validate
 					input.trigger('validate.prove');
@@ -164,6 +161,7 @@
 
 					//destroy
 					form.trigger('destroy.prove');
+					form.
 					input.trigger('destroy.prove');
 
 					//decoration
