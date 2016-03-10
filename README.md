@@ -92,12 +92,12 @@ Prove is both a consumer and publisher of events.
 
 ### Published Events
 
-The following events are emitted by Prove on the form container. The decorator plugin listens to these events in order to decorate the form. Your code may also listen to these events.
+The following events are published (emitted) by Prove. The decorator plugin listens to these events in order to decorate the form. Your code may also listen to these events.
 
 #### Event: `field.prove` ####
 - **Description** A field has been validated.
 - **Publisher** Form input DOM element.
-- **Listener** Attached your listener to the form container.
+- **Listener** Attach your listener to the form container.
 
 ```javascript
 form.on('field.prove', function(event, data){
@@ -106,14 +106,14 @@ form.on('field.prove', function(event, data){
 	var validator = data.validator;
 
 	//do something
-})
+});
 ```
 
 #### Event: `form.prove` ####
 
 - **Description** All fields in the form have been validated.
 - **Publisher** Form DOM element.
-- **Listener** Attached your listener to the form container.
+- **Listener** Attach your listener to the form container.
 
 ```javascript
 form.on('form.prove', function(event, data){
@@ -122,16 +122,41 @@ form.on('form.prove', function(event, data){
 	var validators = data.validators;
 
 	//do something like submit form via ajax
-})
+});
 ```
 
 ### Listened To Events
 
 Prove listens to the following events on the form container and inputs (delegated to the form container).
 
-`validate.form.prove`
-`validate.field.prove`
+#### Event: `validate.form.prove` ####
 
+- **Description** When Prove hears this event it will validate all fields.
+- **Target** Form container.
+- **Publisher** Your code.
+
+```javascript
+form.trigger('validate.form.prove'); //triggers form validation
+```
+You can also perform form validation by:
+
+```javascript
+var isValid = form.data('prove').valid(); //invokes form validation
+```
+
+#### Event: `validate.field.prove` ####
+
+## Form Submission
+
+You will need to stop browser from submitting the form by:
+
+```javascript
+form.submit(function(event){
+	event.preventDefault();
+
+	//do something else, like ajax submission of form
+});
+```
 
 ## Others
 
