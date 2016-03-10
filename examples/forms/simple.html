@@ -122,11 +122,12 @@
 
 				form.on('field.prove', function(event, data){
 
-					var input = data.input;
+					var input = $(event.target);
+					console.log('data', data);
 
 					//add some classes to decorate the input
 					input.tinsel({
-						state: data.validator.state,
+						state: data.state,
 						placement: ['.form-group', '.checkbox', '.radio', 'td'], //first of
 						classSuccess: 'has-success',
 						classFailure: 'has-error'
@@ -134,10 +135,10 @@
 
 					//show message on error, clear error message on success
 					input.garland({
-						state: !data.validator.state,
+						state: !data.state,
 						wrapper: '<span class="help-block"></span>',
 						placement: ['.form-group', 'td', '.checkbox', '.radio'], //first of
-						message: data.validator.message
+						message: data.message
 					});
 				});
 

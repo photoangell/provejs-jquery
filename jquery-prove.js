@@ -98,55 +98,61 @@
 		bindDomEvent: function(name, field){
 
 			var el = this.$form;
-			var events = this.domEvents(name, field);
+			var domEvents = this.domEvents(name, field);
 			var selector = this.domSelector(name, field);
-			var handler = $.proxy(this.checkHandler, this);
+			var handler = $.proxy(this.domInputEventHandler, this);
+			var data = $.extend({}, field); //clone
 
-			//console.log('bindDomEvents()', events, selector);
+			// Put field name in field config, so downstream
+			// event handlers know what field triggered the event.
+			data.name = name;
 
 			// http://api.jquery.com/on/
-			el.on(events, selector, field, handler);
+			el.on(domEvents, selector, data, handler);
 		},
 		unbindDomEvent: function(name, field){
 			var el = this.$form;
-			var events = this.domEvents(name, field);
+			var domEvents = this.domEvents(name, field);
 			var selector = this.domSelector(name, field);
 
 			//console.log('unbindDomEvents()', events, selector);
 
 			// http://api.jquery.com/off/
-			el.off(events, selector);
+			el.off(domEvents, selector);
 		},
-		checkHandler: function(event){
+		domInputEventHandler: function(event){
 
 			var input = $(event.target);
 			var field = event.data;
+			var name = field.name;
 			var values = this.serializeObject(); //get all values
 
-			this.checkValidators(field, input, values);
+			this.checkField(name, field, input, values);
 		},
-		checkValidators: function(field, input, values){
+		checkField: function(fieldName, fieldConfig, input, values){
 
 			var data, isValid = true, state;
-			var validators = field.validators || {};
+			var validators = fieldConfig.validators || {};
 			var value = this.inputValue(input);
 			var checkValidator = $.proxy(this.checkValidator, this);
 
-			$.each(validators, function(validatorName, config){
+			$.each(validators, function(validatorName, validatorConfig){
 
-				// only check next validator if there was not
-				// a problem with the previous validator
+				// Only check next validator if there was
+				// not a problem with the previous one.
 				if (isValid !== false) {
-					state = checkValidator(validatorName, config, value, values);
+					state = checkValidator(validatorName, validatorConfig, value, values);
 
 					// Compose data the decorator will be interested in
 					data = {
-						input: input,
+						field: fieldName,
+						state: state,
+						message: validatorConfig.message,
+						// todo: do we return an array of validators and their data?
+						// We would need to do this on the `validated.form.prove` event.
 						validator: {
 							name: validatorName,
-							state: state,
-							config: $.extend({},config), //clone
-							message: config.message
+							config: $.extend({}, validatorConfig) //clone
 						}
 					}
 
@@ -156,7 +162,8 @@
 			});
 
 			//trigger event indicating validation state
-			this.$form.trigger('field.prove', data);
+			//this.$form.trigger('field.prove', data);
+			input.trigger('field.prove', data);
 
 			return isValid;
 		},
@@ -246,7 +253,7 @@
 			console.log('Prove.valid()');
 
 			var fields = this.options.fields;
-			var checkValidators = $.proxy(this.checkValidators, this);
+			var checkField = $.proxy(this.checkField, this);
 			var values = this.serializeObject();
 			var isValid = true;
 			var that = this;
@@ -258,7 +265,7 @@
 				var input = that.$form.find(selector);
 
 
-				var isValidField = checkValidators(fieldConfig, input, values);
+				var isValidField = checkField(fieldName, fieldConfig, input, values);
 
 				console.log('isValidField', isValidField);
 				if (!isValidField) isValid = false;

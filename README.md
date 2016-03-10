@@ -94,17 +94,22 @@ Prove is both a consumer and publisher of events.
 
 The following events are emitted by Prove on the form container. The decorator plugin listens to these events in order to decorate the form. Your code may also listen to these events.
 
-**valid.form.prove**
+**`field.prove`**
+- **Description** A field has been validated. The event data indicates validation state.
+- **Publisher** Form input DOM element.
+- **Listener** Attached your listner to the form container.
 
-`**invalid.form.prove**`
+```javascript
+form.on('field.prove', function(event, data){
+	var input = $(event.target);
+	var state = data.state;
+	var validator = data.validator;
 
-**`valid.field.prove`**
+	//do something
+})
+```
 
-`invalid.field.prove`
-
-`reset.field.prove`
-
-`field.prove`
+**`field.prove`**
 
 ### Listened To Events
 
