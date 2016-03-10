@@ -84,9 +84,10 @@
 		html5NoValidate: function(state){
 			this.$form.attr("novalidate", state);
 		},
-		// ***************************
-		// ***** Bind DOM Events *****
-		// ***************************
+		/**
+		* Bind Event 'field.prove'
+		* https://github.com/dhollenbeck/jquery-prove#event-fieldprove
+		*/
 		bindDomFieldEvents: function(field){
 
 			var el = this.$form;
@@ -117,11 +118,8 @@
 		},
 
 		/**
-		* Bind Prove Events
-		*
-		* Allow javascript code to trigger field validation on
-		* input.trigger('validate.field.prove');
-		*
+		* Bind Event 'validate.field.prove'
+		* https://github.com/dhollenbeck/jquery-prove#event-validatefieldprove
 		*/
 		bindFieldProveEvent: function(field){
 
@@ -192,8 +190,7 @@
 			});
 
 			//trigger event indicating validation state
-			//this.$form.trigger('field.prove', data);
-			input.trigger('field.prove', data);
+			input.trigger('validated.field.prove', data);
 
 			return isValid;
 		},

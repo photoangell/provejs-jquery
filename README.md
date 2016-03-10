@@ -101,13 +101,13 @@ Prove is both a consumer and publisher of events.
 
 The following events are published (emitted) by Prove. The decorator plugin listens to these events in order to decorate the form. Your code may also listen to these events.
 
-#### Event: `field.prove` ####
+#### Event: `validated.field.prove` ####
 - **Description** A field has been validated.
 - **Publisher** Form input DOM element.
 - **Listener** Attach your listener to the form container.
 
 ```javascript
-form.on('field.prove', function(event, data){
+form.on('validated.field.prove', function(event, data){
 	var input = $(event.target);
 	var state = data.state; //validation state of input (true, false, null)
 	var validator = data.validator;
@@ -128,7 +128,7 @@ form.on('form.prove', function(event, data){
 	var state = data.state; //validation state of form (true, false, null)
 	var validators = data.validators;
 
-	//do something like submit form via ajax
+	//do something, like submit form via ajax
 });
 ```
 
@@ -143,12 +143,12 @@ Prove listens to the following events on the form container and inputs (delegate
 - **Publisher** Your code.
 
 ```javascript
-form.trigger('validate.form.prove'); //triggers form validation
+form.trigger('validate.form.prove');
 ```
 You can also perform form validation by:
 
 ```javascript
-var isValid = form.data('prove').validate(); //invokes form validation
+var isValid = form.data('prove').validate();
 ```
 
 #### Event: `validate.field.prove` ####
@@ -158,9 +158,8 @@ var isValid = form.data('prove').validate(); //invokes form validation
 - **Publisher** Your code.
 
 ```javascript
-input.trigger('validate.field.prove'); //triggers field validation
+input.trigger('validate.field.prove');
 ```
-
 
 ## Form Submission
 
