@@ -8,7 +8,11 @@
 	* @param {object} values All input values.
 	* @return {bool or null} The result of the validation.
 	*/
+	//$.fn.proveRequired = function(options){
 	$.Prove.addValidator('required', function( config, value, values ) {
+
+		//var isBrowser = (typeof jQuery === 'function');
+		//var isNode = (!isBrowser);
 
 		var hasValue = this.hasValue(value);
 		var isValid;
@@ -56,6 +60,7 @@
 	* @param {object} values All input values.
 	* @return {bool or null} The result of the validation.
 	*/
+	//$.fn.provePattern = function(options){
 	$.Prove.addValidator('pattern', function( config, value, values ) {
 
 		var hasValue = this.hasValue(value);
