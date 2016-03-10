@@ -37,12 +37,14 @@
 			throw new Error('Invalid `required` param for required validator.');
 		}
 
-		console.groupCollapsed('Validator.required()')
-			console.log('config', config);
-			console.log('value', value);
-			console.log('values', values);
-			console.log('isValid', isValid);
-		console.groupEnd();
+		if (config.debug){
+			console.groupCollapsed('Validator.required()')
+				console.log('config', config);
+				console.log('value', value);
+				console.log('values', values);
+				console.log('isValid', isValid);
+			console.groupEnd();
+		}
 
 		return isValid;
 	});
@@ -70,13 +72,14 @@
 		} else {
 			isValid = false;
 		}
-
-		console.groupCollapsed('Validator.pattern()')
-			console.log('config', config);
-			console.log('value', value);
-			console.log('values', values);
-			console.log('isValid', isValid);
-		console.groupEnd();
+		if (config.debug){
+			console.groupCollapsed('Validator.pattern()')
+				console.log('config', config);
+				console.log('value', value);
+				console.log('values', values);
+				console.log('isValid', isValid);
+			console.groupEnd();
+		}
 
 		return isValid;
 	});

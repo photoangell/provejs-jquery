@@ -22,11 +22,11 @@
 			throw new Error('Invalid selector.')
 		}
 
-		console.groupCollapsed('Decorators.container()')
+/*		console.groupCollapsed('Decorators.container()')
 			console.log('el', el);
 			console.log('selector', selector);
 			console.log('container', container);
-		console.groupEnd();
+		console.groupEnd();*/
 
 		return container;
 	};
@@ -36,13 +36,15 @@
 
 		var input = $(this);
 
-/*		console.groupCollapsed('Decorators.tinsel()')
-			console.log('input', input);
-			console.log('state', options.state);
-			console.log('placement', options.placement);
-			console.log('classSuccess', options.classSuccess);
-			console.log('classFailure', options.classFailure);
-		console.groupEnd();*/
+		if (options.debug){
+			console.groupCollapsed('Decorators.tinsel()')
+				console.log('input', input);
+				console.log('state', options.state);
+				console.log('placement', options.placement);
+				console.log('classSuccess', options.classSuccess);
+				console.log('classFailure', options.classFailure);
+			console.groupEnd();
+		}
 
 		function setup(input, state){
 			var container = input.container(options.placement);
@@ -65,13 +67,15 @@
 
 		var input = $(this);
 
-/*		console.groupCollapsed('Decorators.garland()')
-			console.log('input', input);
-			console.log('state', options.state);
-			console.log('wrapper', options.wrapper);
-			console.log('placement', options.placement);
-			console.log('message', options.message);
-		console.groupEnd();*/
+		if (options.debug){
+			console.groupCollapsed('Decorators.garland()')
+				console.log('input', input);
+				console.log('state', options.state);
+				console.log('wrapper', options.wrapper);
+				console.log('placement', options.placement);
+				console.log('message', options.message);
+			console.groupEnd();
+		}
 
 		function setup(input){
 			var container = input.container(options.placement);

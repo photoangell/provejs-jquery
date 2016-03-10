@@ -125,7 +125,7 @@
 					//add some classes to decorate the input
 					input.tinsel({
 						state: data.validator.state,
-						placement: ['.form-group', '.checkbox', '.radio', 'td'],
+						placement: ['.form-group', '.checkbox', '.radio', 'td'], //first of
 						classSuccess: 'has-success',
 						classFailure: 'has-error'
 					});
@@ -134,7 +134,7 @@
 					input.garland({
 						state: !data.validator.state,
 						wrapper: '<span class="help-block"></span>',
-						placement: ['.form-group', 'td', '.checkbox', '.radio'],
+						placement: ['.form-group', 'td', '.checkbox', '.radio'], //first of
 						message: data.validator.message
 					});
 				});
