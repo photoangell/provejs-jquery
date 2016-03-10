@@ -148,10 +148,19 @@ form.trigger('validate.form.prove'); //triggers form validation
 You can also perform form validation by:
 
 ```javascript
-var isValid = form.data('prove').valid(); //invokes form validation
+var isValid = form.data('prove').validate(); //invokes form validation
 ```
 
 #### Event: `validate.field.prove` ####
+
+- **Description** When Prove hears this event it will validate just this input.
+- **Target** Form input.
+- **Publisher** Your code.
+
+```javascript
+input.trigger('validate.field.prove'); //triggers field validation
+```
+
 
 ## Form Submission
 
