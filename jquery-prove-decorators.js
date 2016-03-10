@@ -1,7 +1,7 @@
 !function ($) {
 	"use strict";
 
-/*	$.fn.container = function(selector){
+	$.fn.container = function(selector){
 		var el = $(this);
 		var container;
 
@@ -29,7 +29,7 @@
 		console.groupEnd();
 
 		return container;
-	};*/
+	};
 
 
 	$.fn.tinsel = function(options){
@@ -45,13 +45,13 @@
 		console.groupEnd();*/
 
 		function setup(input, state){
-			var container = input.closest(options.placement);
+			var container = input.container(options.placement);
 			var klass = (state)? options.classSuccess : options.classFailure;
 			container.addClass(klass);
 		}
 
 		function teardown(input){
-			var container = input.closest(options.placement);
+			var container = input.container(options.placement);
 			container.removeClass(options.classFailure).removeClass(options.classSuccess);
 		}
 
@@ -74,7 +74,7 @@
 		console.groupEnd();*/
 
 		function setup(input){
-			var container = input.closest(options.placement);
+			var container = input.container(options.placement);
 			var garland = $(options.wrapper);
 			garland.addClass('garland-wrapper');
 			garland.text(options.message);
@@ -82,7 +82,7 @@
 		}
 
 		function teardown(input){
-			var container = input.closest(options.placement);
+			var container = input.container(options.placement);
 			container.find('.garland-wrapper').remove();
 		}
 

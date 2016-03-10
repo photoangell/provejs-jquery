@@ -25,27 +25,45 @@
 
 		<div class="container-fluid">
 
-			<h1>Simple Example</h1>
+			<h1>Bootstrap Example</h1>
 
 			<form>
-				<div class="form-group">
-					<label for="email">Email address</label>
-					<input type="email" name="email" class="form-control" id="email" placeholder="Email">
-				</div>
-				<div class="form-group">
-					<label for="password">Password</label>
-					<input type="password" name="password" class="form-control" id="password" placeholder="Password">
-				</div>
-				<div class="form-group">
-					<label for="exampleInputFile">File input</label>
-					<input type="file" id="exampleInputFile">
-					<p class="help-block">Example block-level help text here.</p>
-				</div>
-				<div class="checkbox">
-					<label>
-						<input type="checkbox"> Check me out
-					</label>
-				</div>
+				<fieldset>
+					<legend>Text Inputs</legend>
+					<div class="form-group">
+						<label for="email">Email address</label>
+						<input type="email" name="email" class="form-control" id="email" placeholder="Email">
+					</div>
+					<div class="form-group">
+						<label for="password">Password</label>
+						<input type="password" name="password" class="form-control" id="password" placeholder="Password">
+					</div>
+				<fieldset>
+					<legend>File Input</legend>
+					<div class="form-group">
+						<label for="exampleInputFile">File input</label>
+						<input type="file" id="exampleInputFile">
+						<p class="help-block">Example block-level help text here.</p>
+					</div>
+				</fieldset>
+
+				<fieldset>
+					<legend>Checkboxes and Radios</legend>
+					<p>Please select at least one fruit.
+
+					<div class="form-group">
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" name="fruit" value="apple"> Apple
+							</label>
+						</div>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" name="fruit" value="pear"> Pear
+							</label>
+						</div>
+					</div>
+				</fieldset>
 				<button type="submit" class="btn btn-default">Submit</button>
 			</form>
 
@@ -88,6 +106,14 @@
 									message: 'Your password is required.', //optional, passed to decorator
 								}
 							}
+						},
+						fruit: {
+							validators: {
+								required: {
+									state: true,
+									message: 'A fruit is required.',
+								}
+							}
 						}
 					}
 				};
@@ -99,7 +125,7 @@
 					//add some classes to decorate the input
 					input.tinsel({
 						state: data.validator.state,
-						placement: '.form-group, td, .checkbox, .radio',
+						placement: ['.form-group', '.checkbox', '.radio', 'td'],
 						classSuccess: 'has-success',
 						classFailure: 'has-error'
 					});
@@ -108,7 +134,7 @@
 					input.garland({
 						state: !data.validator.state,
 						wrapper: '<span class="help-block"></span>',
-						placement: '.form-group, td, .checkbox, .radio',
+						placement: ['.form-group', 'td', '.checkbox', '.radio'],
 						message: data.validator.message
 					});
 				});

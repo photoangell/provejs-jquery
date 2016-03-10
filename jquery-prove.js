@@ -129,7 +129,7 @@
 
 			var data, isValid = true, state;
 			var validators = field.validators || {};
-			var value = input.val(); //todo: will this work on checkboxes, etc
+			var value = this.inputValue(input);
 			var checkValidator = $.proxy(this.checkValidator, this);
 
 			$.each(validators, function(validatorName, config){
@@ -177,9 +177,54 @@
 			var isValid = validator(config, value, values);
 			return isValid;
 		},
-		isSelector: function(str){
-			return
+		inputValue: function( input ) {
+
+			var type = input.attr('type');
+			var isCheckbox = (type === 'checkbox');
+			var isRadio = (type === 'radio');
+			var isNumber = (type === 'number');
+			var isFile = (type === 'file');
+			var val, idx;
+
+/*			console.groupCollapsed('Prove.inputValue()');
+			console.log('type', type);
+			console.log('c', config);
+			console.log('value', value);
+			console.log('values', values);
+			console.groupEnd();*/
+
+			if ( isRadio || isCheckbox ) {
+				//todo: find other inputs with the same name?
+				return input.filter(':checked').val();
+			} else if ( isNumber && typeof input.validity !== 'undefined' ) {
+				return input.validity.badInput ? NaN : input.val();
+			} else if ( isFile ) {
+
+				val = input.val();
+
+				// Modern browser (chrome & safari)
+				if ( val.substr( 0, 12 ) === 'C:\\fakepath\\' ) return val.substr( 12 );
+
+				// Legacy browsers, unix-based path
+				idx = val.lastIndexOf( '/' );
+				if ( idx >= 0 ) return val.substr( idx + 1 );
+
+				// Windows-based path
+				idx = val.lastIndexOf( '\\' );
+				if ( idx >= 0 ) return val.substr( idx + 1 );
+
+				return val;
+			} else if ( input[0].hasAttribute( 'contenteditable' ) ) {
+				val = input.text();
+			} else {
+				val = input.val();
+			}
+
+			if ( typeof val === 'string' ) return val.replace( /\r/g, '' );
+
+			return val;
 		},
+
 		serializeObject: function(){
 			//https://raw.githubusercontent.com/cowboy/jquery-misc/master/jquery.ba-serializeobject.js
 			var obj = {};
