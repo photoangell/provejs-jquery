@@ -88,17 +88,22 @@ form.on(['prove.success', 'prove.failure'], function(event, data){
 
 ## Events
 
-Prove is both a consumer and publisher of events on the form container.
+Prove is both a consumer and publisher of events.
 
 ### Published Events
 
-The following events are emitted by Prove on the form container.
+The following events are emitted by Prove on the form container. The decorator plugin listens to these events in order to decorate the form. Your code may also listen to these events.
 
-`valid.form.prove`
-`invalid.form.prove`
-`valid.field.prove`
+**valid.form.prove**
+
+`**invalid.form.prove**`
+
+**`valid.field.prove`**
+
 `invalid.field.prove`
+
 `reset.field.prove`
+
 `field.prove`
 
 ### Listened To Events
