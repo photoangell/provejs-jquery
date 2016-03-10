@@ -1,12 +1,17 @@
 # jquery-prove
 
-An event based validation plugin used for client-side validation of html forms.
+An event based jQuery plugin for client-side validation of html forms.
 
 ## Design Considerations
 
 How is this validator plugin different than other jquery plugin form validators?
 
-###Validations
+- Explicit Validations
+- DOM Agnostic via Delagated Events
+- Decoration Plugins
+- Validation Plugins
+
+### Eplicit Validations
 
 Unlike all other form validations this plugin primary focus is the validation rules and not the form inputs. During validations the plugin will loop the defined fields config looking for any inputs which might exist and if and only if the form input exists validate the input's value. All other plugins loop the inputs and validate the form inputs. This plugin loops the validations and could careless if a form input exists or not.
 
