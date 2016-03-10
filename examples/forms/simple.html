@@ -87,7 +87,7 @@
 				var cfg = {
 					fields: {
 						email: {
-							trigger: 'blur',
+							trigger: 'blur validate',
 							//selector: null, // tbd
 							validators: {
 								required: {
@@ -145,12 +145,35 @@
 					event.preventDefault();
 
 					var ok = form.data('prove').valid();
+					//form.trigger('validate.prove');
 
 					console.log('submit', ok);
 				});
 
-				//validator form
-				form.prove(cfg);
+				/* todo:
+					//form validate
+					form.trigger('validate.prove');
+					var ok = form.data('prove').valid();
+
+					//input validate
+					input.trigger('validate.prove');
+
+					//input reset decoration
+					input.trigger('reset');
+
+					//destroy
+					form.trigger('destroy.prove');
+					input.trigger('destroy.prove');
+
+					//decoration
+					form.decorate({
+						framework: 'bootstrap'
+					});
+				*/
+
+				//form plugins
+				//form.decorate(); //decorate
+				form.prove(cfg); //validate
 
 				//form.prove('destroy');
 

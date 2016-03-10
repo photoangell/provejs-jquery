@@ -86,16 +86,28 @@ form.on(['prove.success', 'prove.failure'], function(event, data){
 });
 ```
 
-## Events EMITTED
+## Events
 
-The following events are emitted by the plugin on the form container.
+Prove is both a consumer and publisher of events on the form container.
 
-- `valid.form.prove`, {...}
-- `invalid.form.prove`, {...}
-- `valid.field.prove`, {...}
-- `invalid.field.prove`, {...}
-- `reset.field.prove`, {...}
-- `field.prove`, {event.data.validator.state}
+### Published Events
+
+The following events are emitted by Prove on the form container.
+
+`valid.form.prove`
+`invalid.form.prove`
+`valid.field.prove`
+`invalid.field.prove`
+`reset.field.prove`
+`field.prove`
+
+### Listened To Events
+
+Prove listens to the following events on the form container and inputs (delegated to the form container).
+
+`validate.form.prove`
+`validate.field.prove`
+
 
 ## Others
 
