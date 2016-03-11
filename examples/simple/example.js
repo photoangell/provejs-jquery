@@ -24,11 +24,19 @@
 					}
 				}
 			},
-			fruit: {
+			'fruit[]': {
 				validators: {
 					proveRequired: {
 						state: true,
 						message: 'A fruit is required.',
+					}
+				}
+			},
+			dynamicField: {
+				validators: {
+					proveRequired: {
+						state: true,
+						message: 'This input does not exist, but might sometime in the future. When it does exist prove will validate it.',
 					}
 				}
 			}
@@ -36,12 +44,25 @@
 	};
 
 	var events = $('#events');
-	var all = 'validated.field.prove validate.field.prove setup.field.prove destroy.field.prove'
+	var all = [
+		'setup.field.prove',
+		'setup.form.prove',
+
+		'validate.field.prove',
+		'validated.field.prove',
+		'validated.form.prove',
+
+		'destroyed.field.prove',
+		'destroyed.form.prove'
+		].join(' ');
 
 	form.on(all, function(event, data){
-		var input = $(event.target);
-		var ts = new Date(event.timeStamp);
-		events.append('<div>' + event.type + '.' + event.namespace + ': ' + input.attr('name') + ' ' + ts.toISOString() +'</div>');
+		data = data || {};
+		events.prepend(eventRow(event, data));
+	});
+
+	form.on('click', '#optout', function () {
+		$('#email').trigger('validate.field.prove');
 	});
 
 	form.on('validated.field.prove', function(event, data){
@@ -62,5 +83,20 @@
 
 	//form plugins
 	form.prove(cfg); //validate
+
+	//private function
+	function eventRow(event, data){
+
+		var input = $(event.target);
+		var ts = new Date(event.timeStamp);
+		var tr = $('<tr><td></td><td></td><td></td><td></td><td></td></tr>');
+		var td = tr.find('td');
+		td.eq(0).text(event.type);
+		td.eq(1).text(event.namespace);
+		td.eq(2).text(input.attr('name') || 'form');
+		td.eq(3).text(data.state);
+		td.eq(4).text(ts.toISOString());
+		return tr;
+	}
 
 })();

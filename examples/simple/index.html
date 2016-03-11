@@ -55,12 +55,12 @@
 							<div class="form-group">
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" name="fruit" value="apple" id="apple"> Apple
+										<input type="checkbox" name="fruit[]" value="apple" id="apple"> Apple
 									</label>
 								</div>
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" name="fruit" value="pear"> Pear
+										<input type="checkbox" name="fruit[]" value="pear"> Pear
 									</label>
 								</div>
 							</div>
@@ -70,8 +70,19 @@
 				</div>
 				<div class="col-sm-6">
 					<fieldset>
-						<legend>Prove Events</legend>
-						<div id="events" class="well">
+						<legend>Prove Events <small class="text-muted">most recent at top</small></legend>
+						<div class="well">
+							<table class="table table-condensed">
+								<thead>
+									<th>Event</th>
+									<th>Namespace</th>
+									<th>Source</th>
+									<th>State</th>
+									<th>Timestamp</th>
+								</thead>
+								<tbody id="events">
+								</tbody>
+							</table>
 						</div>
 					</fieldset>
 				</div>

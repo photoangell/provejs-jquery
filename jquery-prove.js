@@ -20,6 +20,8 @@
 
 		this.setupFields();
 		this.setupForm();
+
+		this.$form.trigger('setup.form.prove');
 	}
 
 	//$.Prove.prototype.defaults = {
@@ -40,7 +42,7 @@
 			this.teardownFields();
 			this.teardownForm();
 
-			el.trigger('destroyed.prove');
+			el.trigger('destroyed.form.prove');
 		},
 		//return jquery selector that represents the element in the DOM
 		domSelector: function(field){
@@ -95,7 +97,7 @@
 				that.unbindFieldProveEvent(field);
 
 				var selector = that.domSelector(field);
-				that.$form.find(selector).trigger('destroy.field.prove');
+				that.$form.find(selector).trigger('destroyed.field.prove');
 			});
 		},
 		html5NoValidate: function(state){
@@ -233,7 +235,7 @@
 
 		//validate entire form
 		validate: function(){
-			//console.log('Prove.valid()');
+			//console.log('Prove.validate()');
 
 			var fields = this.options.fields;
 			var checkField = $.proxy(this.checkField, this);
@@ -242,16 +244,20 @@
 
 			$.each(fields, function(index, field){
 
-				//todo: encapsulate
+				//todo: encapsulate?
 				var selector = '[name="' + field.name + '"]';
 				var input = that.$form.find(selector);
 
 
 				var isValidField = checkField(field, input);
 
-				//console.log('isValidField', isValidField);
-
 				if (!isValidField) isValid = false;
+			});
+
+			//trigger event indicating validation state
+			// todo: return validators (state and messages)
+			this.$form.trigger('validated.form.prove', {
+				state: isValid
 			});
 
 			return isValid;
