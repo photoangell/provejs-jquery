@@ -173,6 +173,18 @@ form.submit(function(event){
 });
 ```
 
+## Destroy
+
+You can remove the Prove plugin by either:
+```javascript
+form.data('prove').destroy();
+```
+or
+
+```javascript
+form.remove();
+```
+
 ## Others
 
 - http://formvalidation.io/

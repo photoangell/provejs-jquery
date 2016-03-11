@@ -143,38 +143,24 @@
 					event.preventDefault();
 
 					var ok = form.data('prove').validate();
-					//form.trigger('validate.prove');
+					//form.trigger('validate.form.prove');
 
 					console.log('submit', ok);
 				});
 
-				/* todo:
-					//form validate
-					form.trigger('validate.prove');
-					form.data('prove').validate();
-
-					//input validate
-					input.trigger('validate.prove');
-
-					//input reset decoration
-					input.trigger('reset');
-
-					//destroy
-					form.trigger('destroy.prove');
-					form.
-					input.trigger('destroy.prove');
+				/* todo
 
 					//decoration
 					form.decorate({
 						framework: 'bootstrap'
 					});
+
+					input.bootstrap();
 				*/
 
 				//form plugins
 				//form.decorate(); //decorate
 				form.prove(cfg); //validate
-
-				//form.prove('destroy');
 
 			})();
 			</script>
