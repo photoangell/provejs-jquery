@@ -12,11 +12,14 @@
 		//todo: clean this up
 		this.options = $.extend(this.defaults, options);
 
-		console.groupCollapsed('Prove()');
-		console.log('options', options);
-		console.groupEnd();
+		if (options.debug){
+			console.groupCollapsed('Prove()');
+			console.log('options', options);
+			console.groupEnd();
+		}
 
 		this.setupFields();
+		this.setupForm();
 	}
 
 	//$.Prove.prototype.defaults = {
@@ -35,6 +38,7 @@
 			el.data('prove', false);
 
 			this.teardownFields();
+			this.teardownForm();
 
 			el.trigger('destroyed.prove');
 		},
@@ -48,6 +52,15 @@
 		fieldDomEvents: function(field){
 			var events = field.trigger || 'change keyup click blur';
 			return events;
+		},
+
+		setupForm: function(){
+			this.html5NoValidate(true);
+			this.bindDomFormEvents();
+		},
+		teardownForm: function(){
+			this.html5NoValidate(false);
+			this.unbindDomFormEvents();
 		},
 		setupFields: function(options){
 
@@ -64,7 +77,6 @@
 
 				that.bindDomFieldEvents(field);
 				that.bindFieldProveEvent(field);
-				that.html5NoValidate(true);
 			});
 		},
 		teardownFields: function(options){
@@ -78,15 +90,13 @@
 			$.each(fields, function(name, field){
 				that.unbindDomFieldEvents(field);
 				that.unbindFieldProveEvent(field);
-				this.html5NoValidate(false);
 			});
 		},
 		html5NoValidate: function(state){
 			this.$form.attr("novalidate", state);
 		},
 		/**
-		* Bind Event 'field.prove'
-		* https://github.com/dhollenbeck/jquery-prove#event-fieldprove
+		* DOM Input Events Listener
 		*/
 		bindDomFieldEvents: function(field){
 
@@ -115,6 +125,26 @@
 			var name = field.name;
 
 			this.checkField(field, input);
+		},
+		/**
+		* DOM Form Events Listener
+		*/
+		bindDomFormEvents: function(){
+
+			var el = this.$form;
+			var domEvents = 'validate.form.prove';
+			var handler = $.proxy(this.validate, this);
+
+			// http://api.jquery.com/on/
+			el.on(domEvents, handler);
+		},
+		unbindDomFormEvents: function(){
+
+			var el = this.$form;
+			var domEvents = 'validate.form.prove';
+
+			// http://api.jquery.com/off/
+			el.off(domEvents);
 		},
 
 		/**
@@ -231,7 +261,8 @@
 
 				var isValidField = checkField(field, input);
 
-				console.log('isValidField', isValidField);
+				//console.log('isValidField', isValidField);
+
 				if (!isValidField) isValid = false;
 			});
 
