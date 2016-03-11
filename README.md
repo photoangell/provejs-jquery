@@ -2,7 +2,7 @@
 
 An event based jQuery plugin for client-side validation of html forms.
 
-## Table Contents:
+## Table Contents
 - [Design Considerations](#design-considerations)
 - [Advantages](#advanages)
 - [Examples](#examples)
@@ -212,5 +212,14 @@ form.remove();
 		- https://github.com/jzaefferer/jquery-validation/labels/name-attribute
 - http://www.formvalidator.net/
 
-##
+## Todo
+
+Encapsulate the decorators in a single plugin.
+
+```javascript
+form.on('validated.field.prove', function(event, data){
+	var input = $(event.target);
+	input.bootstrap(data);
+});
+```
 

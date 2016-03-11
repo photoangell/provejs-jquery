@@ -120,24 +120,8 @@
 				};
 
 				form.on('validated.field.prove', function(event, data){
-
 					var input = $(event.target);
-
-					//add some classes to decorate the input
-					input.tinsel({
-						state: data.state,
-						placement: ['.form-group', '.checkbox', '.radio', 'td'], //first of
-						classSuccess: 'has-success',
-						classFailure: 'has-error'
-					});
-
-					//show message on error, clear error message on success
-					input.garland({
-						state: !data.state,
-						wrapper: '<span class="help-block"></span>',
-						placement: ['.form-group', 'td', '.checkbox', '.radio'], //first of
-						message: data.message
-					});
+					input.bootstrap(data);
 				});
 
 				form.submit(function(event){
@@ -149,18 +133,7 @@
 					console.log('submit', ok);
 				});
 
-				/* todo
-
-					//decoration
-					form.decorate({
-						framework: 'bootstrap'
-					});
-
-					input.bootstrap();
-				*/
-
 				//form plugins
-				//form.decorate(); //decorate
 				form.prove(cfg); //validate
 
 			})();
