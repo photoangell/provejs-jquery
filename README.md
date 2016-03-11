@@ -16,9 +16,39 @@ An event based jQuery plugin for client-side validation of html forms.
 How is this validator plugin different than other jquery plugin form validators?
 
 - Explicit Validations
-- DOM Agnostic via Delagated Events
-- Decoration Plugins
-- Validation Plugins
+- Delagated Events
+	- DOM Agnostic
+	- Form Control Plugins
+- Decorators as Plugins
+	- Tinsel
+	- Garland
+	- Aria
+	- Bootstrap
+	- huntout('closest', ['selector1', 'selector2', 'selector3'])
+- Validators as Plugins
+	- Simple
+	- Composable
+	- Field config are plugin options
+
+```javascript
+//composable plugin
+$.fn.requiredEmail = function(options){
+
+	var input = $(this);
+	var optionsEmail = {};
+	var optionsRequired = {};
+
+	if (!input.proveRequired(optionsRequired)){
+		return false;
+	} else if (!input.provePattern(optionsEmail)) {
+		return false;
+	} else {
+		return true;
+	}
+}
+};
+```
+
 
 ### Eplicit Validations
 
