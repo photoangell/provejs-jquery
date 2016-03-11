@@ -6,10 +6,12 @@ An event based jQuery plugin for client-side validation of html forms.
 - [Design Considerations](#design-considerations)
 - [Advantages](#advanages)
 - [Examples](#examples)
-- [Options](#options)
-- [Events](#events)
+- [Prove Options](#prove-options)
+- [Prove Validators](#prove-validators)
+- [Prove Decorators](#prove-decorators)
+- [Prove Events](#prove-events)
 - [Destroy](#destory)
-- [Others](#others)
+- [Other Libraries](#other-libraries)
 
 ## Design Considerations
 
@@ -134,10 +136,19 @@ form.on(['prove.success', 'prove.failure'], function(event, data){
 });
 ```
 
-## Options
+## Prove Options
 
+todo
 
-## Events
+## Prove Validators
+
+todo
+
+## Prove Decorators
+
+todo
+
+## Prove Events
 
 Prove is both a consumer and publisher of events.
 
