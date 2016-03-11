@@ -40,6 +40,17 @@ $.fn.requiredEmail = function(options){
 };
 ```
 
+Validator Anatomy
+- jQuery plugin
+- Single input options parameter which is the field validator config object.
+- The `this` context is the DOM input to validate.
+- Returns
+	- `true` on validation success
+	- `false` on validation was not successful
+	- `undefined` on validation was not performed
+- Accepts a boolean debug option
+- Must return undefined on blank or empty input.
+
 
 ### Eplicit Validations
 
