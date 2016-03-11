@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<title>Prove Simple</title>
+
+		<!-- Bootstrap -->
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<div class="container-fluid">
+
+			<div class="row">
+				<div class="col-sm-6">
+					<script type="text/html" id="row-principle-charge">
+						<tr>
+							<td class="text-nowrap p-5 form-group">
+								<div class="input-group">
+									<input type="text" name="itemized_charges_principle_description" class="form-control itemized_charges_principle_description"
+									autocomplete="off" placeholder="Other Principle Charge"
+									>
+									<span class="input-group-addon"><a href="#" class="del-principle-row"><i class="fa fa-times"></i></a></span>
+								</div>
+							</td>
+							<td class="p-5">
+								<div class="input-group">
+									<span class="input-group-addon">$</span>
+									<input type="text" class="form-control money amount" name="itemized_charges_principle_value[]" value="0.00" autocomplete="off">
+								</div>
+							</td>
+						</tr>
+					</script>
+					<script type="text/html" id="row-additional-charge">
+						<tr>
+							<td class="text-nowrap p-5 form-group">
+								<div class="input-group">
+									<input type="text" name="itemized_charges_additional_description[]" class="form-control itemized_charges_additional_description"
+									autocomplete="off" placeholder="Other Additional Charge"
+									>
+									<span class="input-group-addon"><a href="#" class="del-additional-row"><i class="fa fa-times"></i></a></span>
+								</div>
+							</td>
+							<td class="p-5">
+								<div class="input-group">
+									<span class="input-group-addon">$</span>
+									<input type="text" class="form-control money amount" name="itemized_charges_additional_value[]" value="0.00" autocomplete="off">
+								</div>
+							</td>
+						</tr>
+					</script>
+
+					<!-- amount owned -->
+					<form class="wizard-panel form-horizontal" method="POST">
+						<div class="">
+							<fieldset>
+								<legend>Amount Owed</legend>
+								<p>Do you want to itemize charges or summerize them?</p>
+
+								<div class="form-group m-l-2">
+									<div class="radio">
+										<label class="control-label">
+											<input type="radio" id="use-statement" name="statement_attached_has" value="1">
+											Summarize
+										</label>
+									</div>
+									<div class="radio">
+										<label class="control-label">
+											<input type="radio" id="use-itemized" name="statement_attached_has" value="0">
+											Itemize
+										</label>
+									</div>
+								</div>
+
+								<!-- toggle on attached statement of account -->
+								<div id="wrapper-statement-attached" style="display:none;">
+
+									<p>What is the total amount owed?</p>
+
+									<div class="form-group">
+										<label class="col-sm-3 control-label hidden-xs">Amount Owed</label>
+										<div class="col-sm-4 col-xs-12">
+											<div class="input-group">
+												<span class="input-group-addon">$</span>
+												<input type="text" name="amount_owed" class="form-control money"
+												autocomplete="off">
+											</div>
+										</div>
+									</div>
+
+									<p >Please enter (and press return) the type(s) of principal charges.</p>
+
+									<div class="form-group">
+										<label class="col-xs-3 control-label hidden-xs">Charge Descriptions</label>
+										<div class="col-xs-12 col-sm-8 placement">
+											<select class="form-control" name="charge_descriptions" id="charge_descriptions" multiple="multiple">
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<!-- toggle on attached statement of account -->
+								<div id="wrapper-itemized-amounts" style="display:none;">
+									<p>Please itemize the type and amount of charges.</p>
+
+									<div class="table-responsive">
+										<table class="table table-bordered table-condensed-xx" id="itemization">
+											<thead>
+											</thead>
+											<tbody>
+												<tr class="active">
+													<th colspan="2" class="text-center">
+														<div class="pull-right">
+															<a href="#" class="btn btn-default btn-xs add-principle-row"><i class="fa fa-plus"></i>
+															</a>
+														</div>
+														Itemized Principle Charges
+													</th>
+												</tr>
+												<tr>
+													<td class="text-nowrap">Principle 1</td>
+													<td class="p-5" style="width:50%">
+														<div class="input-group">
+															<span class="input-group-addon">$</span>
+															<input type="text" class="form-control money amount" name="itemized_assessments_regular" value="0.00" autocomplete="off">
+														</div>
+													</td>
+												</tr>
+												<tr>
+													<td class="text-nowrap">Principle 2</td>
+													<td class="p-5">
+														<div class="input-group">
+															<span class="input-group-addon">$</span>
+															<input type="text" class="form-control money amount" name="itemized_assessments_special" value="0.00" autocomplete="off">
+														</div>
+													</td>
+												</tr>
+												<tr>
+													<td class="text-nowrap">Principle 3</td>
+													<td class="p-5">
+														<div class="input-group">
+															<span class="input-group-addon">$</span>
+															<input type="text" class="form-control money amount" name="itemized_fines" value="0.00" autocomplete="off">
+														</div>
+													</td>
+												</tr>
+												<tr class="active">
+													<th colspan="2" class="text-center">
+														<div class="pull-right">
+															<a href="#" class="btn btn-default btn-xs add-additional-row"><i class="fa fa-plus"></i>
+															</a>
+														</div>
+														Itemized Additional Charges
+													</th>
+												</tr>
+												<tr>
+													<td class="text-nowrap">Additional 1</td>
+													<td class="p-5">
+														<div class="input-group">
+															<span class="input-group-addon">$</span>
+															<input type="text" class="form-control money amount" name="itemized_late_fees" value="0.00" autocomplete="off">
+														</div>
+													</td>
+												</tr>
+												<tr>
+													<td class="text-nowrap">Additional 2</td>
+													<td class="p-5">
+														<div class="input-group">
+															<span class="input-group-addon">$</span>
+															<input type="text" class="form-control money amount" name="itemized_accrued_interest" value="0.00" autocomplete="off">
+														</div>
+													</td>
+												</tr>
+												<tr>
+													<td class="text-nowrap">Additional 3</td>
+													<td class="p-5">
+														<div class="input-group">
+															<span class="input-group-addon">$</span>
+															<input type="text" class="form-control money amount" name="itemized_collection_costs" value="0.00" autocomplete="off">
+														</div>
+													</td>
+												</tr>
+												<tr class="active">
+													<td class="text-nowrap text-uppercase p-t-15">Total</td>
+													<td class="p-5">
+														<div class="input-group">
+															<span class="input-group-addon">$</span>
+															<input type="text" class="form-control money summation" name="itemization_summation" value="0.00">
+														</div>
+													</td>
+												</td>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+					</form>
+				</div>
+				<div class="col-sm-6">
+					<fieldset>
+						<legend>Prove Events <small class="text-muted">most recent at top</small></legend>
+						<div class="well">
+							<table class="table table-condensed">
+								<thead>
+									<th>Event</th>
+									<th>Namespace</th>
+									<th>Source</th>
+									<th>State</th>
+									<th>Timestamp</th>
+								</thead>
+								<tbody id="events">
+								</tbody>
+							</table>
+						</div>
+					</fieldset>
+				</div>
+			</div>
+			</div>
+
+			<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+			<!-- Include all compiled plugins (below), or include individual files as needed -->
+			<!-- Latest compiled and minified JavaScript -->
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+			<!--<script src="../../../jquery-custom-selectors/jquery-custom-selectors.js"></script>-->
+			<script src="../../jquery-prove.js"></script>
+			<script src="../../validators/jquery-prove-validators.js"></script>
+			<script src="../../decorators/jquery-prove-decorators.js"></script>
+			<script src="./example.js"></script>
+		</div>
+	</body>
+</html>
