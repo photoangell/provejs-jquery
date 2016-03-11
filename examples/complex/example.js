@@ -88,7 +88,7 @@
 		//setup
 		var radio = form.find('[name="statement_attached_has"]');
 
-		var select1 = panel.find('[name="charge_descriptions"]');
+		var select1 = form.find('[name="charge_descriptions"]');
 		var monies = form.find('.money');
 		var table = form.find('table#itemization');
 		var wrapper1 = form.find('#wrapper-statement-attached');
