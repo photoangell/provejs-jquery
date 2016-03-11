@@ -2,8 +2,14 @@
 
 An event based jQuery plugin for client-side validation of html forms.
 
-Table contents:
+## Table Contents:
 - [Design Considerations](#design-considerations)
+- [Advantages](#advanages)
+- [Examples](#examples)
+- [Options](#options)
+- [Events](#events)
+- [Destroy](#destory)
+- [Others](#others)
 
 ## Design Considerations
 
@@ -43,7 +49,7 @@ These design considerations have the following advantages:
 * Form control plugins can be instateated before or after the prove plugin.
 * When form control plugins modify events you do not need to invoke the prove to validate any inputs.
 
-## Usage
+## Examples
 
 ```javascript
 
@@ -95,6 +101,9 @@ form.on(['prove.success', 'prove.failure'], function(event, data){
 	//todo: decorate form/inputs here
 });
 ```
+
+## Options
+
 
 ## Events
 
