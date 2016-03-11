@@ -27,7 +27,6 @@
 			file: {
 				validators: {
 					proveRequired: {
-						debug: true,
 						state: true, // true, false, selector string, callback
 						message: 'A file is required.', //optional, passed to decorator
 					}

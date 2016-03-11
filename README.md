@@ -217,3 +217,7 @@ form.remove();
 Encapsulate the decorators in a single plugin.
 
 Create an FAQ.
+
+Document events setup.field.prove and destroy.field.prove
+
+Document anatomy of validators.

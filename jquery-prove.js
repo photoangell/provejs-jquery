@@ -77,6 +77,9 @@
 
 				that.bindDomFieldEvents(field);
 				that.bindFieldProveEvent(field);
+
+				var selector = that.domSelector(field);
+				that.$form.find(selector).trigger('setup.field.prove');
 			});
 		},
 		teardownFields: function(options){
@@ -90,6 +93,9 @@
 			$.each(fields, function(name, field){
 				that.unbindDomFieldEvents(field);
 				that.unbindFieldProveEvent(field);
+
+				var selector = that.domSelector(field);
+				that.$form.find(selector).trigger('destroy.field.prove');
 			});
 		},
 		html5NoValidate: function(state){
@@ -225,27 +231,9 @@
 			return isValid;
 		},
 
-		//todo: jquery plugin	form.serializeObject()
-		//
-/*		serializeObject: function(){
-			//https://raw.githubusercontent.com/cowboy/jquery-misc/master/jquery.ba-serializeobject.js
-			var obj = {};
-
-			$.each( this.$form.serializeArray(), function(i,o){
-				var n = o.name;
-				var v = o.value;
-
-				obj[n] = obj[n] === undefined ? v
-					: $.isArray( obj[n] ) ? obj[n].concat( v )
-					: [ obj[n], v ];
-			});
-
-			return obj;
-		},*/
-
 		//validate entire form
 		validate: function(){
-			console.log('Prove.valid()');
+			//console.log('Prove.valid()');
 
 			var fields = this.options.fields;
 			var checkField = $.proxy(this.checkField, this);
