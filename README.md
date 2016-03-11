@@ -3,7 +3,7 @@
 An event based jQuery plugin for client-side validation of html forms.
 
 Table contents:
-- [#design-considerations](Design Considerations)
+- [Design Considerations](#design-considerations)
 
 ## Design Considerations
 
