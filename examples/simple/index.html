@@ -24,46 +24,58 @@
 	<body>
 		<div class="container-fluid">
 
-			<form>
-				<fieldset>
-					<legend>Text Inputs</legend>
-					<div class="form-group">
-						<label for="email">Email address</label>
-						<input type="email" name="email" class="form-control" id="email" placeholder="Email">
-					</div>
-					<div class="form-group">
-						<label for="password">Password</label>
-						<input type="password" name="password" class="form-control" id="password" placeholder="Password">
-					</div>
-				<fieldset>
-					<legend>File Input</legend>
-					<div class="form-group">
-						<label for="file" class="control-label">File input</label>
-						<input type="file" id="file" name="file">
-					</div>
-				</fieldset>
+			<div class="row">
+				<div class="col-sm-6">
+					<form>
+						<fieldset>
+							<legend>Text Inputs</legend>
+							<div class="form-group">
+								<label for="email">Email address</label>
+								<input type="email" name="email" class="form-control" id="email" placeholder="Email">
+							</div>
+							<div class="form-group">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="optout" value="nothanks" id="optout"> Email opt out.
+									</label>
+								</div>
+							</div>
+						<fieldset>
+							<legend>File Input</legend>
+							<div class="form-group">
+								<label for="file" class="control-label">File input</label>
+								<input type="file" id="file" name="file">
+							</div>
+						</fieldset>
 
-				<fieldset>
-					<legend>Checkboxes and Radios</legend>
-					<p>Please select at least one fruit.
+						<fieldset>
+							<legend>Checkboxes and Radios</legend>
+							<p>Please select at least one fruit.
 
-					<div class="form-group">
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" name="fruit" value="apple" id="apple"> Apple
-							</label>
+							<div class="form-group">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="fruit" value="apple" id="apple"> Apple
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="fruit" value="pear"> Pear
+									</label>
+								</div>
+							</div>
+						</fieldset>
+						<button type="submit" class="btn btn-default">Submit</button>
+					</form>
+				</div>
+				<div class="col-sm-6">
+					<fieldset>
+						<legend>Prove Events</legend>
+						<div id="events" class="well">
 						</div>
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" name="fruit" value="pear"> Pear
-							</label>
-						</div>
-					</div>
-				</fieldset>
-				<button type="submit" class="btn btn-default">Submit</button>
-			</form>
-
-			<div id="test" style="display:none;">Test me</div>
+					</fieldset>
+				</div>
+			</div>
 
 			<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
