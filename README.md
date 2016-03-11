@@ -31,21 +31,12 @@ How is this validator plugin different than other jquery plugin form validators?
 	- Field config are plugin options
 
 ```javascript
-//composable plugin
+//composable validator plugin - required email
 $.fn.requiredEmail = function(options){
-
 	var input = $(this);
-	var optionsEmail = {};
-	var optionsRequired = {};
-
-	if (!input.proveRequired(optionsRequired)){
-		return false;
-	} else if (!input.provePattern(optionsEmail)) {
-		return false;
-	} else {
-		return true;
-	}
-}
+	var check1 = input.proveRequired(options1);
+	var check2 = input.provePattern(options2);
+	return (check1 && check2);
 };
 ```
 
