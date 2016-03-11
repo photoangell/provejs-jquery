@@ -14,12 +14,16 @@
 		var val, idx;
 
 		if (options.debug) {
-			console.groupCollapsed('Prove.vals()');
+			console.groupCollapsed('Validator.vals()');
+			console.log('input', input);
 			console.log('type', type);
 			console.groupEnd();
 		}
 
-		if ( isRadio || isCheckbox ) {
+		if (typeof type === 'undefined'){
+			//todo: warning here
+			return;
+		}if ( isRadio || isCheckbox ) {
 			//todo: find other inputs with the same name?
 			return input.filter(':checked').val();
 		} else if ( isNumber && typeof input.validity !== 'undefined' ) {
@@ -40,7 +44,7 @@
 			if ( idx >= 0 ) return val.substr( idx + 1 );
 
 			return val;
-		} else if ( input[0].hasAttribute( 'contenteditable' ) ) {
+		} else if ( input.attr('contenteditable') ) {
 			val = input.text();
 		} else {
 			val = input.val();
@@ -96,7 +100,9 @@
 	$.fn.proveRequired = function(options){
 
 		var input = $(this);
-		var value = input.val();
+		var value = input.vals({
+			debug: options.debug
+		});
 		var hasValue = input.hasValue();
 		var isValid;
 

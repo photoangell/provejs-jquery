@@ -216,10 +216,4 @@ form.remove();
 
 Encapsulate the decorators in a single plugin.
 
-```javascript
-form.on('validated.field.prove', function(event, data){
-	var input = $(event.target);
-	input.bootstrap(data);
-});
-```
-
+Create an FAQ.
