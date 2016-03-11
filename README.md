@@ -2,6 +2,9 @@
 
 An event based jQuery plugin for client-side validation of html forms.
 
+Table contents:
+- [#design-considerations](Design Considerations)
+
 ## Design Considerations
 
 How is this validator plugin different than other jquery plugin form validators?
@@ -176,6 +179,7 @@ form.submit(function(event){
 ## Destroy
 
 You can remove the Prove plugin by either:
+
 ```javascript
 form.data('prove').destroy();
 ```
