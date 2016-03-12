@@ -128,35 +128,8 @@
 	$.fn.proveRequired = function(options){
 
 		var input = $(this);
-		var value = input.vals({
-			//debug: options.debug
-		});
-		var hasValue = input.hasValue();
-		var isValid;
-
-		function evalSelector(selector){
-			try {
-				return !!$(selector).length;
-			} catch (e) {
-				console.error('Invalid `required` jquery selector (`%s`) param for required validator.', selector);
-				return false;
-			}
-		}
-
-		if (hasValue) {
-			//if has value it pointless to do anything but return true
-			isValid = true;
-		} else if (options.state === false) {
-			isValid = true;
-		} else if (options.state === true){
-			isValid = false;
-		} else if (typeof options.state === 'string'){
-			isValid = evalSelector(options.state);
-		} else if (typeof options.state === 'function'){
-			isValid = !options.state(value, values);
-		} else {
-			throw new Error('Invalid `required` param for required validator.');
-		}
+		var value = input.vals();
+		var isValid = input.hasValue();
 
 		if (options.debug){
 			console.groupCollapsed('Validator.required()', options.field)

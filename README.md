@@ -214,6 +214,10 @@ var isValid = form.data('prove').validate();
 
 ```javascript
 input.trigger('validate.field.prove');
+
+//todo: what is wrong with
+input.trigger('change') //or
+input.trigger('validate')
 ```
 
 ## Form Submission

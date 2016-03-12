@@ -15,9 +15,9 @@
 	var cfg = {
 		fields: {
 			toggle: {
+				enabled: true,
 				validators: {
 					proveRequired: {
-						state: true, //todo: why do we need this state not that we have field.enabled?
 						message: 'Amount required.',
 					}
 				}
@@ -27,7 +27,6 @@
 				validators: {
 					proveRequired: {
 						debug: true,
-						state: true, //todo: why do we need the state?
 						message: 'Amount required.',
 					}
 				}
@@ -37,7 +36,6 @@
 				validators:{
 					proveRequired: {
 						debug: true,
-						state: '#summerize:checked',
 						message: 'Description is required.',
 					},
 					provePattern: {
@@ -50,7 +48,6 @@
 				enabled:'#itemize:checked',
 				validators:{
 					proveRequired: {
-						state: true,
 						message: 'Description is required.',
 					},
 					provePattern: {
@@ -103,65 +100,34 @@
 	//form plugins
 	form.prove(cfg); //validate
 
+	var configTagsinput = {
+		trimValue: true,
+		itemText: toLowerCase,
+		tagClass: tagClass
+	};
+	var configMoneymask = {
+		allowZero: true
+	};
 
+	//tags
+	select1.on('itemAdded', revalidate);
+	select1.on('itemRemoved', revalidate);
+	select1.tagsinput(configTagsinput);
 
+	select1.parent().find('input').addClass('ignore');
+	select1.parent().find('input').attr('name', 'ignore');
 
+	//money mask
+	monies.on('change', revalidate);
+	monies.maskMoney(configMoneymask);
 
-/*		form.validate({
-			rules: {
-				amount_owed: 'required',
-				statement_attached_has: 'required',
-				charge_descriptions: {
-					required: '#use-statement:checked',
-					pattern: '{{patterns.commons.tag.source}}'
-				},
-				itemized_charges_principle_description: {
-					required: '.itemized_charges_principle_description:visible',
-					pattern: '{{patterns.commons.tag.source}}'
-				},
-				itemized_charges_principle_description: {
-					required: '.itemized_charges_principle_description:visible',
-					pattern: '{{patterns.commons.tag.source}}'
-				}
-			},
-			messages: {
-				amount_owed: "Please enter your firstname"
-			},
-			placements: {
-				amount_owed: '.col-sm-4',
-				charge_descriptions: '.placement',
-				statement_attached_has: '.form-group'
-			}
-		});*/
-
-		var configTagsinput = {
-			trimValue: true,
-			itemText: toLowerCase,
-			tagClass: tagClass
-		};
-		var configMoneymask = {
-			allowZero: true
-		};
-
-		//tags
-		select1.on('itemAdded', revalidate);
-		select1.on('itemRemoved', revalidate);
-		select1.tagsinput(configTagsinput);
-
-		select1.parent().find('input').addClass('ignore');
-		select1.parent().find('input').attr('name', 'ignore');
-
-		//money mask
-		monies.on('change', revalidate);
-		monies.maskMoney(configMoneymask);
-
-		//seup events
-		radio.change(onRadioChange);
-		table.on('change', 'input.amount', onItemizationChange);
-		table.on('click', 'a.add-principle-row', addPrincipleChargeRow);
-		table.on('click', 'a.add-additional-row', addAdditionalChargeRow);
-		table.on('click', 'a.del-principle-row', delChargeRow);
-		table.on('click', 'a.del-additional-row', delChargeRow);
+	//seup events
+	radio.change(onRadioChange);
+	table.on('change', 'input.amount', onItemizationChange);
+	table.on('click', 'a.add-principle-row', addPrincipleChargeRow);
+	table.on('click', 'a.add-additional-row', addAdditionalChargeRow);
+	table.on('click', 'a.del-principle-row', delChargeRow);
+	table.on('click', 'a.del-additional-row', delChargeRow);
 
 
 	//radio wrapper
