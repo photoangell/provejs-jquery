@@ -154,7 +154,9 @@
 		var input = $(this);
 		var value = input.val();
 		var hasValue = input.hasValue();
-		var regex = new RegExp( "^(?:" + options.regex + ")$" );
+		var regex = (options.regex instanceof RegExp)
+			? options.regex
+			: new RegExp( "^(?:" + options.regex + ")$" );
 		var isValid;
 
 		if (!hasValue) {
@@ -168,7 +170,7 @@
 			isValid = false;
 		}
 		if (options.debug){
-			console.groupCollapsed('Validator.pattern()')
+			console.groupCollapsed('Validator.pattern()', options.field)
 				console.log('options', options);
 				console.log('isValid', isValid);
 			console.groupEnd();

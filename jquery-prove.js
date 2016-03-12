@@ -56,6 +56,11 @@
 			return events;
 		},
 
+		pluginExists: function(plugin){
+			var exist = (typeof $.fn[plugin] === 'function');
+			if (!exist) console.error('Missing validator plugin "%s".', plugin);
+			return exist;
+		},
 		setupForm: function(){
 			this.html5NoValidate(true);
 			this.bindDomFormEvents();
@@ -193,58 +198,48 @@
 		* @option {object} values All input values.
 		* @return {bool or null} The result of the validation.
 		*/
-
-
-
 		checkField: function(field, input){
 
-			var data, isValid, state;
+			var data, isValid, state, plugin;
+			var that = this;
 			var fieldName = field.name;
 			var validators = field.validators || {};
 			var isEnabled = $('body').booleanator(field.enabled);
 
-			// only validate if field is enabled
-			if (isEnabled){
-				$.each(validators, function(validatorName, validatorConfig){
-
-					validatorConfig.field = fieldName;
-
-					// Only check next validator if there was
-					// not a problem with the previous one.
-					if (isValid !== false) {
-
-						//todo: show warning if validator plugin is not defined
-						//invoke validator plugin
-						state = input[validatorName](validatorConfig);
-
-						// Compose data the decorator will be interested in
-						data = {
-							field: field.name,
-							state: state,
-							message: validatorConfig.message,
-							// todo: do we return an array of validators and their data?
-							// We would need to do this on the `validated.form.prove` event.
-							validator: {
-								name: validatorName,
-								config: clone(validatorConfig)
-							}
-						}
-
-						// setup for next loop
-						if (state === false) {
-							isValid = false;
-						} else if (typeof isValid === undefined && state === true){
-							isValid = true;
-						}
-					}
-				});
+			//return early if nothing to do
+			if (!isEnabled) {
+				//trigger event indicating validation state
+				input.trigger('validated.field.prove', data);
+				return isValid;
 			}
 
-/*		console.groupCollapsed('Decorators.huntout()')
-			console.log('el', el);
-			console.log('selector', selector);
-			console.log('container', container);
-		console.groupEnd();*/
+			// loop each validtor
+			$.each(validators, function(validatorName, validatorConfig){
+
+				validatorConfig.field = fieldName;
+
+				//invoke validator plugin
+				plugin = (that.pluginExists(validatorName))? input[validatorName] : $.noop;
+				state = plugin(validatorConfig);
+
+				// Compose data the decorator will be interested in
+				data = {
+					field: field.name,
+					state: state,
+					message: validatorConfig.message,
+					// todo: do we return an array of validators and their data?
+					// We would need to do this on the `validated.form.prove` event.
+					validator: {
+						name: validatorName,
+						config: clone(validatorConfig)
+					}
+				}
+
+				isValid = state;
+
+				//return of false to break loop
+				return isValid;
+			});
 
 			//trigger event indicating validation state
 			input.trigger('validated.field.prove', data);
@@ -263,14 +258,13 @@
 
 			$.each(fields, function(index, field){
 
-				//todo: encapsulate?
-				var selector = '[name="' + field.name + '"]';
+				var selector = that.domSelector(field);
 				var input = that.$form.find(selector);
-
-
 				var isValidField = checkField(field, input);
 
-				if (!isValidField) isValid = false;
+				if (isValidField === false) isValid = false;
+				if (isValidField === true && isValid !== false) isValid = true;
+				//if isValidField === undefined, do nothing
 			});
 
 			//trigger event indicating validation state

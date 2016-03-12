@@ -8,7 +8,7 @@
 	var table = form.find('table#itemization');
 	var wrapper1 = form.find('#wrapper-statement-attached');
 	var wrapper2 = form.find('#wrapper-itemized-amounts');
-	var pattern = /^[-a-zA-Z0-9,.)( ]*$/;
+	var regex = /^[-a-zA-Z0-9,.)( ]*$/;
 
 	var isItemization;
 
@@ -18,6 +18,7 @@
 				enabled: true,
 				validators: {
 					proveRequired: {
+						debug: false,
 						message: 'Amount required.',
 					}
 				}
@@ -26,7 +27,7 @@
 				enabled: '#summarize:checked',
 				validators: {
 					proveRequired: {
-						debug: true,
+						debug: false,
 						message: 'Amount required.',
 					}
 				}
@@ -35,11 +36,12 @@
 				enabled: '#summarize:checked',
 				validators:{
 					proveRequired: {
-						debug: true,
+						debug: false,
 						message: 'Description is required.',
 					},
 					provePattern: {
-						regex: pattern.source,
+						debug: false,
+						regex: regex,
 						message: 'Invalid description.'
 					}
 				}
@@ -48,10 +50,12 @@
 				enabled:'#itemize:checked',
 				validators:{
 					proveRequired: {
+						debug: false,
 						message: 'Description is required.',
 					},
 					provePattern: {
-						regex: pattern.source,
+						debug: false,
+						regex: regex,
 						message: 'Invalid description.'
 					}
 				}
@@ -230,12 +234,12 @@
 
 
 	function tagClass(item){
-		var isValid = pattern.test(item);
+		var isValid = regex.test(item);
 		return (isValid)? 'label label-default' : 'label label-danger';
 	}
 
 	function revalidate(event){
-		console.log('revalidate()', event.target.name);
+		//console.log('revalidate()', event.target.name);
 		var input = $(event.target);
 		input.trigger('validate.field.prove');
 	}
