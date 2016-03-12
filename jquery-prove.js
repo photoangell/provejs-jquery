@@ -130,7 +130,6 @@
 
 			var input = $(event.target);
 			var field = event.data;
-			var name = field.name;
 
 			this.checkField(field, input);
 		},
@@ -197,9 +196,12 @@
 		checkField: function(field, input){
 
 			var data, isValid = true, state;
+			var fieldName = field.name;
 			var validators = field.validators || {};
 
 			$.each(validators, function(validatorName, validatorConfig){
+
+				validatorConfig.field = fieldName;
 
 				// Only check next validator if there was
 				// not a problem with the previous one.

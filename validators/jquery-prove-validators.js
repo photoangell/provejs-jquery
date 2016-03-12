@@ -101,7 +101,7 @@
 
 		var input = $(this);
 		var value = input.vals({
-			debug: options.debug
+			//debug: options.debug
 		});
 		var hasValue = input.hasValue();
 		var isValid;
@@ -131,7 +131,7 @@
 		}
 
 		if (options.debug){
-			console.groupCollapsed('Validator.required()')
+			console.groupCollapsed('Validator.required()', options.field)
 				console.log('options', options);
 				console.log('value', value);
 				console.log('isValid', isValid);

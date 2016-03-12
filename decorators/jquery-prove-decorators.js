@@ -1,7 +1,7 @@
 !function ($) {
 	"use strict";
 
-	$.fn.container = function(selector){
+	$.fn.huntout = function(selector){
 		var el = $(this);
 		var container;
 
@@ -22,7 +22,7 @@
 			throw new Error('Invalid selector.')
 		}
 
-/*		console.groupCollapsed('Decorators.container()')
+/*		console.groupCollapsed('Decorators.huntout()')
 			console.log('el', el);
 			console.log('selector', selector);
 			console.log('container', container);
@@ -47,13 +47,13 @@
 		}
 
 		function setup(input, state){
-			var container = input.container(options.placement);
+			var container = input.huntout(options.placement);
 			var klass = (state)? options.classSuccess : options.classFailure;
 			container.addClass(klass);
 		}
 
 		function teardown(input){
-			var container = input.container(options.placement);
+			var container = input.huntout(options.placement);
 			container.removeClass(options.classFailure).removeClass(options.classSuccess);
 		}
 
@@ -78,7 +78,7 @@
 		}
 
 		function setup(input){
-			var container = input.container(options.placement);
+			var container = input.huntout(options.placement);
 			var garland = $(options.wrapper);
 			garland.addClass('garland-wrapper');
 			garland.text(options.message);
@@ -86,7 +86,7 @@
 		}
 
 		function teardown(input){
-			var container = input.container(options.placement);
+			var container = input.huntout(options.placement);
 			container.find('.garland-wrapper').remove();
 		}
 
@@ -106,7 +106,7 @@
 		//add some classes to decorate the input
 		input.tinsel({
 			state: options.state,
-			placement: ['.form-group', '.checkbox', '.radio', 'td'], //first of
+			placement: ['.tinsel', '.form-group', '.checkbox', '.radio', 'td'], //first of
 			classSuccess: 'has-success',
 			classFailure: 'has-error'
 		});
@@ -115,7 +115,7 @@
 		input.garland({
 			state: !options.state,
 			wrapper: '<span class="help-block"></span>',
-			placement: ['.form-group', 'td', '.checkbox', '.radio'], //first of
+			placement: ['.garland', '.form-group', 'td', '.checkbox', '.radio'], //first of
 			message: options.message
 		});
 	};

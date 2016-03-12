@@ -23,6 +23,12 @@
 				}
 			},
 			amount_owed: {
+				/*
+				todo:
+				enabled: true/false/selector/function,
+				if not enabled validation of field should return undefined,
+				which when sent to the decorators resets the decoration.
+				*/
 				validators: {
 					proveRequired: {
 						state: '#summerize:checked',
@@ -139,9 +145,6 @@
 		var configMoneymask = {
 			allowZero: true
 		};
-
-
-		console.log('select1', select1)
 
 		//tags
 		select1.on('itemAdded', revalidate);
