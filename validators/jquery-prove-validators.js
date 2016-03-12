@@ -7,43 +7,35 @@
 
 		var input = $(this);
 		var type = input.attr('type');
+		var isSelect = input.is('select');
 		var isCheckbox = (type === 'checkbox');
 		var isRadio = (type === 'radio');
 		var isNumber = (type === 'number');
 		var isFile = (type === 'file');
 		var val, idx;
 
-		if (options.debug) {
-			console.groupCollapsed('Validator.vals()');
-			console.log('input', input);
-			console.log('type', type);
-			console.groupEnd();
-		}
 
-		if (typeof type === 'undefined'){
-			//todo: warning here
-			return;
-		}if ( isRadio || isCheckbox ) {
-			//todo: find other inputs with the same name?
-			return input.filter(':checked').val();
+
+		if (isSelect){
+			val = input.val();
+		} else if ( isRadio || isCheckbox ) {
+			val = input.filter(':checked').val();
 		} else if ( isNumber && typeof input.validity !== 'undefined' ) {
-			return input.validity.badInput ? NaN : input.val();
+			val = input.validity.badInput ? NaN : input.val();
 		} else if ( isFile ) {
 
 			val = input.val();
 
 			// Modern browser (chrome & safari)
-			if ( val.substr( 0, 12 ) === 'C:\\fakepath\\' ) return val.substr( 12 );
+			if ( val.substr( 0, 12 ) === 'C:\\fakepath\\' ) val = val.substr( 12 );
 
 			// Legacy browsers, unix-based path
 			idx = val.lastIndexOf( '/' );
-			if ( idx >= 0 ) return val.substr( idx + 1 );
+			if ( idx >= 0 ) val = val.substr( idx + 1 );
 
 			// Windows-based path
 			idx = val.lastIndexOf( '\\' );
-			if ( idx >= 0 ) return val.substr( idx + 1 );
-
-			return val;
+			if ( idx >= 0 ) val = val.substr( idx + 1 );
 		} else if ( input.attr('contenteditable') ) {
 			val = input.text();
 		} else {
@@ -51,6 +43,14 @@
 		}
 
 		if ( typeof val === 'string' ) return val.replace( /\r/g, '' );
+
+		if (options.debug) {
+			console.groupCollapsed('Validator.vals()');
+			console.log('input', input);
+			console.log('type', type);
+			console.log('val', val);
+			console.groupEnd();
+		}
 
 		return val;
 	};

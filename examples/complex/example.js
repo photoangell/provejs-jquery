@@ -1,45 +1,48 @@
 (function() {
 
+	//setup
 	var form = $('form');
+	var radio = form.find('[name="toggle"]');
+	var select1 = form.find('[name="charge_descriptions"]');
+	var monies = form.find('.money');
+	var table = form.find('table#itemization');
+	var wrapper1 = form.find('#wrapper-statement-attached');
+	var wrapper2 = form.find('#wrapper-itemized-amounts');
+	var pattern = /^[-a-zA-Z0-9,.)( ]*$/;
+
+	var isItemization;
+
 	var cfg = {
 		fields: {
-			email: {
-				//trigger: 'blur validate',
+			toggle: {
 				validators: {
 					proveRequired: {
-						state: '#optout:checked', // true, false, selector string, callback
-						message: 'Your email is required unless you opt out.',
+						state: true,
+						message: 'Amount required.',
+					}
+				}
+			},
+			amount_owed: {
+				validators: {
+					proveRequired: {
+						state: '#summerize:checked',
+						message: 'Amount required.',
+					}
+				}
+			},
+			charge_descriptions:{
+				validators:{
+					proveRequired: {
+						debug: true,
+						state: '#summerize:checked',
+						message: 'Description is required.',
 					},
 					provePattern: {
-						regex: '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,63}',
-						message: 'Invalid email address.' //optional, passed to decorator
+						regex: pattern.source,
+						message: 'Invalid description.'
 					}
 				}
 			},
-			file: {
-				validators: {
-					proveRequired: {
-						state: true, // true, false, selector string, callback
-						message: 'A file is required.', //optional, passed to decorator
-					}
-				}
-			},
-			'fruit[]': {
-				validators: {
-					proveRequired: {
-						state: true,
-						message: 'A fruit is required.',
-					}
-				}
-			},
-			dynamicField: {
-				validators: {
-					proveRequired: {
-						state: true,
-						message: 'This input does not exist, but might sometime in the future. When it does exist prove will validate it.',
-					}
-				}
-			}
 		}
 	};
 
@@ -85,15 +88,7 @@
 	form.prove(cfg); //validate
 
 
-		//setup
-		var radio = form.find('[name="statement_attached_has"]');
 
-		var select1 = form.find('[name="charge_descriptions"]');
-		var monies = form.find('.money');
-		var table = form.find('table#itemization');
-		var wrapper1 = form.find('#wrapper-statement-attached');
-		var wrapper2 = form.find('#wrapper-itemized-amounts');
-		var isItemization;
 
 
 /*		form.validate({
@@ -123,7 +118,7 @@
 			}
 		});*/
 
-/*		var configTagsinput = {
+		var configTagsinput = {
 			trimValue: true,
 			itemText: toLowerCase,
 			tagClass: tagClass
@@ -131,6 +126,9 @@
 		var configMoneymask = {
 			allowZero: true
 		};
+
+
+		console.log('select1', select1)
 
 		//tags
 		select1.on('itemAdded', revalidate);
@@ -142,15 +140,15 @@
 
 		//money mask
 		monies.on('change', revalidate);
-		monies.maskMoney(configMoneymask);*/
+		monies.maskMoney(configMoneymask);
 
 		//seup events
 		radio.change(onRadioChange);
-		//table.on('change', 'input.amount', onItemizationChange);
-		//table.on('click', 'a.add-principle-row', addPrincipleChargeRow);
-		//table.on('click', 'a.add-additional-row', addAdditionalChargeRow);
-		//table.on('click', 'a.del-principle-row', delChargeRow);
-		//table.on('click', 'a.del-additional-row', delChargeRow);
+		table.on('change', 'input.amount', onItemizationChange);
+		table.on('click', 'a.add-principle-row', addPrincipleChargeRow);
+		table.on('click', 'a.add-additional-row', addAdditionalChargeRow);
+		table.on('click', 'a.del-principle-row', delChargeRow);
+		table.on('click', 'a.del-additional-row', delChargeRow);
 
 
 	//radio wrapper
@@ -185,9 +183,6 @@
 		//insert into dom
 		target.before(html);
 
-		//setup validation
-		//form.formValidation('addField', input);
-
 		//setup money mask
 		money.maskMoney(configMoneymask);
 	}
@@ -206,9 +201,6 @@
 		//insert into dom
 		target.before(html);
 
-		//setup validation
-		//form.formValidation('addField', input);
-
 		//setup money mask
 		money.maskMoney(configMoneymask);
 	}
@@ -221,11 +213,6 @@
 		var input = tr.find('input').eq(0);
 		var money = tr.find('input').eq(1);
 
-		console.log('remove input', input);
-
-		//remove validation
-		//form.formValidation('removeField', input);
-
 		//remove plugins
 		money.maskMoney('destroy');
 
@@ -234,10 +221,6 @@
 		onItemizationChange();
 	}
 
-
-
-
-
 	function resetTable (){
 		table.find('input.money').val('0.00');
 	}
@@ -245,9 +228,7 @@
 	function resetTags() {
 		console.log('resetTags()');
 		select1.tagsinput('removeAll');
-		//form.formValidation('resetField', 'charge_descriptions');
-		select1.valid(); //validator.element( "#myselect" );
-		//form.valid();
+		select1.trigger('validate.field.prove');
 	}
 
 	function sumItemizationValues(){
@@ -270,15 +251,14 @@
 
 
 	function tagClass(item){
-		var isValid = window.patterns.commons.tag.test(item);
+		var isValid = pattern.test(item);
 		return (isValid)? 'label label-default' : 'label label-danger';
 	}
 
 	function revalidate(event){
 		console.log('revalidate()', event.target.name);
-		var element = $(event.target);
-		element.valid();
-		//form.formValidation('revalidateField', event.target.name);
+		var input = $(event.target);
+		input.trigger('validate.field.prove');
 	}
 
 	function toLowerCase(item){
