@@ -18,7 +18,7 @@
 				enabled: true,
 				validators: {
 					proveRequired: {
-						debug: false,
+						debug: true,
 						message: 'Amount required.',
 					}
 				}
@@ -87,6 +87,7 @@
 
 	form.on('validated.field.prove', function(event, data){
 		var input = $(event.target);
+		//console.log('validated.field.prove', data);
 		input.bootstrap(data);
 	});
 
@@ -117,9 +118,6 @@
 	select1.on('itemAdded', revalidate);
 	select1.on('itemRemoved', revalidate);
 	select1.tagsinput(configTagsinput);
-
-	select1.parent().find('input').addClass('ignore');
-	select1.parent().find('input').attr('name', 'ignore');
 
 	//money mask
 	monies.on('change', revalidate);

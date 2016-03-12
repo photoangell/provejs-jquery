@@ -134,6 +134,7 @@
 		if (options.debug){
 			console.groupCollapsed('Validator.required()', options.field)
 				console.log('options', options);
+				console.log('input', input);
 				console.log('value', value);
 				console.log('isValid', isValid);
 			console.groupEnd();

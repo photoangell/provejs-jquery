@@ -200,7 +200,7 @@
 		*/
 		checkField: function(field, input){
 
-			var data, isValid, state, plugin;
+			var data, isValid, state;
 			var that = this;
 			var fieldName = field.name;
 			var validators = field.validators || {};
@@ -219,8 +219,10 @@
 				validatorConfig.field = fieldName;
 
 				//invoke validator plugin
-				plugin = (that.pluginExists(validatorName))? input[validatorName] : $.noop;
-				state = plugin(validatorConfig);
+				if (!that.pluginExists(validatorName)) return false;
+				state = input[validatorName](validatorConfig);
+
+				console.log('state', state);
 
 				// Compose data the decorator will be interested in
 				data = {
