@@ -34,7 +34,7 @@
 						<tr>
 							<td class="text-nowrap p-5 form-group">
 								<div class="input-group">
-									<input type="text" name="itemized_charges_principle_description" class="form-control itemized_charges_principle_description"
+									<input type="text" name="dynamic1" class="form-control dynamic1"
 									autocomplete="off" placeholder="Other Principle Charge"
 									>
 									<span class="input-group-addon"><a href="#" class="del-principle-row"><i class="fa fa-times"></i></a></span>
@@ -44,24 +44,6 @@
 								<div class="input-group">
 									<span class="input-group-addon">$</span>
 									<input type="text" class="form-control money amount" name="itemized_charges_principle_value[]" value="0.00" autocomplete="off">
-								</div>
-							</td>
-						</tr>
-					</script>
-					<script type="text/html" id="row-additional-charge">
-						<tr>
-							<td class="text-nowrap p-5 form-group">
-								<div class="input-group">
-									<input type="text" name="itemized_charges_additional_description[]" class="form-control itemized_charges_additional_description"
-									autocomplete="off" placeholder="Other Additional Charge"
-									>
-									<span class="input-group-addon"><a href="#" class="del-additional-row"><i class="fa fa-times"></i></a></span>
-								</div>
-							</td>
-							<td class="p-5">
-								<div class="input-group">
-									<span class="input-group-addon">$</span>
-									<input type="text" class="form-control money amount" name="itemized_charges_additional_value[]" value="0.00" autocomplete="off">
 								</div>
 							</td>
 						</tr>
@@ -131,74 +113,11 @@
 															<a href="#" class="btn btn-default btn-xs add-principle-row"><i class="fa fa-plus"></i>
 															</a>
 														</div>
-														Itemized Principle Charges
+														Itemized Charges
 													</th>
 												</tr>
-												<tr>
-													<td class="text-nowrap">Principle 1</td>
-													<td class="p-5" style="width:50%">
-														<div class="input-group">
-															<span class="input-group-addon">$</span>
-															<input type="text" class="form-control money amount" name="itemized_assessments_regular" value="0.00" autocomplete="off">
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="text-nowrap">Principle 2</td>
-													<td class="p-5">
-														<div class="input-group">
-															<span class="input-group-addon">$</span>
-															<input type="text" class="form-control money amount" name="itemized_assessments_special" value="0.00" autocomplete="off">
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="text-nowrap">Principle 3</td>
-													<td class="p-5">
-														<div class="input-group">
-															<span class="input-group-addon">$</span>
-															<input type="text" class="form-control money amount" name="itemized_fines" value="0.00" autocomplete="off">
-														</div>
-													</td>
-												</tr>
 												<tr class="active">
-													<th colspan="2" class="text-center">
-														<div class="pull-right">
-															<a href="#" class="btn btn-default btn-xs add-additional-row"><i class="fa fa-plus"></i>
-															</a>
-														</div>
-														Itemized Additional Charges
-													</th>
-												</tr>
-												<tr>
-													<td class="text-nowrap">Additional 1</td>
-													<td class="p-5">
-														<div class="input-group">
-															<span class="input-group-addon">$</span>
-															<input type="text" class="form-control money amount" name="itemized_late_fees" value="0.00" autocomplete="off">
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="text-nowrap">Additional 2</td>
-													<td class="p-5">
-														<div class="input-group">
-															<span class="input-group-addon">$</span>
-															<input type="text" class="form-control money amount" name="itemized_accrued_interest" value="0.00" autocomplete="off">
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td class="text-nowrap">Additional 3</td>
-													<td class="p-5">
-														<div class="input-group">
-															<span class="input-group-addon">$</span>
-															<input type="text" class="form-control money amount" name="itemized_collection_costs" value="0.00" autocomplete="off">
-														</div>
-													</td>
-												</tr>
-												<tr class="active">
-													<td class="text-nowrap text-uppercase p-t-15">Total</td>
+													<td class="text-nowrap text-uppercase p-t-15" width="50%">Total</td>
 													<td class="p-5">
 														<div class="input-group">
 															<span class="input-group-addon">$</span>

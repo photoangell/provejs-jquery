@@ -30,7 +30,7 @@
 					}
 				}
 			},
-			charge_descriptions:{
+			charge_descriptions: {
 				validators:{
 					proveRequired: {
 						debug: true,
@@ -43,6 +43,19 @@
 					}
 				}
 			},
+			dynamic1: {
+				validators:{
+					proveRequired: {
+						debug: true,
+						state: '#itemize:checked',
+						message: 'Description is required.',
+					},
+					provePattern: {
+						regex: pattern.source,
+						message: 'Invalid description.'
+					}
+				}
+			}
 		}
 	};
 
