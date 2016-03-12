@@ -90,6 +90,34 @@
 		return isValid;
 	};
 
+	$.fn.booleanator = function(param) {
+
+		var el = $(this);
+		var state;
+
+		function evalSelector(selector){
+			try {
+				return !!$(selector).length;
+			} catch (e) {
+				console.error('Invalid jquery selector (`%s`) param for booleanator plugin.', selector);
+				return false;
+			}
+		}
+
+		if (typeof param === 'undefined'){
+			state = true;
+		} else if (typeof param === 'boolean') {
+			state = param;
+		} else if (typeof param === 'string'){
+			state = evalSelector(param);
+		} else if (typeof param === 'function'){
+			state = param();
+		} else {
+			throw new Error('Invalid param for booleanator plugin.');
+		}
+		return state;
+	};
+
 	/**
 	* Required validator.
 	* @param {object} options The validator configuration.

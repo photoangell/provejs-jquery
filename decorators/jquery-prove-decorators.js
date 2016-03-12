@@ -34,6 +34,7 @@
 
 	$.fn.tinsel = function(options){
 
+		options = options || {};
 		var input = $(this);
 
 		if (options.debug){
@@ -65,6 +66,7 @@
 
 	$.fn.garland = function(options){
 
+		options = options || {};
 		var input = $(this);
 
 		if (options.debug){
@@ -101,6 +103,7 @@
 
 	$.fn.bootstrap = function(options){
 
+		options = options || {};
 		var input = $(this);
 
 		//add some classes to decorate the input

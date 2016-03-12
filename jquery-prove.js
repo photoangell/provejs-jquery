@@ -193,41 +193,58 @@
 		* @option {object} values All input values.
 		* @return {bool or null} The result of the validation.
 		*/
+
+
+
 		checkField: function(field, input){
 
-			var data, isValid = true, state;
+			var data, isValid, state;
 			var fieldName = field.name;
 			var validators = field.validators || {};
+			var isEnabled = $('body').booleanator(field.enabled);
 
-			$.each(validators, function(validatorName, validatorConfig){
+			// only validate if field is enabled
+			if (isEnabled){
+				$.each(validators, function(validatorName, validatorConfig){
 
-				validatorConfig.field = fieldName;
+					validatorConfig.field = fieldName;
 
-				// Only check next validator if there was
-				// not a problem with the previous one.
-				if (isValid !== false) {
+					// Only check next validator if there was
+					// not a problem with the previous one.
+					if (isValid !== false) {
 
-					//todo: show warning if validator plugin is not defined
-					//invoke validator plugin
-					state = input[validatorName](validatorConfig);
+						//todo: show warning if validator plugin is not defined
+						//invoke validator plugin
+						state = input[validatorName](validatorConfig);
 
-					// Compose data the decorator will be interested in
-					data = {
-						field: field.name,
-						state: state,
-						message: validatorConfig.message,
-						// todo: do we return an array of validators and their data?
-						// We would need to do this on the `validated.form.prove` event.
-						validator: {
-							name: validatorName,
-							config: clone(validatorConfig)
+						// Compose data the decorator will be interested in
+						data = {
+							field: field.name,
+							state: state,
+							message: validatorConfig.message,
+							// todo: do we return an array of validators and their data?
+							// We would need to do this on the `validated.form.prove` event.
+							validator: {
+								name: validatorName,
+								config: clone(validatorConfig)
+							}
+						}
+
+						// setup for next loop
+						if (state === false) {
+							isValid = false;
+						} else if (typeof isValid === undefined && state === true){
+							isValid = true;
 						}
 					}
+				});
+			}
 
-					// setup for next loop
-					if (state === false) isValid = false;
-				}
-			});
+/*		console.groupCollapsed('Decorators.huntout()')
+			console.log('el', el);
+			console.log('selector', selector);
+			console.log('container', container);
+		console.groupEnd();*/
 
 			//trigger event indicating validation state
 			input.trigger('validated.field.prove', data);

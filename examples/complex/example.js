@@ -17,26 +17,23 @@
 			toggle: {
 				validators: {
 					proveRequired: {
-						state: true,
+						state: true, //todo: why do we need this state not that we have field.enabled?
 						message: 'Amount required.',
 					}
 				}
 			},
 			amount_owed: {
-				/*
-				todo:
-				enabled: true/false/selector/function,
-				if not enabled validation of field should return undefined,
-				which when sent to the decorators resets the decoration.
-				*/
+				enabled: '#summarize:checked',
 				validators: {
 					proveRequired: {
-						state: '#summerize:checked',
+						debug: true,
+						state: true, //todo: why do we need the state?
 						message: 'Amount required.',
 					}
 				}
 			},
 			charge_descriptions: {
+				enabled: '#summarize:checked',
 				validators:{
 					proveRequired: {
 						debug: true,
@@ -50,10 +47,10 @@
 				}
 			},
 			dynamic1: {
+				enabled:'#itemize:checked',
 				validators:{
 					proveRequired: {
-						debug: true,
-						state: '#itemize:checked',
+						state: true,
 						message: 'Description is required.',
 					},
 					provePattern: {
