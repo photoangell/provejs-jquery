@@ -100,8 +100,6 @@
 		console.log('submit', ok);
 	});
 
-	form.on()
-
 	//form plugins
 	form.prove(cfg); //validate
 
