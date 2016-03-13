@@ -1,0 +1,33 @@
+{
+  "name": "jquery-prove",
+  "version": "0.0.1",
+  "description": "An event based jQuery plugin for client-side validation of html forms.",
+  "main": "jquery-prove.js",
+  "directories": {
+    "example": "examples"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-concat": "^1.0.0",
+    "grunt-eslint": "^18.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dhollenbeck/jquery-prove.git"
+  },
+  "keywords": [
+    "jquery",
+    "form",
+    "validation"
+  ],
+  "author": "dan@hollenbecks.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dhollenbeck/jquery-prove/issues"
+  },
+  "homepage": "https://github.com/dhollenbeck/jquery-prove#readme"
+}

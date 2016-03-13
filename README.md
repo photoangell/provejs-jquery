@@ -1,6 +1,6 @@
 # jquery-prove
 
-An event based jQuery plugin for client-side validation of html forms.
+> An event based jQuery plugin for client-side validation of html forms.
 
 ## Table Contents
 - [Design Considerations](#design-considerations)
