@@ -29,20 +29,11 @@
 
 		defaults: {},
 		constructor: Prove,
-
 		destroy: function() {
-			console.log('destroy()');
-			//this.$container.remove();
-			//this.$form.show();
-			//this.$form.data('prove', null);
-
-			var el = this.$form;
-			el.data('prove', false);
-
 			this.teardownFields();
 			this.teardownForm();
-
-			el.trigger('destroyed.form.prove');
+			this.$form.data('prove', false);
+			this.$form.trigger('destroyed.form.prove');
 		},
 		//return jquery selector that represents the element in the DOM
 		domSelector: function(field){
@@ -119,6 +110,9 @@
 			var handler = $.proxy(this.domFieldEventsHandler, this);
 			var data = clone(field);
 
+			// honor request to disable live validation
+			if (field.trigger === false) return;
+
 			// http://api.jquery.com/on/
 			el.on(domEvents, selector, data, handler);
 		},
@@ -142,40 +136,53 @@
 		* DOM Form Events Listener
 		*/
 		bindDomFormEvents: function(){
-
-			var el = this.$form;
-			var domEvents = 'validate.form.prove';
-			var handler = $.proxy(this.validate, this);
-
-			// http://api.jquery.com/on/
-			el.on(domEvents, handler);
+			var handler = $.proxy(this.proveEventHandler1, this);
+			this.$form.on('validate.form.prove', handler);
 		},
 		unbindDomFormEvents: function(){
-
-			var el = this.$form;
-			var domEvents = 'validate.form.prove';
-
-			// http://api.jquery.com/off/
-			el.off(domEvents);
+			this.$form.off('validate.form.prove');
 		},
-
+		proveEventHandler1: function(event){
+			event.preventDefault();
+			this.validate();
+		},
 		/**
-		* Bind Event 'validate.field.prove'
-		* https://github.com/dhollenbeck/jquery-prove#event-validatefieldprove
+			Bind Event 'validate.field.prove'
+			https://github.com/dhollenbeck/jquery-prove#event-validatefieldprove
+
+			The concern with this code is that for every prove field we bind a new
+			event handler on the form container. The reason we do this because we
+			also bind the field config (as event data) to the event so the event handler
+			knows the field. Could the event handler determine the field config another way?
+
+			Option 1: Can we determine from event target which field config to use?
+			1. try the input.attr('name') to match field name.
+			2. does any of the field config selectors match this input?
+				var name = input.attr('name');
+				$.each(fields, function(field, config){
+					if (name === field || input.is(config.selector)) // found correct field
+				})
+			option 2: require the code that triggers the validate event to pass in
+			the field name: input.trigger('validate', {field: 'fieldName'})
+
 		*/
 		bindFieldProveEvent: function(field){
 
 			var selector = this.domSelector(field);
-			var handler = $.proxy(this.proveInputEventHandler, this);
+			var handler = $.proxy(this.proveEventHandler2, this);
 			var data = clone(field);
+
 			this.$form.on('validate.field.prove', selector, data, handler);
 		},
 		unbindFieldProveEvent: function(field){
+
+			//go from field config to selector
 			var selector = this.domSelector(field);
 			this.$form.off('validate.field.prove', selector);
 		},
-		proveInputEventHandler: function(event){
+		proveEventHandler2: function(event){
 
+			event.preventDefault();
 			var input = $(event.target);
 			var field = event.data;
 
@@ -213,8 +220,6 @@
 				if (!that.pluginExists(validatorName)) return false;
 				state = input[validatorName](validatorConfig);
 
-				console.log('state', state);
-
 				// Compose data the decorator will be interested in
 				data = {
 					field: field.name,
@@ -241,6 +246,7 @@
 		},
 
 		//validate entire form
+		// todo: this could be plugin where the plugin gets prove instance via $(this).data('prove')
 		validate: function(){
 			//console.log('Prove.validate()');
 

@@ -25,6 +25,7 @@
 			},
 			amount_owed: {
 				enabled: '#summarize:checked',
+				trigger: 'change', //maskMoney plugin triggers change
 				validators: {
 					proveRequired: {
 						debug: false,
@@ -34,6 +35,7 @@
 			},
 			charge_descriptions: {
 				enabled: '#summarize:checked',
+				trigger: false, //demo code below triggers `validate` event
 				validators:{
 					proveRequired: {
 						debug: false,
@@ -65,13 +67,15 @@
 
 	var events = $('#events');
 	var all = [
+
+		// prove listens to this event
+		'validate',
+
+		// prove triggers these events
 		'setup.field.prove',
 		'setup.form.prove',
-
-		'validate.field.prove',
 		'validated.field.prove',
 		'validated.form.prove',
-
 		'destroyed.field.prove',
 		'destroyed.form.prove'
 		].join(' ');
@@ -81,13 +85,9 @@
 		events.prepend(eventRow(event, data));
 	});
 
-	form.on('click', '#optout', function () {
-		$('#email').trigger('validate.field.prove');
-	});
-
+	// decorate the form
 	form.on('validated.field.prove', function(event, data){
 		var input = $(event.target);
-		//console.log('validated.field.prove', data);
 		input.bootstrap(data);
 	});
 
@@ -113,12 +113,12 @@
 	};
 
 	//tags
-	select1.on('itemAdded', revalidate);
-	select1.on('itemRemoved', revalidate);
+	//select1.on('itemAdded', revalidate);
+	//select1.on('itemRemoved', revalidate);
 	select1.tagsinput(configTagsinput);
 
 	//money mask
-	monies.on('change', revalidate);
+	//monies.on('change', revalidate);
 	monies.maskMoney(configMoneymask);
 
 	//seup events
