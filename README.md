@@ -250,9 +250,9 @@ form.remove();
 ### Setup
 
 ```bash
-npm install -g grunt
-npm install -g grunt-eslint
-npm install -g grunt-contrib-concat
+npm install grunt
+npm install grunt-eslint
+npm install grunt-contrib-concat
 ```
 
 ### Lint
