@@ -245,6 +245,26 @@ or
 form.remove();
 ```
 
+## Contributing
+
+### Setup
+
+```bash
+npm install -g grunt
+npm install -g grunt-eslint
+npm install -g grunt-contrib-concat
+```
+
+### Lint
+```bash
+grunt lint
+```
+
+### Build
+```bash
+grunt build
+```
+
 ## Others
 
 - http://formvalidation.io/

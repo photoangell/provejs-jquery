@@ -29,20 +29,11 @@
 
 		defaults: {},
 		constructor: Prove,
-
 		destroy: function() {
-			console.log('destroy()');
-			//this.$container.remove();
-			//this.$form.show();
-			//this.$form.data('prove', null);
-
-			var el = this.$form;
-			el.data('prove', false);
-
 			this.teardownFields();
 			this.teardownForm();
-
-			el.trigger('destroyed.form.prove');
+			this.$form.data('prove', false);
+			this.$form.trigger('destroyed.form.prove');
 		},
 		//return jquery selector that represents the element in the DOM
 		domSelector: function(field){
@@ -122,8 +113,6 @@
 			// honor request to disable live validation
 			if (field.trigger === false) return;
 
-			console.log('bindDomFieldEvents()', domEvents, selector);
-
 			// http://api.jquery.com/on/
 			el.on(domEvents, selector, data, handler);
 		},
@@ -155,7 +144,6 @@
 		},
 		proveEventHandler1: function(event){
 			event.preventDefault();
-			console.log('proveEventHandler1()');
 			this.validate();
 		},
 		/**
@@ -231,8 +219,6 @@
 				//invoke validator plugin
 				if (!that.pluginExists(validatorName)) return false;
 				state = input[validatorName](validatorConfig);
-
-				console.log('state', state);
 
 				// Compose data the decorator will be interested in
 				data = {

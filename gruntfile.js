@@ -11,7 +11,7 @@ module.exports = function(grunt) {
 	grunt.loadTasks('./grunts');
 
 	// register tasks
-	grunt.registerTask('check', ['eslint']);
+	grunt.registerTask('lint', ['eslint']);
 	grunt.registerTask('build', ['concat:js']);
 	grunt.registerTask('default', ['check']);
 };
