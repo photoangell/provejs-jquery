@@ -265,7 +265,7 @@ grunt lint
 grunt build
 ```
 
-## Others Libraries
+## Other Libraries
 
 There are many other form validation libraries. Just about any of them will work great for simple forms. However, if you have complex forms good luck.
 
