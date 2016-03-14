@@ -27,21 +27,10 @@
 		}
 	};
 
-	// decorate the form
-	form.on('validated.field.prove', function(event, data){
-		var input = $(event.target);
-		input.bootstrap(data);
-	});
-
-	// stop form submit
-	form.submit(function(event){
-		console.log('stopping submit because only a demo');
-		event.preventDefault();
-	});
-
+	// form plugins
+	// order does not matter
+	form.decorate('bootstrap');
 	select.multiselect();
-	form.prove(cfg); //validate
-
-
+	form.prove(cfg);
 
 })();

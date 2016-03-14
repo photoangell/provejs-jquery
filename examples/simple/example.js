@@ -1,5 +1,6 @@
 (function() {
 	var form = $('form');
+	var email = $('email');
 	var cfg = {
 		onSubmit: true,
 		fields: {
@@ -43,56 +44,12 @@
 		}
 	};
 
-	var events = $('#events');
-	var all = [
-		'setup.field.prove',
-		'setup.form.prove',
-
-		'validate.field.prove',
-		'validated.field.prove',
-		'validated.form.prove',
-
-		'destroyed.field.prove',
-		'destroyed.form.prove',
-		'submitted.form.prove'
-		].join(' ');
-
-	form.on(all, function(event, data){
-		data = data || {};
-		events.prepend(eventRow(event, data));
-	});
-
 	form.on('click', '#optout', function () {
-		$('#email').trigger('validate.field.prove');
-	});
-
-	form.on('validated.field.prove', function(event, data){
-		var input = $(event.target);
-		input.bootstrap(data);
-	});
-
-	// stop form submit
-	form.submit(function(event){
-		console.log('stopping submit because only a demo');
-		event.preventDefault();
+		email.trigger('validate.field.prove');
 	});
 
 	//form plugins
-	form.prove(cfg); //validate
-
-	//private function
-	function eventRow(event, data){
-
-		var input = $(event.target);
-		var ts = new Date(event.timeStamp);
-		var tr = $('<tr><td></td><td></td><td></td><td></td><td></td></tr>');
-		var td = tr.find('td');
-		td.eq(0).text(event.type);
-		td.eq(1).text(event.namespace);
-		td.eq(2).text(input.attr('name') || 'form');
-		td.eq(3).text(data.state);
-		td.eq(4).text(ts.toISOString());
-		return tr;
-	}
+	form.prove(cfg);
+	form.decorate('bootstrap');
 
 })();
