@@ -43,9 +43,9 @@ This lib does not bind any events directly to the input elements. All event bind
 
 ### Form Decoration ###
 
-Form validation libraries should not be directly decorating the form. Form decoration should be handled by a seperate plugin that is monitoring validation events and decorating the form and form inputs.
+Form validation libraries should not be directly decorating the form. The form validation libraries should not be adding validation classes, displaying messaging, changing ARIA attributes, or controlling internationalization of error messages. Form decoration should be handled by a seperate plugins that are monitoring validation events and decorating the form and form inputs.
 
-This lib introduces a number of [decorator plugins](./src/decorators) to decorate the form on validation events. It is trival to create your own decorator plugins.
+This lib introduces a number of [decorator plugins](./src/decorators) to decorate the form on validation events. It is trival to create your own decorator plugins.  You should not need to monkey patch a form validation library to change where you want your error messages to be displayed.
 
 ### jQuery Plugins ###
 
