@@ -11,7 +11,8 @@
 - Accepts a boolean debug option
 - If validator binds any events they should be bound to the form container 
 ```javascript
-$('form').closest('form').on()
+//inside validator
+$(this).closest('form').on()
 ```
 
 You can make your own custom validator which is composed of other validators.
