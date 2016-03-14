@@ -32,8 +32,14 @@
 			//control how prove should handle submit button clicks
 			submit: {
 				button: ':submit', //submit button selector
-				validate: ':submit:not(.skip-validation)' //booleanator, validate on submit, but not if element has class `skip-validation`
+				validate: ':submit:not(.skip-validation)',//booleanator, validate on submit, but not if element has class `skip-validation`
 				// validate: '#skip-validation:checked',
+
+				//trigger: 'click', //todo: is there any need for this?
+
+				//twice: false,
+
+
 				// note: if you want to added a disabled class to the submit button
 				// create yourself a decorator to do that.
 			}
@@ -48,6 +54,8 @@
 		setupSubmitIntercept: function(){
 			var selector = this.options.submit.button;
 			var handler = $.proxy(this.submitInterceptHandler, this);
+
+			// we intercept the submit by bind `click` rather than ':submit'
 			this.$form.on('click', selector, handler);
 		},
 		submitInterceptHandler: function(event){
@@ -55,30 +63,46 @@
 			var selector = this.options.submit.button;
 			var shouldValidate = this.$form.booleanator(this.options.submit.validate);
 			var isValid = (shouldValidate)? this.validate() : undefined;
+			var nosubmit = !!this.$form.attr('nosubmit');
 
-			// todo: will adding the disabled attr stop double submits on on IE?
-			// http://stackoverflow.com/a/17107357/2620505
+			/*
+				Of note, the following things did not work to stop double submits.
+				If you add the 'disabled' attribute to the button then the next
+				submit handler will not be invoked and the form will not be sumitted
+				either via ajax or traditional.
 
-/*			console.groupCollapsed('submitInterceptHandler()');
+				todo: will adding the disabled attr stop double submits on on IE?
+				http://stackoverflow.com/a/17107357/2620505
+
+				If you add the bootstrap `disabled` class the button still invokes
+				the this intercept handler.
+			*/
+
+			console.groupCollapsed('submitInterceptHandler()');
 			console.log('shouldValidate', shouldValidate);
+			console.log('nosubmit', nosubmit);
 			console.log('isValid', isValid);
-			console.groupEnd();*/
+			console.groupEnd();
 
 			if (isValid === false) {
 				// Stop form submit to allow user to fix invalid inputs
+				event.preventDefault();
+			} else if (nosubmit){
+				// stop twice submit
 				event.preventDefault();
 			} else {
 				// Allow form submission to continue, but add
 				// attribute to disable double form submissions.
 				// I have a desire to add a `disable` class to the
 				// submit button(s) but is that the job of a decorator?
-				this.$form.find(selector).attr("disabled", true);
-			}
+				this.$form.attr('nosubmit', true);
 
-			// trigger event - perhaps the a decorator might find this useful
-			this.$form.trigger('submitted.form.prove', {
-				validated: shouldValidate
-			});
+				// trigger event - perhaps a decorator could find this useful
+				// for ajax submits
+				this.$form.trigger('submitted.form.prove', {
+					validated: shouldValidate
+				});
+			}
 		},
 		//return jquery selector that represents the element in the DOM
 		domSelector: function(field){

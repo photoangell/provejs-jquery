@@ -77,7 +77,8 @@
 		'validated.field.prove',
 		'validated.form.prove',
 		'destroyed.field.prove',
-		'destroyed.form.prove'
+		'destroyed.form.prove',
+		'submitted.form.prove'
 		].join(' ');
 
 	form.on(all, function(event, data){
@@ -91,13 +92,10 @@
 		input.bootstrap(data);
 	});
 
+	// stop form submit
 	form.submit(function(event){
+		console.log('stopping submit because only a demo');
 		event.preventDefault();
-
-		var ok = form.data('prove').validate();
-		//form.trigger('validate.form.prove');
-
-		console.log('submit', ok);
 	});
 
 	//form plugins

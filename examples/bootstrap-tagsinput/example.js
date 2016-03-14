@@ -30,7 +30,7 @@
 		input.bootstrap(data);
 	});
 
-	// submit the form
+	// stop form submit
 	form.submit(function(event){
 		console.log('stopping submit because only a demo');
 		event.preventDefault();
