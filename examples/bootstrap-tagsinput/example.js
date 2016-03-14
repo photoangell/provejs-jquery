@@ -7,8 +7,8 @@
 	var cfg = {
 		fields: {
 			field: {
-				enabled: true,
-				//trigger: false, //demo code below triggers `validate` event
+				enabled: true, //booleanator
+				trigger: 'change', //tagsinput plugin triggers `change` event which in turn triggers field validation
 				validators:{
 					proveRequired: {
 						debug: false,
@@ -30,21 +30,16 @@
 		input.bootstrap(data);
 	});
 
+	// submit the form
 	form.submit(function(event){
+		console.log('stopping submit because only a demo');
 		event.preventDefault();
-
-		var ok = form.data('prove').validate();
-		//form.trigger('validate.form.prove');
-
-		console.log('submit', ok);
 	});
 
 	//form plugins
 	form.prove(cfg); //validate
 
 	//tags
-	//select1.on('itemAdded', revalidate);
-	//select1.on('itemRemoved', revalidate);
 	select1.tagsinput({
 		trimValue: true,
 		itemText: toLowerCase,
@@ -55,12 +50,6 @@
 	function tagClass(item){
 		var isValid = regex.test(item);
 		return (isValid)? 'label label-default' : 'label label-danger';
-	}
-
-	function revalidate(event){
-		//console.log('revalidate()', event.target.name);
-		var input = $(event.target);
-		input.trigger('validate.field.prove');
 	}
 
 	function toLowerCase(item){

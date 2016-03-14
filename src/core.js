@@ -20,6 +20,7 @@
 
 		this.setupFields();
 		this.setupForm();
+		this.setupSubmitIntercept();
 
 		this.$form.trigger('setup.form.prove');
 	}
@@ -27,13 +28,65 @@
 	//$.Prove.prototype.defaults = {
 	Prove.prototype = {
 
-		defaults: {},
+		defaults: {
+			//control how prove should handle submit button clicks
+			submit: {
+				button: ':submit', //submit button selector
+				validate: ':submit:not(.skip-validation)' //booleanator, validate on submit, but not if element has class `skip-validation`
+				// validate: '#skip-validation:checked',
+				// note: if you want to added a disabled class to the submit button
+				// create yourself a decorator to do that.
+			}
+		},
 		constructor: Prove,
 		destroy: function() {
 			this.teardownFields();
 			this.teardownForm();
 			this.$form.data('prove', false);
 			this.$form.trigger('destroyed.form.prove');
+		},
+		setupSubmitIntercept: function(){
+			var selector = this.options.submit.button;
+			var handler = $.proxy(this.submitInterceptHandler, this);
+			this.$form.on('click', selector, handler);
+		},
+		submitInterceptHandler: function(event){
+
+			var isValid;
+			var twice = 'prove-already-submitted';
+			var shouldValidate = this.$form.booleanator(this.options.submit.validate);
+			var alreadySubmitted = this.$form.attr(twice) || false;
+
+			// optionally validate form
+			if (shouldValidate){
+				isValid = this.validate();
+			}
+
+/*			console.groupCollapsed('submitInterceptHandler()');
+			console.log('shouldValidate', shouldValidate);
+			console.log('alreadySubmitted', alreadySubmitted);
+			console.log('isValid', isValid);
+			console.groupEnd();*/
+
+			if (!isValid) {
+				// Stop form submission
+				event.preventDefault();
+			} else if (alreadySubmitted) {
+				// Stop form from submitted twice
+				event.preventDefault();
+			} else {
+				// Allow form submission to continue, but add
+				// attribute to disable double form submissions.
+				this.$form.attr(twice, true);
+			}
+
+			// trigger event
+			// todo: what is the use case for this?
+			this.$form.trigger('submitted.form.prove', {
+				isValid: isValid,
+				shouldValidate: shouldValidate,
+				alreadySubmitted: alreadySubmitted
+			});
 		},
 		//return jquery selector that represents the element in the DOM
 		domSelector: function(field){
