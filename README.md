@@ -6,10 +6,10 @@
 - [Introduction](#introduction)
 - [Advantages](#advanages)
 - [Examples](#examples)
-- [Prove Options](#prove-options)
-- [Prove Validators](#prove-validators)
-- [Prove Decorators](#prove-decorators)
-- [Prove Events](#prove-events)
+- [Options](#prove-options)
+- [Validators](#prove-validators)
+- [Decorators](#prove-decorators)
+- [Events](#prove-events)
 - [Destroy](#destory)
 - [Other Libraries](#other-libraries)
 
@@ -19,14 +19,14 @@ When trying to perform form validation on a complex form with hidden fieldsets, 
 
 ### Explict Validation ###
 
-Many of the form validation libraries will not not validate hidden inputs. This fine for simple forms, but becomes a huge pain when you have a multiple input plugins that hide you inputs and overlay them with dynamic DOM elements modeling an advanced input control. I want form validation to be explicit. If I define a field to be validated I want it validated even if it is hidden. 
+Many of the form validation libraries will not validate hidden or readonly inputs. This fine for simple forms, but becomes a huge pain when you have a multiple input plugins that hide inputs and overlay them with dynamically generated DOM elements modeling an advanced input control. Form validation should be explicit. If you define a field to be validated it should be validated. 
 
-I would rather be able to directly control enable/disable of field validation using a [booleanator](www.google.com) that is evaluated immediately before validation.
+I would rather be able to directly control enable/disable of field validation using a [booleanator](./src/utilities/jquery-booleanator.js) that is evaluated at time of validation. A booleanator can be defined as either true, false, selector, or callback which are evaluated later to either true or false.
 
 ```javascript
 fields: {
 	field1: {
-		enable: 'fieldset#panel1:visivle', //true, false, evaluated selector, callback
+		enable: 'fieldset#panel1:visible', //evaluated at time of validation: true, false, selector, callback
 		validators: {
 		}
 	}
@@ -35,9 +35,9 @@ fields: {
 
 ### Delagated Events ###
 
-Form validation should not be dependent on the state of the form inputs. This is particularly important if the form inputs are inserted dynamically. If a field is defined to be validated, but there is no matching form inputs than the field validation is skipped silently. If later during another validation attempt the inputs are now found in the form DOM then validation will happen as normally. This allows us to pre-define field validations before the inputs are actually in the DOM. This also allows to remove the field inputs and re-insert them later and validation will happend as expected.
+Form validation should not be dependent on the state of the form inputs. This is particularly important if the form inputs are inserted dynamically. If a field is defined to be validated, but there is no matching form inputs than the field validation should be skipped silently. If later during another validation attempt the inputs are now found in the form than validation will happen as normally. This allows us to pre-define field validations before the inputs are actually in the DOM. This also allows for the removal of field inputs and re-inserting them later - validation will happen as expected.
 
-This lib does not bind any events directly to the input elements. All event binding is delegated to the form. 
+This lib does not bind any events directly to the input elements. All event binding is delegated to the form. You can delete, insert, or modify form input at anypoint and it will not impact form validation.
 
 ### Form Decoration ###
 
@@ -49,60 +49,11 @@ This lib introduces a number of [decorator plugins](./src/decorators) to decorat
 
 All other form validation libraries are jQuery plugins, but they stop there. They all create thier own proprietary framework for their validation rules and methods. Instead they should have just created their validator methods as jQuery plugins. This would allow the sharing of validators between form validation libs. As a general rule if you are passing in a DOM reference to a method, then you should consider making that method a jQuery plugin.
 
-This lib makes heavy use of the jQuery plugin framework. All validators and decoraators are jQuery plugins. All of it is very composable, extendable, and widely understood by the development community.
+This lib makes heavy use of the jQuery plugin framework. All validators and decorators are standalone jQuery plugins. All of them are very composable, extendable, and widely understood by the development community.
 
 ## Examples
 
-```javascript
-
-var cfg = {
-	fields: {
-		field1: {
-			selector: '', //any jquery selector, defaults to '[name="field1"]'
-			validators: {
-				required: {
-					enabled: true, //true, false, selector (radio#other:checked), callback
-					message: 'Please enter an amount.'
-				},
-				pattern: {
-					enabled: true,
-					regexp: "[0-9]",
-					message: 'You have entered an invalid character.'
-				},
-				callback: {
-					enable: true,
-					method: function(...){
-
-					},
-					message: 'Some string or function'
-				}
-			},
-			decoration: {
-				classPlacement: '.error-class-placement', //any jquery selector
-				errorPlacement: '.error-message-placement'
-			}
-		},
-		field2: {
-		...
-		}
-	}
-};
-
-var form = $('form');
-form.prove(cfg);
-
-//monitor all validation events
-var allEvents = $.prove.allEvents; //array of event names
-form.on(allEvents, function(event, data){
-	console.log(event, data)
-});
-
-//decorate the form
-form.on(['prove.success', 'prove.failure'], function(event, data){
-	console.log(event, data)
-	//todo: decorate form/inputs here
-});
-```
+todo
 
 ## Prove Options
 
