@@ -34,14 +34,8 @@
 				button: ':submit', //submit button selector
 				validate: ':submit:not(.skip-validation)',//booleanator, validate on submit, but not if element has class `skip-validation`
 				// validate: '#skip-validation:checked',
-
-				//trigger: 'click', //todo: is there any need for this?
-
-				//twice: false,
-
-
-				// note: if you want to added a disabled class to the submit button
-				// create yourself a decorator to do that.
+				prevent: false, //booleanator
+				twice: false //todo: allow some forms to submit twice
 			}
 		},
 		constructor: Prove,
@@ -54,16 +48,18 @@
 		setupSubmitIntercept: function(){
 			var selector = this.options.submit.button;
 			var handler = $.proxy(this.submitInterceptHandler, this);
-
 			// we intercept the submit by bind `click` rather than ':submit'
 			this.$form.on('click', selector, handler);
 		},
 		submitInterceptHandler: function(event){
 
-			var selector = this.options.submit.button;
 			var shouldValidate = this.$form.booleanator(this.options.submit.validate);
+			var preventSubmit = this.$form.booleanator(this.options.submit.prevent);
 			var isValid = (shouldValidate)? this.validate() : undefined;
 			var nosubmit = !!this.$form.attr('nosubmit');
+
+			var submitSetup = (isValid && !nosubmit);
+			var submitStop = (isValid === false || preventSubmit || nosubmit);
 
 			/*
 				Of note, the following things did not work to stop double submits.
@@ -80,29 +76,24 @@
 
 			console.groupCollapsed('submitInterceptHandler()');
 			console.log('shouldValidate', shouldValidate);
+			console.log('preventSubmit', preventSubmit);
 			console.log('nosubmit', nosubmit);
 			console.log('isValid', isValid);
 			console.groupEnd();
 
-			if (isValid === false) {
-				// Stop form submit to allow user to fix invalid inputs
-				event.preventDefault();
-			} else if (nosubmit){
-				// stop twice submit
-				event.preventDefault();
-			} else {
-				// Allow form submission to continue, but add
-				// attribute to disable double form submissions.
-				// I have a desire to add a `disable` class to the
-				// submit button(s) but is that the job of a decorator?
+			if (submitSetup) {
+
+				// Add attribute to disable double form submissions.
 				this.$form.attr('nosubmit', true);
 
-				// trigger event - perhaps a decorator could find this useful
-				// for ajax submits
+				// trigger event - for decorator
 				this.$form.trigger('submitted.form.prove', {
 					validated: shouldValidate
 				});
 			}
+
+			// stop form submit
+			if (submitStop) event.preventDefault();
 		},
 		//return jquery selector that represents the element in the DOM
 		domSelector: function(field){
@@ -641,6 +632,47 @@
 	"use strict";
 
 	/**
+	* Required validator.
+	* @param {object} options The validator configuration.
+	* @option {string or array} state The input value to validate.
+	* @option {object} values All input values.
+	* @return {bool or null} The result of the validation.
+	*/
+	$.fn.proveLength = function(options){
+
+		var input = $(this);
+		var value = input.vals();
+		var hasValue = input.hasValue();
+		var isValid = input.hasValue();
+		var okMin = (typeof options.min !== 'undefined')? (value.length >= options.min) : true;
+		var okMax = (typeof options.max !== 'undefined')? (value.length <= options.max) : true;
+
+		if (!hasValue) {
+			// All validators are optional except of `required` validator.
+			isValid = true;
+		} else if (okMin && okMax) {
+			isValid = true;
+		} else {
+			isValid = false;
+		}
+
+		if (options.debug){
+			console.groupCollapsed('Validator.proveLength()', options.field);
+				console.log('options', options);
+				console.log('input', input);
+				console.log('value', value);
+				console.log('isValid', isValid);
+			console.groupEnd();
+		}
+
+		return isValid;
+	};
+}(window.jQuery);
+
+!function ($) {
+	"use strict";
+
+	/**
 	* Pattern validator.
 	* @param {bool} config The validator configuration.
 	* @param {string or array} num2 The input value to validate.
@@ -667,8 +699,9 @@
 		} else {
 			isValid = false;
 		}
+
 		if (options.debug){
-			console.groupCollapsed('Validator.pattern()', options.field);
+			console.groupCollapsed('Validator.provePattern()', options.field);
 				console.log('options', options);
 				console.log('isValid', isValid);
 			console.groupEnd();
@@ -697,7 +730,7 @@
 		var isValid = input.hasValue();
 
 		if (options.debug){
-			console.groupCollapsed('Validator.required()', options.field);
+			console.groupCollapsed('Validator.proveRequired()', options.field);
 				console.log('options', options);
 				console.log('input', input);
 				console.log('value', value);

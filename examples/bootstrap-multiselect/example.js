@@ -2,17 +2,25 @@
 
 	//setup
 	var form = $('form');
-	var select1 = form.find('[name="field"]');
-	var regex = /^[-a-zA-Z0-9,.)( ]*$/;
+	var select = form.find('select');
 	var cfg = {
 		fields: {
-			field: {
-				enabled: true, //booleanator
-				//trigger: 'change', //tagsinput plugin triggers `change` event which in turn triggers field validation
+			gender: {
 				validators:{
 					proveRequired: {
-						debug: false,
-						message: 'Fruit is required.',
+						message: 'The gender is required.',
+					}
+				}
+			},
+			browsers: {
+				validators:{
+					proveRequired: {
+						message: 'Please choose 2-3 browsers you use for developing.',
+					},
+					proveLength: {
+						min: 2,
+						max: 3,
+						message: 'Please choose 2-3 browsers you use for developing.'
 					}
 				}
 			}
@@ -31,9 +39,9 @@
 		event.preventDefault();
 	});
 
-	//form plugins
+	select.multiselect();
 	form.prove(cfg); //validate
 
-	select1.multiselect({});
+
 
 })();

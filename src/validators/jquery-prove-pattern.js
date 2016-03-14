@@ -28,8 +28,9 @@
 		} else {
 			isValid = false;
 		}
+
 		if (options.debug){
-			console.groupCollapsed('Validator.pattern()', options.field);
+			console.groupCollapsed('Validator.provePattern()', options.field);
 				console.log('options', options);
 				console.log('isValid', isValid);
 			console.groupEnd();

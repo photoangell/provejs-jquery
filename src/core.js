@@ -34,14 +34,8 @@
 				button: ':submit', //submit button selector
 				validate: ':submit:not(.skip-validation)',//booleanator, validate on submit, but not if element has class `skip-validation`
 				// validate: '#skip-validation:checked',
-
-				//trigger: 'click', //todo: is there any need for this?
-
-				//twice: false,
-
-
-				// note: if you want to added a disabled class to the submit button
-				// create yourself a decorator to do that.
+				prevent: false, //booleanator
+				twice: false //todo: allow some forms to submit twice
 			}
 		},
 		constructor: Prove,
@@ -59,10 +53,13 @@
 		},
 		submitInterceptHandler: function(event){
 
-			var selector = this.options.submit.button;
 			var shouldValidate = this.$form.booleanator(this.options.submit.validate);
+			var preventSubmit = this.$form.booleanator(this.options.submit.prevent);
 			var isValid = (shouldValidate)? this.validate() : undefined;
 			var nosubmit = !!this.$form.attr('nosubmit');
+
+			var submitSetup = (isValid && !nosubmit);
+			var submitStop = (isValid === false || preventSubmit || nosubmit);
 
 			/*
 				Of note, the following things did not work to stop double submits.
@@ -79,29 +76,24 @@
 
 			console.groupCollapsed('submitInterceptHandler()');
 			console.log('shouldValidate', shouldValidate);
+			console.log('preventSubmit', preventSubmit);
 			console.log('nosubmit', nosubmit);
 			console.log('isValid', isValid);
 			console.groupEnd();
 
-			if (isValid === false) {
-				// Stop form submit to allow user to fix invalid inputs
-				event.preventDefault();
-			} else if (nosubmit){
-				// stop twice submit
-				event.preventDefault();
-			} else {
-				// Allow form submission to continue, but add
-				// attribute to disable double form submissions.
-				// I have a desire to add a `disable` class to the
-				// submit button(s) but is that the job of a decorator?
+			if (submitSetup) {
+
+				// Add attribute to disable double form submissions.
 				this.$form.attr('nosubmit', true);
 
-				// trigger event - perhaps a decorator could find this useful
-				// for ajax submits
+				// trigger event - for decorator
 				this.$form.trigger('submitted.form.prove', {
 					validated: shouldValidate
 				});
 			}
+
+			// stop form submit
+			if (submitStop) event.preventDefault();
 		},
 		//return jquery selector that represents the element in the DOM
 		domSelector: function(field){
