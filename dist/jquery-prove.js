@@ -52,40 +52,32 @@
 		},
 		submitInterceptHandler: function(event){
 
-			var isValid;
-			var twice = 'prove-already-submitted';
+			var selector = this.options.submit.button;
 			var shouldValidate = this.$form.booleanator(this.options.submit.validate);
-			var alreadySubmitted = this.$form.attr(twice) || false;
+			var isValid = (shouldValidate)? this.validate() : undefined;
 
-			// optionally validate form
-			if (shouldValidate){
-				isValid = this.validate();
-			}
+			// todo: will adding the disabled attr stop double submits on on IE?
+			// http://stackoverflow.com/a/17107357/2620505
 
 /*			console.groupCollapsed('submitInterceptHandler()');
 			console.log('shouldValidate', shouldValidate);
-			console.log('alreadySubmitted', alreadySubmitted);
 			console.log('isValid', isValid);
 			console.groupEnd();*/
 
-			if (!isValid) {
-				// Stop form submission
-				event.preventDefault();
-			} else if (alreadySubmitted) {
-				// Stop form from submitted twice
+			if (isValid === false) {
+				// Stop form submit to allow user to fix invalid inputs
 				event.preventDefault();
 			} else {
 				// Allow form submission to continue, but add
 				// attribute to disable double form submissions.
-				this.$form.attr(twice, true);
+				// I have a desire to add a `disable` class to the
+				// submit button(s) but is that the job of a decorator?
+				this.$form.find(selector).attr("disabled", true);
 			}
 
-			// trigger event
-			// todo: what is the use case for this?
+			// trigger event - perhaps the a decorator might find this useful
 			this.$form.trigger('submitted.form.prove', {
-				isValid: isValid,
-				shouldValidate: shouldValidate,
-				alreadySubmitted: alreadySubmitted
+				validated: shouldValidate
 			});
 		},
 		//return jquery selector that represents the element in the DOM
