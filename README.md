@@ -265,19 +265,27 @@ grunt lint
 grunt build
 ```
 
-## Others
+## Others Libraries
 
-- http://formvalidation.io/
-- http://jqueryvalidation.org/
-	- Issue: multiple inputs with same name
-		- http://stackoverflow.com/questions/931687/using-jquery-validate-plugin-to-validate-multiple-form-fields-with-identical-nam/4136430#4136430
-		- https://github.com/jzaefferer/jquery-validation/pull/717
-		- http://blog.kyawzinwin.me/jquery-validation-for-array-of-input-elements/
-		- http://www.codeboss.in/web-funda/2009/05/27/jquery-validation-for-array-of-input-elements/
-	- Issue: any input (ie tagsinput) without name attribute will throw an error
-		- ignore: '*:not([name])'
-		- https://github.com/jzaefferer/jquery-validation/labels/name-attribute
+There are many other form validation libraries. Just about any of them will work great for simple forms. However, if you have complex forms good luck.
+
 - http://www.formvalidator.net/
+	- License:  MIT (declared in bower.json), but not license file.
+	- Focus: Unobtrusive form validation declorations.
+	- Concerns: It binds event handlers directly to the inputs rather delagate them to the form container. Merges decoration and validation together.
+	- Development: Maintained and under active development.
+
+- http://jqueryvalidation.org/
+	- License: MIT 
+	- Concerns: not actively being maintained. Be prepared to monkey patch.
+	
+- https://github.com/1000hz/bootstrap-validator
+	- License: MIT
+	
+- http://formvalidation.io/
+	- License: Commercial
+	- Concerns: Merges decoration and validation into single lib.
+	- Development: 
 
 ## Todo
 
