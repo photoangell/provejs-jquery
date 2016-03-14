@@ -3,138 +3,61 @@
 > An event based jQuery plugin for client-side validation of html forms.
 
 ## Table Contents
-- [Design Considerations](#design-considerations)
+- [Introduction](#introduction)
 - [Advantages](#advanages)
 - [Examples](#examples)
-- [Prove Options](#prove-options)
-- [Prove Validators](#prove-validators)
-- [Prove Decorators](#prove-decorators)
-- [Prove Events](#prove-events)
+- [Options](#prove-options)
+- [Validators](#prove-validators)
+- [Decorators](#prove-decorators)
+- [Events](#prove-events)
 - [Destroy](#destory)
 - [Other Libraries](#other-libraries)
 
-## Design Considerations
+## Introduction
 
-How is this validator plugin different than other jquery plugin form validators?
+All of the other form validation libraries work great for simple forms. However, they all have short-comings when trying to validate complex forms. Complex forms have many hidden inputs and collections of inputs (eg tabs or panels). Complex forms have input plugins which modify the form DOM and hide the original inputs. Complex forms have inputs that dynamically inserted or removed from the form. These other form validation libraries make validating complex forms painful. 
 
-- Explicit Validations
-- Delagated Events
-	- DOM Agnostic
-	- Form Control Plugins
-- Decorators as Plugins
-	- Tinsel
-	- Garland
-	- Aria
-	- Bootstrap
-	- huntout('closest', ['selector1', 'selector2', 'selector3'])
-- Validators as Plugins
-	- Simple
-	- Composable
-	- Field config are plugin options
+Below is a list design considerations that address the design problems of the other validators libraries.
+
+### Explict Validation ###
+
+Many of the form validation libraries will not validate hidden or readonly inputs. This fine for simple forms, but becomes a huge pain when you have a multiple input plugins that hide inputs and overlay them with dynamically generated DOM elements modeling an advanced input control. Form validation should be explicit. If you define a field to be validated it should be validated. 
+
+I would rather be able to directly control enable/disable of field validation using a [booleanator](./src/utilities/jquery-booleanator.js) that is evaluated at time of validation. A booleanator can be defined as either boolean, selector, or callback which is later evaluated to a boolean (true or false).
 
 ```javascript
-//composable validator plugin - required email
-$.fn.requiredEmail = function(options){
-	var input = $(this);
-	var check1 = input.proveRequired(options1);
-	var check2 = input.provePattern(options2);
-	return (check1 && check2);
-};
+fields: {
+	field1: {
+		//evaluated at time of validation
+		//accepts true, false, selector, callback
+		enable: 'fieldset#panel1:visible',
+		validators: {
+		}
+	}
+}
 ```
 
-Validator Anatomy
-- jQuery plugin
-- Single input options parameter which is the field validator config object.
-- The `this` context is the DOM input to validate.
-- Returns
-	- `true` on validation success
-	- `false` on validation was not successful
-	- `undefined` on validation was not performed
-- Accepts a boolean debug option
-- Must return undefined on blank or empty input.
+### Delagated Events ###
 
+Form validation should not be dependent on the state of the form inputs. This is particularly important if the form inputs are inserted dynamically. If a field is defined to be validated, but there is no matching form inputs than the field validation should be skipped silently. If later during another validation attempt the inputs are now found in the form than validation will happen as normally. This allows us to pre-define field validations before the inputs are actually in the DOM. This also allows for the removal of field inputs and re-inserting them later - validation will happen as expected.
 
-### Eplicit Validations
+This lib does not bind any events directly to the input elements. All event binding is delegated to the form. You can delete, insert, or modify form input at anypoint and it will not impact form validation.
 
-Unlike all other form validations this plugin primary focus is the validation rules and not the form inputs. During validations the plugin will loop the defined fields config looking for any inputs which might exist and if and only if the form input exists validate the input's value. All other plugins loop the inputs and validate the form inputs. This plugin loops the validations and could careless if a form input exists or not.
+### Form Decoration ###
 
-This plugin will validate only what you specify. If you do not define a field to be validated it will be not be validated. Also, if you define a field to be validated it will be validated event if the input is hidden, disabled, or readonly. All other plugins will validate what you don't want them to and expect you figure out how to exclude/ignore these inputs you did not ask be validated from being validated. They will also ignore inputs you explictly asked to be validated with no reasonable way to force the validation to happen. For example, try validating a form which uses jquery-multiselect on it using any of the other validation plugins.
+Form validation libraries should not be directly decorating the form. The form validation libraries should not be adding validation classes, displaying messaging, changing ARIA attributes, or controlling internationalization of error messages. Form decoration should be handled by a seperate plugins that are monitoring validation events and decorating the form and form inputs.
 
-### Validators
+This lib introduces a number of [decorator plugins](./src/decorators) to decorate the form on validation events. It is trival to create your own decorator plugins.  You should not need to monkey patch a form validation library to change where you want your error messages to be displayed.
 
-The validator methods should be seperate from the validation plugin. This is again because of seperation of concerns, but also because the validators maybe shared between the frontend and backend (via Node.js). Theis would imply that the validators should not be passed DOM references.
+### jQuery Plugins ###
 
-###Decoration
+All other form validation libraries are jQuery plugins, but they stop there. They all create thier own proprietary framework for their validation rules and methods. Instead they should have just created their validator methods as jQuery plugins. This would allow the sharing of validators between form validation libs. As a general rule if you are passing in a DOM reference to a method, then you should consider making that method a jQuery plugin.
 
-Form and input decorations should not be part of a validation plugin (e.g. seperation of concerns). The validation code should be loosely coupled with the decoration code by DOM events. The validation code triggers events and the decoration code listens to these events and decorates the DOM accordingly. See jquery-decorator.
-
-###Delagated Events
-
-All other form validation plugins attach keyup events directly to the form inputs to provide live validation to the user. These event listens should be **delegated** to the plugin container (ie normally the form tag) to allow for dynamic changes to the form DOM. Changes to the form DOM are common with most advanced form control plugins, dynamic HTML features.
-
-Since all events are delagated to the form container cleanup of the DOM for single page applications as simple as form.remove(). You of course would need to cleanup up any field control plugins you have enabled on your form.
-
-## Advantages
-
-These design considerations have the following advantages:
-
-* The form DOM can change at anypoint in time.
-* You can define validation fields and validators in advance of the form inputs actually entering the DOM.
-* Form control plugins can be instateated before or after the prove plugin.
-* When form control plugins modify events you do not need to invoke the prove to validate any inputs.
+This lib makes heavy use of the jQuery plugin framework. All validators and decorators are standalone jQuery plugins. All of them are very composable, extendable, and widely understood by the development community.
 
 ## Examples
 
-```javascript
-
-var cfg = {
-	fields: {
-		field1: {
-			selector: '', //any jquery selector, defaults to '[name="field1"]'
-			validators: {
-				required: {
-					enabled: true, //true, false, selector (radio#other:checked), callback
-					message: 'Please enter an amount.'
-				},
-				pattern: {
-					enabled: true,
-					regexp: "[0-9]",
-					message: 'You have entered an invalid character.'
-				},
-				callback: {
-					enable: true,
-					method: function(...){
-
-					},
-					message: 'Some string or function'
-				}
-			},
-			decoration: {
-				classPlacement: '.error-class-placement', //any jquery selector
-				errorPlacement: '.error-message-placement'
-			}
-		},
-		field2: {
-		...
-		}
-	}
-};
-
-var form = $('form');
-form.prove(cfg);
-
-//monitor all validation events
-var allEvents = $.prove.allEvents; //array of event names
-form.on(allEvents, function(event, data){
-	console.log(event, data)
-});
-
-//decorate the form
-form.on(['prove.success', 'prove.failure'], function(event, data){
-	console.log(event, data)
-	//todo: decorate form/inputs here
-});
-```
+todo
 
 ## Prove Options
 
@@ -265,19 +188,27 @@ grunt lint
 grunt build
 ```
 
-## Others
+## Other Libraries
 
-- http://formvalidation.io/
-- http://jqueryvalidation.org/
-	- Issue: multiple inputs with same name
-		- http://stackoverflow.com/questions/931687/using-jquery-validate-plugin-to-validate-multiple-form-fields-with-identical-nam/4136430#4136430
-		- https://github.com/jzaefferer/jquery-validation/pull/717
-		- http://blog.kyawzinwin.me/jquery-validation-for-array-of-input-elements/
-		- http://www.codeboss.in/web-funda/2009/05/27/jquery-validation-for-array-of-input-elements/
-	- Issue: any input (ie tagsinput) without name attribute will throw an error
-		- ignore: '*:not([name])'
-		- https://github.com/jzaefferer/jquery-validation/labels/name-attribute
+There are many other form validation libraries. Just about any of them will work great for simple forms. However, if you have complex forms good luck.
+
 - http://www.formvalidator.net/
+	- License:  MIT (declared in bower.json), but not license file.
+	- Focus: Unobtrusive form validation declorations.
+	- Concerns: It binds event handlers directly to the inputs rather delagate them to the form container. Merges decoration and validation together.
+	- Development: Maintained and under active development.
+
+- http://jqueryvalidation.org/
+	- License: MIT 
+	- Concerns: not actively being maintained. Be prepared to monkey patch.
+	
+- https://github.com/1000hz/bootstrap-validator
+	- License: MIT
+	
+- http://formvalidation.io/
+	- License: Commercial
+	- Concerns: Merges decoration and validation into single lib.
+	- Development: 
 
 ## Todo
 
