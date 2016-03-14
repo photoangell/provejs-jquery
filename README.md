@@ -15,13 +15,15 @@
 
 ## Introduction
 
-When trying to perform form validation on a complex form with hidden fieldsets, multiple input control plugins, and dynamically inserted form inuts I tried to get many of the other form validation libraries to work. I found that all of them were lacking and not up to the task. Below is a list design considerations that I discovered while working with the other form validation libraries.
+All of the other form validation libraries work great for simple forms. However, they all have short-comings when trying to validate complex forms. Complex forms have many hidden inputs and collections of inputs (eg tabs or panels). Complex forms have input plugins which modify the form DOM and hide the original inputs. Complex forms have inputs that dynamically inserted or removed from the form. Thes other form validation libs make validating complex forms painful. 
+
+Below is a list design considerations that address design problems of the other validators libraries.
 
 ### Explict Validation ###
 
 Many of the form validation libraries will not validate hidden or readonly inputs. This fine for simple forms, but becomes a huge pain when you have a multiple input plugins that hide inputs and overlay them with dynamically generated DOM elements modeling an advanced input control. Form validation should be explicit. If you define a field to be validated it should be validated. 
 
-I would rather be able to directly control enable/disable of field validation using a [booleanator](./src/utilities/jquery-booleanator.js) that is evaluated at time of validation. A booleanator can be defined as either true, false, selector, or callback which are evaluated later to either true or false.
+I would rather be able to directly control enable/disable of field validation using a [booleanator](./src/utilities/jquery-booleanator.js) that is evaluated at time of validation. A booleanator can be defined as either true, false, selector, or callback which is later evaluated to either true or false.
 
 ```javascript
 fields: {
