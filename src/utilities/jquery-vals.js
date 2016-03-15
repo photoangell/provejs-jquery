@@ -12,13 +12,19 @@
 		var isRadio = (type === 'radio');
 		var isNumber = (type === 'number');
 		var isFile = (type === 'file');
-		var val, idx;
+		var name = input.attr('name');
+		var val, idx, selector;
 
 
 		if (isSelect){
 			val = input.val();
-		} else if ( isRadio || isCheckbox ) {
+		} else if ( isRadio ) {
+			// single selection model
 			val = input.filter(':checked').val();
+		} else if ( isCheckbox){
+			// multiple selection model
+			selector = '[name="' + name + '"]:checked';
+			val = input.closest('form').find(selector).val();
 		} else if ( isNumber && typeof input.validity !== 'undefined' ) {
 			val = input.validity.badInput ? NaN : input.val();
 		} else if ( isFile ) {
