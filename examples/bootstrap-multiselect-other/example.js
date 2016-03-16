@@ -24,24 +24,23 @@
 	// check related input has a value
 	$.fn.otherDescriptionPattern = function(options){
 
-		return;
-
 		var checkbox = $(this);
 		var input = checkbox.closest('.input-group').find('input[type="text"]');
-		var value = input.val() || '';
-		var hasValue = (value !== '');
+		var val = input.val();
+
+		var isValid = (/^[a-zA-z0-9]+$/).test(val);
 
 		if (options.debug){
 			console.groupCollapsed('Validators.otherDescriptionPattern()', options.field);
 			console.log('options', options);
 			console.log('checkbox', checkbox);
 			console.log('input', input);
-			console.log('value', value);
-			console.log('hasValue', hasValue);
+			console.log('value', val);
+			console.log('isValid', isValid);
 			console.groupEnd();
 		}
 
-		return hasValue;
+		return isValid;
 	};
 
 
@@ -51,33 +50,15 @@
 	var inputs = form.find('input[name="charges"]');
 	var cfg = {
 		fields: {
-/*			gender: {
-				validators:{
-					proveRequired: {
-						message: 'The gender is required.',
-					}
-				}
-			},
-			browsers: {
-				validators:{
-					proveRequired: {
-						message: 'Please choose browsers you use for developing.',
-					}
-				}
-			},*/
 			checkboxes: {
-				//trigger: 'change',
 				validators:{
 					proveRequired: {
-						debug: true,
 						message: 'Please choose browsers you use for developing.',
 					},
 					otherDescriptionRequired: {
-						debug: true,
 						message: 'Please enter the description of the other charge.',
 					},
 					otherDescriptionPattern: {
-						debug: true,
 						message: 'Invalid character in the description of the other charge.'
 					}
 				}
@@ -99,20 +80,32 @@
 		checkbox.trigger('validate.field.prove');
 	});
 
-	form.on('change', '[name="checkboxes"]:last', function(event){
+	form.on('change', '[name="checkboxes"]', function(event){
 		var checkbox = $(this);
 		var checked = checkbox.is(':checked');
 		var input = checkbox.closest('.input-group').find('input[type="text"]');
+		var readonly = !!input.attr('readonly');
 
-		//console.log('checkbox change', checked);
-		if (checked) {
-			//add addition input group
-			console.log('add other');
-		} else {
+		if (!checked && !readonly) {
 			//remove existing input group
 			input.val('');
-			console.log('empty value, and if not last other then remove this');
 		}
 	});
+
+	form.on('click', '.del-input-group', function(event){
+		$(this).closest('.input-group').remove();
+		$('form').find('[name="checkboxes"]:first').trigger('validate.field.prove');
+	});
+
+	form.on('click', '.add-input-group', function(event){
+		$(this).closest('.input-group').remove();
+		var group = $(this).closest('.form-group');
+		var target = group.find('.input-group:last');
+		var clone = target.clone();
+		clone.find('input[type="text"]').val('').attr('readonly', false);
+		clone.find('input[type=checkbox]').attr('checked', false);
+		target.after(clone);
+	});
+
 
 })();
