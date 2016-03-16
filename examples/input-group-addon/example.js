@@ -92,19 +92,18 @@
 		}
 	});
 
+	// remove input group
 	form.on('click', '.del-input-group', function(event){
 		$(this).closest('.input-group').remove();
 		$('form').find('[name="checkboxes"]:first').trigger('validate.field.prove');
 	});
 
+	// insert input group
 	form.on('click', '.add-input-group', function(event){
-		$(this).closest('.input-group').remove();
+		var html = $('script#row').text();
 		var group = $(this).closest('.form-group');
 		var target = group.find('.input-group:last');
-		var clone = target.clone();
-		clone.find('input[type="text"]').val('').attr('readonly', false);
-		clone.find('input[type=checkbox]').attr('checked', false);
-		target.after(clone);
+		target.after(html);
 	});
 
 
