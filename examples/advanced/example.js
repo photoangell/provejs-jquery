@@ -45,7 +45,6 @@
 			},
 			'dynamic1[]': {
 				enabled:'#itemize:checked', //booleanator
-				//group: true, //apply validators indivudally
 				validators:{
 					proveRequired: {
 						debug: true,

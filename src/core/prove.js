@@ -9,7 +9,6 @@
 
 		this.$form = $(form);
 
-		//todo: clean this up
 		this.options = $.extend(this.defaults, options);
 
 		if (options.debug){
@@ -257,13 +256,6 @@
 		* @return {bool or null} The result of the validation.
 		*/
 		//todo: make this a plugin
-		/*
-			This function must handle three use cases:
-			- single named input,
-			- multiple named inputs but treated like a single (eg type="checkbox" name="field")
-			- multiple named inputs but validated separatedly (eg type="input" name="field[]").
-
-		*/
 		checkField: function(field, input){
 
 			var data, isValid, state;
@@ -327,29 +319,23 @@
 
 				var selector = that.domSelector(field);
 				var input = that.$form.find(selector);
-				var isMultiple = input.isMultiple();
+				var isMultiple = input.is(':multiple');
 				var isValidField;
-				//console.log('isMultiple', field.name, isMultiple);
 
-
-/*				if (isMultiple){
-					$.each(input, function(indexx, inputx){
-						isValidField = checkField(field, inputx);
+				if (isMultiple){
+					//handle case when name="field[]"
+					input.each(function(){
+						var input = $(this);
+						isValidField = checkField(field, input);
 						if (isValidField === false) isValid = false;
 						if (isValidField === true && isValid !== false) isValid = true;
 					});
 				}  else {
+					//handle case where name="field"
 					isValidField = checkField(field, input);
 					if (isValidField === false) isValid = false;
 					if (isValidField === true && isValid !== false) isValid = true;
-				}*/
-
-				var isValidField = checkField(field, input);
-
-				if (isValidField === false) isValid = false;
-				if (isValidField === true && isValid !== false) isValid = true;
-
-
+				}
 			});
 
 			//trigger event indicating validation state

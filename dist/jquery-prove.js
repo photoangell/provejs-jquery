@@ -327,29 +327,23 @@
 
 				var selector = that.domSelector(field);
 				var input = that.$form.find(selector);
-				var isMultiple = input.isMultiple();
+				var isMultiple = input.is(':multiple');
 				var isValidField;
-				//console.log('isMultiple', field.name, isMultiple);
 
-
-/*				if (isMultiple){
-					$.each(input, function(indexx, inputx){
-						isValidField = checkField(field, inputx);
+				if (isMultiple){
+					//handle case when name="field[]"
+					input.each(function(){
+						var input = $(this);
+						isValidField = checkField(field, input);
 						if (isValidField === false) isValid = false;
 						if (isValidField === true && isValid !== false) isValid = true;
 					});
 				}  else {
+					//handle case where name="field"
 					isValidField = checkField(field, input);
 					if (isValidField === false) isValid = false;
 					if (isValidField === true && isValid !== false) isValid = true;
-				}*/
-
-				var isValidField = checkField(field, input);
-
-				if (isValidField === false) isValid = false;
-				if (isValidField === true && isValid !== false) isValid = true;
-
-
+				}
 			});
 
 			//trigger event indicating validation state
@@ -524,6 +518,44 @@
 !function ($) {
 	"use strict";
 
+	// Custom selectors
+	$.extend( $.expr[":"], {
+
+		// http://jqueryvalidation.org/blank-selector/
+		blank: function( a ) {
+			return !$.trim( "" + $( a ).val() );
+		},
+
+		// http://jqueryvalidation.org/filled-selector/
+		filled: function( a ) {
+			var val = $( a ).val();
+			return val !== null && !!$.trim( "" + val );
+		},
+
+		// http://jqueryvalidation.org/unchecked-selector/
+		unchecked: function( a ) {
+			return !$( a ).prop( "checked" );
+		},
+
+		//http://www.sitepoint.com/make-your-own-custom-jquery-selector/
+		inview: function(el) {
+			if ($(el).offset().top > $(window).scrollTop() - $(el).outerHeight(true) && $(el).offset().top < $(window).scrollTop() + $(el).outerHeight(true) + $(window).height()) {
+				return true;
+			}
+			return false;
+		},
+
+		multiple: function(el) {
+			var name = $(el).attr('name');
+			return (name.charAt(name.length - 1) === ']');
+		}
+
+	});
+}(window.jQuery);
+
+!function ($) {
+	"use strict";
+
 	//todo: support a `this` context and also a passed in context
 	$.fn.booleanator = function(param) {
 
@@ -597,18 +629,6 @@
 		return container;
 	};
 
-}(window.jQuery);
-
-!function ($) {
-	"use strict";
-
-	$.fn.isMultiple = function(){
-
-		var input = $(this);
-		var name = input.attr('name');
-		var last = name.charAt(name.length - 1);
-		return (last === ']');
-	};
 }(window.jQuery);
 
 !function ($) {
