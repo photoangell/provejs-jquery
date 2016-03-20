@@ -13,12 +13,15 @@
 		var input = $(this);
 		var value = input.val();
 		var hasValue = input.hasValue();
+		var isEnabled = $('body').booleanator(options.enabled);
 		var regex = (options.regex instanceof RegExp)
 			? options.regex
 			: new RegExp( "^(?:" + options.regex + ")$" );
 		var isValid;
 
-		if (!hasValue) {
+		if (!isEnabled){
+			isValid = undefined;
+		} else if (!hasValue) {
 			// all validators should return true (or perhaps null)
 			// when there is no value. Otherwise, there is no purpose
 			// for the 'proveRequired' validator.

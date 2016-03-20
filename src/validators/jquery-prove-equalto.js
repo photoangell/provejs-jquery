@@ -7,7 +7,8 @@
 		var other = $(options.equalTo);
 		var form = input.closest('form');
 		var isSetup = input.hasClass('validator-equalto-setup');
-		var isValid = (input.val() === other.val());
+		var isEnabled = $('body').booleanator(options.enabled);
+		var isValid = (isEnabled)? (input.val() === other.val()) : undefined;
 
 		//setup event to validate this input when other input value changes
 		if (!isSetup){
