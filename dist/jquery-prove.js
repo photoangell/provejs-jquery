@@ -17,6 +17,7 @@
 			console.groupEnd();
 		}
 
+		this.checkOptions();
 		this.setupFields();
 		this.setupForm();
 		this.setupSubmitIntercept();
@@ -43,6 +44,19 @@
 			this.teardownForm();
 			this.$form.data('prove', false);
 			this.$form.trigger('destroyed.form.prove');
+		},
+		checkOptions: function(){
+
+			//return early
+			//if (!this.options.debug) return;
+
+			//check prove options here
+			if (!this.options.fields) console.warn('Missing fields option.');
+
+			$.each(this.options.fields, function(index, field){
+
+				if (!field.validators) console.warn('Missing validators option for field "%s".', index);
+			});
 		},
 		setupSubmitIntercept: function(){
 			var selector = this.options.submit.button;
