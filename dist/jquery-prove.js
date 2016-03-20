@@ -9,7 +9,6 @@
 
 		this.$form = $(form);
 
-		//todo: clean this up
 		this.options = $.extend(this.defaults, options);
 
 		if (options.debug){
@@ -257,13 +256,6 @@
 		* @return {bool or null} The result of the validation.
 		*/
 		//todo: make this a plugin
-		/*
-			This function must handle three use cases:
-			- single named input,
-			- multiple named inputs but treated like a single (eg type="checkbox" name="field")
-			- multiple named inputs but validated separatedly (eg type="input" name="field[]").
-
-		*/
 		checkField: function(field, input){
 
 			var data, isValid, state;
@@ -812,13 +804,15 @@
 
 		var input = $(this);
 		var value = input.vals();
-		var isValid = input.hasValue();
+		var isEnabled = $('body').booleanator(options.enabled);
+		var isValid = (isEnabled)? input.hasValue() : undefined;
 
 		if (options.debug){
 			console.groupCollapsed('Validator.proveRequired()', options.field);
 				console.log('options', options);
 				console.log('input', input);
 				console.log('value', value);
+				console.log('isEnabled', isEnabled);
 				console.log('isValid', isValid);
 			console.groupEnd();
 		}
