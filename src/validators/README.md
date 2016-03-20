@@ -9,7 +9,8 @@
 	- `false` on validation was not successful
 	- `undefined` on validation was not performed (eg blank or empty input)
 - Accepts a boolean debug option
-- If validator binds any events they should be bound to the form container 
+- Accepts a booleanator enabled option
+- If validator binds any events they should be bound to the form container
 ```javascript
 //inside validator
 $(this).closest('form').on()

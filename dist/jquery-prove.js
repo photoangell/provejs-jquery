@@ -687,7 +687,8 @@
 		var other = $(options.equalTo);
 		var form = input.closest('form');
 		var isSetup = input.hasClass('validator-equalto-setup');
-		var isValid = (input.val() === other.val());
+		var isEnabled = $('body').booleanator(options.enabled);
+		var isValid = (isEnabled)? (input.val() === other.val()) : undefined;
 
 		//setup event to validate this input when other input value changes
 		if (!isSetup){
@@ -721,10 +722,13 @@
 		var value = input.vals();
 		var hasValue = input.hasValue();
 		var isValid = input.hasValue();
+		var isEnabled = $('body').booleanator(options.enabled);
 		var okMin = (typeof options.min !== 'undefined')? (value.length >= options.min) : true;
 		var okMax = (typeof options.max !== 'undefined')? (value.length <= options.max) : true;
 
-		if (!hasValue) {
+		if (!isEnabled){
+			isEnabled = undefined;
+		} else if (!hasValue) {
 			// All validators are optional except of `required` validator.
 			isValid = true;
 		} else if (okMin && okMax) {
@@ -738,6 +742,7 @@
 				console.log('options', options);
 				console.log('input', input);
 				console.log('value', value);
+				console.log('isEnabled', isEnabled);
 				console.log('isValid', isValid);
 			console.groupEnd();
 		}
@@ -761,12 +766,15 @@
 		var input = $(this);
 		var value = input.val();
 		var hasValue = input.hasValue();
+		var isEnabled = $('body').booleanator(options.enabled);
 		var regex = (options.regex instanceof RegExp)
 			? options.regex
 			: new RegExp( "^(?:" + options.regex + ")$" );
 		var isValid;
 
-		if (!hasValue) {
+		if (!isEnabled){
+			isValid = undefined;
+		} else if (!hasValue) {
 			// all validators should return true (or perhaps null)
 			// when there is no value. Otherwise, there is no purpose
 			// for the 'proveRequired' validator.
