@@ -43,13 +43,16 @@
 					}
 				}
 			},
-			dynamic1: {
+			'dynamic1[]': {
 				enabled:'#itemize:checked', //booleanator
+				//group: true, //apply validators indivudally
 				validators:{
 					proveRequired: {
+						debug: true,
 						message: 'Description is required.',
 					},
 					provePattern: {
+						debug: true,
 						regex: regex,
 						message: 'Invalid description.'
 					}
