@@ -368,20 +368,20 @@
 		return this.each(function() {
 
 			var el = $(this);
-			var data = el.data('prove');
+			var prove = el.data('prove');
 			var options = typeof option === 'object' && option;
-			var isInitialized = (data);
+			var isInitialized = !!prove;
 
 			// either initialize or call public method
 			if (!isInitialized) {
 				// initialize new instance
-				data = new Prove(this, options);
-				el.data('prove', data);
+				prove = new Prove(this, options);
+				el.data('prove', prove);
 				el.trigger('initialized.prove');
 			} else if (typeof option === 'string') {
 				// call public method
 				// todo: warn if public method does not exist
-				data[option](parameter, extraOptions);
+				prove[option](parameter, extraOptions);
 			} else {
 				throw new Error('invalid invocation.');
 			}

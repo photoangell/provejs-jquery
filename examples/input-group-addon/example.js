@@ -76,8 +76,8 @@
 		//console.log('keyup');
 		var input = $(this);
 		var checkbox = input.closest('.input-group').find('input[type="checkbox"]');
-		//console.log('checkbox', checkbox);
-		checkbox.trigger('validate.field.prove');
+
+		checkbox.validate(); // or checkbox.trigger('validate.field.prove');
 	});
 
 	form.on('change', '[name="checkboxes"]', function(event){

@@ -44,7 +44,7 @@
 	};
 
 	form.on('click', '#optout', function () {
-		email.trigger('validate.field.prove');
+		email.validate(); // or email.trigger('validate.field.prove');
 	});
 
 	//form plugins

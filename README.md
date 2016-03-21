@@ -15,13 +15,13 @@
 
 ## Introduction
 
-All of the other form validation libraries work great for simple forms. However, they all have short-comings when trying to validate complex forms. Complex forms have many hidden inputs and collections of inputs (eg tabs or panels). Complex forms have input plugins which modify the form DOM and hide the original inputs. Complex forms have inputs that dynamically inserted or removed from the form. These other form validation libraries make validating complex forms painful. 
+All of the other form validation libraries work great for simple forms. However, they all have short-comings when trying to validate complex forms. Complex forms have many hidden inputs and collections of inputs (eg tabs or panels). Complex forms have input plugins which modify the form DOM and hide the original inputs. Complex forms have inputs that dynamically inserted or removed from the form. These other form validation libraries make validating complex forms painful.
 
 Below is a list design considerations that address the design problems of the other validators libraries.
 
 ### Explict Validation ###
 
-Many of the form validation libraries will not validate hidden or readonly inputs. This fine for simple forms, but becomes a huge pain when you have a multiple input plugins that hide inputs and overlay them with dynamically generated DOM elements modeling an advanced input control. Form validation should be explicit. If you define a field to be validated it should be validated. 
+Many of the form validation libraries will not validate hidden or readonly inputs. This fine for simple forms, but becomes a huge pain when you have a multiple input plugins that hide inputs and overlay them with dynamically generated DOM elements modeling an advanced input control. Form validation should be explicit. If you define a field to be validated it should be validated.
 
 I would rather be able to directly control enable/disable of field validation using a [booleanator](./src/utilities/jquery-booleanator.js) that is evaluated at time of validation. A booleanator can be defined as either boolean, selector, or callback which is later evaluated to a boolean (true or false).
 
@@ -94,14 +94,14 @@ form.on('validated.field.prove', function(event, data){
 });
 ```
 
-#### Event: `form.prove` ####
+#### Event: `validated.form.prove` ####
 
 - **Description** All fields in the form have been validated.
 - **Publisher** Form DOM element.
 - **Listener** Attach your listener to the form container.
 
 ```javascript
-form.on('form.prove', function(event, data){
+form.on('validated.form.prove', function(event, data){
 	var form = $(event.target);
 	var state = data.state; //validation state of form (true, false, null)
 	var validators = data.validators;
@@ -136,14 +136,12 @@ var isValid = form.data('prove').validate();
 - **Publisher** Your code.
 
 ```javascript
-input.trigger('validate.field.prove');
-
-//todo: what is wrong with
-input.trigger('change') //or
-input.trigger('validate')
+input.trigger('validate.field.prove'); // or input.validate()
 ```
 
 ## Form Submission
+
+todo: document submit intercept options here.
 
 You will need to stop browser from submitting the form by:
 
@@ -199,16 +197,16 @@ There are many other form validation libraries. Just about any of them will work
 	- Development: Maintained and under active development.
 
 - http://jqueryvalidation.org/
-	- License: MIT 
+	- License: MIT
 	- Concerns: not actively being maintained. Be prepared to monkey patch.
-	
+
 - https://github.com/1000hz/bootstrap-validator
 	- License: MIT
-	
+
 - http://formvalidation.io/
 	- License: Commercial
 	- Concerns: Merges decoration and validation into single lib.
-	- Development: 
+	- Development:
 
 ## Todo
 
