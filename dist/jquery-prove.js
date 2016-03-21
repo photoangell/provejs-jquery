@@ -39,7 +39,8 @@
 
 		this.$form = $(form);
 
-		this.options = $.extend(this.defaults, options);
+		// multiple instances requires extending from {}
+		this.options = $.extend({}, this.defaults, options);
 
 		if (options.debug){
 			console.groupCollapsed('Prove()');
@@ -393,12 +394,11 @@
 	};
 
 	$.fn.prove = function(option, parameter, extraOptions) {
-		//console.log('prove()', option);
 
 		return this.each(function() {
 
-			var el = $(this);
-			var prove = el.data('prove');
+			var form = $(this);
+			var prove = form.data('prove');
 			var options = typeof option === 'object' && option;
 			var isInitialized = !!prove;
 
@@ -406,8 +406,8 @@
 			if (!isInitialized) {
 				// initialize new instance
 				prove = new Prove(this, options);
-				el.data('prove', prove);
-				el.trigger('initialized.prove');
+				form.data('prove', prove);
+				form.trigger('initialized.prove');
 			} else if (typeof option === 'string') {
 				// call public method
 				// todo: warn if public method does not exist
