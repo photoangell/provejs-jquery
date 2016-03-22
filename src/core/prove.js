@@ -32,8 +32,8 @@
 		defaults: {
 			//control how prove should handle submit button clicks
 			submit: {
-				button: ':submit', //submit button selector
-				validate: ':submit:not(.skip-validation)',//booleanator, validate on submit, but not if element has class `skip-validation`
+				button: 'button:submit', //submit button selector
+				validate: 'button:submit:not(.skip-validation)',//booleanator, validate on submit, but not if element has class `skip-validation`
 				// validate: '#skip-validation:checked',
 				prevent: false, //booleanator
 				twice: false //todo: allow some forms to submit twice
@@ -277,7 +277,7 @@
 			var that = this;
 			var fieldName = field.name;
 			var validators = field.validators || {};
-			var isEnabled = $('body').booleanator(field.enabled);
+			var isEnabled = input.booleanator(field.enabled);
 
 			//return early if nothing to do
 			if (!isEnabled) {

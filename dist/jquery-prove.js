@@ -62,8 +62,8 @@
 		defaults: {
 			//control how prove should handle submit button clicks
 			submit: {
-				button: ':submit', //submit button selector
-				validate: ':submit:not(.skip-validation)',//booleanator, validate on submit, but not if element has class `skip-validation`
+				button: 'button:submit', //submit button selector
+				validate: 'button:submit:not(.skip-validation)',//booleanator, validate on submit, but not if element has class `skip-validation`
 				// validate: '#skip-validation:checked',
 				prevent: false, //booleanator
 				twice: false //todo: allow some forms to submit twice
@@ -307,7 +307,7 @@
 			var that = this;
 			var fieldName = field.name;
 			var validators = field.validators || {};
-			var isEnabled = $('body').booleanator(field.enabled);
+			var isEnabled = input.booleanator(field.enabled);
 
 			//return early if nothing to do
 			if (!isEnabled) {
@@ -601,7 +601,16 @@
 			try {
 				return !!$(selector).length;
 			} catch (e) {
-				console.warning('Invalid jquery selector (`%s`) param for booleanator plugin.', selector);
+				console.warn('Invalid jquery selector (`%s`) param for booleanator plugin.', selector);
+				return false;
+			}
+		}
+
+		function evalIs(selector, context){
+			try {
+				return $(context).is(selector);
+			} catch (e) {
+				console.warn('Invalid jquery pseudo selector (`%s`) param for booleanator plugin.', selector);
 				return false;
 			}
 		}
@@ -611,12 +620,15 @@
 		} else if (typeof param === 'boolean') {
 			state = param;
 		} else if (typeof param === 'string'){
-			state = evalSelector(param);
+			state = (param.charAt(0) === ':')
+				? evalIs(param, this)
+				: evalSelector(param);
 		} else if (typeof param === 'function'){
 			state = param();
 		} else {
 			throw new Error('Invalid param for booleanator plugin.');
 		}
+
 		return state;
 	};
 }(window.jQuery);
@@ -854,7 +866,7 @@
 	*/
 	$.fn.proveRequired = function(options){
 
-		var input = $(this);
+		var input = (options.context)? options.context(this) : $(this);
 		var value = input.vals();
 		var isEnabled = $('body').booleanator(options.enabled);
 		var isValid = (isEnabled)? input.hasValue() : undefined;

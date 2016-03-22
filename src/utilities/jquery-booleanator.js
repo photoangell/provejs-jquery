@@ -10,7 +10,16 @@
 			try {
 				return !!$(selector).length;
 			} catch (e) {
-				console.warning('Invalid jquery selector (`%s`) param for booleanator plugin.', selector);
+				console.warn('Invalid jquery selector (`%s`) param for booleanator plugin.', selector);
+				return false;
+			}
+		}
+
+		function evalIs(selector, context){
+			try {
+				return $(context).is(selector);
+			} catch (e) {
+				console.warn('Invalid jquery pseudo selector (`%s`) param for booleanator plugin.', selector);
 				return false;
 			}
 		}
@@ -20,12 +29,15 @@
 		} else if (typeof param === 'boolean') {
 			state = param;
 		} else if (typeof param === 'string'){
-			state = evalSelector(param);
+			state = (param.charAt(0) === ':')
+				? evalIs(param, this)
+				: evalSelector(param);
 		} else if (typeof param === 'function'){
 			state = param();
 		} else {
 			throw new Error('Invalid param for booleanator plugin.');
 		}
+
 		return state;
 	};
 }(window.jQuery);

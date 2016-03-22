@@ -10,7 +10,7 @@
 	*/
 	$.fn.proveRequired = function(options){
 
-		var input = $(this);
+		var input = (options.context)? options.context(this) : $(this);
 		var value = input.vals();
 		var isEnabled = $('body').booleanator(options.enabled);
 		var isValid = (isEnabled)? input.hasValue() : undefined;

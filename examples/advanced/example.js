@@ -22,7 +22,7 @@
 				}
 			},
 			amount_owed: {
-				enabled: '#summarize:checked', //booleanator
+				enabled: ':visible', //booleanator
 				trigger: 'change', //<!-- maskmoney plugin triggers change
 				validators: {
 					proveRequired: {
@@ -31,7 +31,7 @@
 				}
 			},
 			charge_descriptions: {
-				enabled: '#summarize:checked', //booleanator
+				enabled: '#summarize:checked', //booleanator (can't use :visible here)
 				trigger: 'change', //<-- tagsinput plugin triggers change
 				validators:{
 					proveRequired: {
