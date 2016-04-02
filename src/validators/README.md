@@ -36,10 +36,10 @@ Each validator should only return the following values:
 	- Decorators will teardown any decoration.
 - `true`
 	- Indicates the input is valid.
-	- Decorators will decorate success.
+	- Decorators will decorate for success.
 - `false`
 	- Indicates the input is not-valid.
-	- Decorators will decorate failure.
+	- Decorators will decorate for failure.
 
 When the validator is:
 
