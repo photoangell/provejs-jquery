@@ -20,12 +20,13 @@
 		var isValid;
 
 		if (!isEnabled){
+			// Validators should return undefined when there is no value.
+			// Decoraters will teardown any decoration when they receive an `undefined` validation state.
 			isValid = undefined;
 		} else if (!hasValue) {
-			// all validators should return true (or perhaps null)
-			// when there is no value. Otherwise, there is no purpose
-			// for the 'proveRequired' validator.
-			isValid = true;
+			// All validators (except proveRequired) should return undefined when there is no value.
+			// Decoraters will teardown any decoration when they receive an `undefined` validation state.
+			isValid = undefined;
 		} else if (regex instanceof RegExp) {
 			isValid = regex.test(value);
 		} else {
