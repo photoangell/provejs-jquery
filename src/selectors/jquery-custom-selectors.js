@@ -29,7 +29,7 @@
 		},
 
 		multiple: function(el) {
-			var name = $(el).attr('name');
+			var name = $(el).attr('name') || '';
 			return (name.charAt(name.length - 1) === ']');
 		}
 
