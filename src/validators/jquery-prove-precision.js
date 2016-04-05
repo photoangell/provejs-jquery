@@ -1,15 +1,16 @@
 !function ($) {
 	"use strict";
 
-	$.fn.proveRequired = function(options){
+	$.fn.provePrecision = function(options){
 
+		var regex = /^(.)*(\.[0-9]{1,2})?$/;
 		var input = (options.context)? options.context(this) : $(this);
 		var value = input.vals();
 		var isEnabled = $('body').booleanator(options.enabled);
-		var isValid = (isEnabled)? input.hasValue() : undefined;
+		var isValid = (isEnabled)? regex.test(value) : undefined;
 
 		if (options.debug){
-			console.groupCollapsed('Validator.proveRequired()', options.field);
+			console.groupCollapsed('Validator.provePrecision()', options.field);
 				console.log('options', options);
 				console.log('input', input);
 				console.log('value', value);

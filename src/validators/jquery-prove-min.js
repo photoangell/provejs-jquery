@@ -1,15 +1,15 @@
 !function ($) {
 	"use strict";
 
-	$.fn.proveRequired = function(options){
+	$.fn.proveMin = function(options){
 
 		var input = (options.context)? options.context(this) : $(this);
 		var value = input.vals();
 		var isEnabled = $('body').booleanator(options.enabled);
-		var isValid = (isEnabled)? input.hasValue() : undefined;
+		var isValid = (isEnabled)? value >= options.min : undefined;
 
 		if (options.debug){
-			console.groupCollapsed('Validator.proveRequired()', options.field);
+			console.groupCollapsed('Validator.proveMin()', options.field);
 				console.log('options', options);
 				console.log('input', input);
 				console.log('value', value);

@@ -1,15 +1,15 @@
 # Prove Validators
 
 ## Anatomy of Validators
-- jQuery plugin
-- Single input options parameter which is the field validator config object.
-- The `this` context is the DOM input to validate.
+- jQuery plugin with `this` context of the input to validate.
+- Single input param of options:
+	- `boolean` debug option: makes validator verbose
+	- `booleanator` enabled option: enables or disables the validator
+	- anything else the validator might need to perform validation.
 - Returns
 	- `true` on validation success
 	- `false` on validation was not successful
 	- `undefined` on validation was not performed (eg blank or empty input)
-- Accepts a boolean debug option
-- Accepts a booleanator enabled option
 - If validator binds any events they should be bound to the form container
 ```javascript
 //inside validator

@@ -1,13 +1,6 @@
 !function ($) {
 	"use strict";
 
-	/**
-	* Pattern validator.
-	* @param {bool} config The validator configuration.
-	* @param {string or array} num2 The input value to validate.
-	* @param {object} values All input values.
-	* @return {bool or null} The result of the validation.
-	*/
 	$.fn.provePattern = function(options){
 
 		var input = $(this);
@@ -44,4 +37,3 @@
 	};
 
 }(window.jQuery);
-

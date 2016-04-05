@@ -24,4 +24,3 @@
 		return isValid;
 	};
 }(window.jQuery);
-
