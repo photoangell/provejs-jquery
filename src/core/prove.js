@@ -263,17 +263,10 @@
 			this.checkField(field, input);
 		},
 
-		/**
-		* Required validator.
-		* @param {object} options The validator configuration.
-		* @option {string or array} state The input value to validate.
-		* @option {object} values All input values.
-		* @return {bool or null} The result of the validation.
-		*/
 		//todo: make this a plugin
 		checkField: function(field, input){
 
-			var data, isValid, state;
+			var data, isValid;
 			var that = this;
 			var fieldName = field.name;
 			var validators = field.validators || {};
@@ -286,22 +279,20 @@
 				return isValid;
 			}
 
-			// loop each validtor
+			// loop each validator
 			$.each(validators, function(validatorName, validatorConfig){
 
 				validatorConfig.field = fieldName;
 
 				//invoke validator plugin
 				if (!that.pluginExists(validatorName)) return false;
-				state = input[validatorName](validatorConfig);
+				var state = input[validatorName](validatorConfig);
 
 				// Compose data the decorator will be interested in
 				data = {
 					field: field.name,
 					state: state,
 					message: validatorConfig.message,
-					// todo: do we return an array of validators and their data?
-					// We would need to do this on the `validated.form.prove` event.
 					validator: {
 						name: validatorName,
 						config: clone(validatorConfig)
