@@ -174,6 +174,7 @@ form.remove();
 npm install grunt
 npm install grunt-eslint
 npm install grunt-contrib-concat
+npm install grunt-contrib-uglify
 ```
 
 ### Lint

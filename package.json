@@ -1,6 +1,6 @@
 {
   "name": "jquery-prove",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "An event based jQuery plugin for client-side validation of html forms.",
   "main": "jquery-prove.js",
   "directories": {

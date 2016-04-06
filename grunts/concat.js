@@ -5,17 +5,21 @@ module.exports = function(grunt) {
 	grunt.config('concat', {
 		options: {
 			nonull: true,
-			// stripBanners: {
-			// 	block: true
-			// },
-			process: function(src) {
-				return src.replace(/\/.*sourceMappingURL.*/g, '');
-			}
+			sourceMap: false
 		},
-		js: {
-			dest: 'dist/jquery-prove.js',
+		prove: {
+			dest: 'dist/prove.js',
 			src: [
-				'src/**/*.js',
+				'src/core/*.js',
+				'src/selectors/*.js',
+				'src/utilities/*.js',
+				'src/validators/*.js',
+			]
+		},
+		decorator: {
+			dest: 'dist/decorator.js',
+			src: [
+				'src/decorators/*.js',
 			]
 		}
 	});

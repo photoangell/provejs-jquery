@@ -12,6 +12,11 @@ module.exports = function(grunt) {
 
 	// register tasks
 	grunt.registerTask('lint', ['eslint']);
-	grunt.registerTask('build', ['concat:js']);
+	grunt.registerTask('build', [
+		'concat:prove',
+		'concat:decorator',
+		'uglify:prove',
+		'uglify:decorator'
+	]);
 	grunt.registerTask('default', ['check']);
 };
