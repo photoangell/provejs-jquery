@@ -18,7 +18,6 @@
 		// remove success and failure classes on options.state = undefined
 		var tinsel = {
 			state: options.state,
-			//placement: ['.tinsel', '.form-group', '.checkbox', '.radio', 'td'], //first of
 			classSuccess: 'has-success',
 			classFailure: 'has-error'
 		};
@@ -33,7 +32,10 @@
 		};
 
 		//placement
-		if (parent1.is('[class^="col-"]')){
+		if (parent1.is('.form-group')){
+			parent1.garland(garland);
+			parent1.tinsel(tinsel);
+		} else if (parent1.is('[class^="col-"]')){
 			parent1.garland(garland);
 			parent2.tinsel(tinsel);
 		} else if (parent1.is('td')) {
