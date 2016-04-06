@@ -293,17 +293,10 @@
 			this.checkField(field, input);
 		},
 
-		/**
-		* Required validator.
-		* @param {object} options The validator configuration.
-		* @option {string or array} state The input value to validate.
-		* @option {object} values All input values.
-		* @return {bool or null} The result of the validation.
-		*/
 		//todo: make this a plugin
 		checkField: function(field, input){
 
-			var data, isValid, state;
+			var data, isValid;
 			var that = this;
 			var fieldName = field.name;
 			var validators = field.validators || {};
@@ -316,22 +309,20 @@
 				return isValid;
 			}
 
-			// loop each validtor
+			// loop each validator
 			$.each(validators, function(validatorName, validatorConfig){
 
 				validatorConfig.field = fieldName;
 
 				//invoke validator plugin
 				if (!that.pluginExists(validatorName)) return false;
-				state = input[validatorName](validatorConfig);
+				var state = input[validatorName](validatorConfig);
 
 				// Compose data the decorator will be interested in
 				data = {
 					field: field.name,
 					state: state,
 					message: validatorConfig.message,
-					// todo: do we return an array of validators and their data?
-					// We would need to do this on the `validated.form.prove` event.
 					validator: {
 						name: validatorName,
 						config: clone(validatorConfig)
@@ -437,28 +428,51 @@
 
 		options = options || {};
 		var input = $(this);
+		var parent1 = input.parent();
+		var parent2 = parent1.parent();
+		var parent3 = parent2.parent();
 
 		// add success class on options.state = true.
 		// add failure class on options.state = false.
 		// remove success and failure classes on options.state = undefined
-		input.tinsel({
+		var tinsel = {
 			state: options.state,
-			placement: ['.tinsel', '.form-group', '.checkbox', '.radio', 'td'], //first of
+			//placement: ['.tinsel', '.form-group', '.checkbox', '.radio', 'td'], //first of
 			classSuccess: 'has-success',
 			classFailure: 'has-error'
-		});
+		};
 
 		// show message on options.state = false.
 		// remove message on options.state = true.
 		// remove message on options.state = undefined.
-		input.garland({
+		var garland = {
 			state: inverse(options.state),
 			wrapper: '<span class="help-block"></span>',
-			placement: ['.garland', '.form-group', 'td', '.checkbox', '.radio'], //first of
 			message: options.message
-		});
-	};
+		};
 
+		//placement
+		if (parent1.is('[class^="col-"]')){
+			parent1.garland(garland);
+			parent2.tinsel(tinsel);
+		} else if (parent1.is('td')) {
+			parent1.garland(garland);
+			parent1.tinsel(tinsel);
+		} else if (parent1.is('.checkbox') || parent1.is('.radio')){
+			parent2.garland(garland);
+			parent2.tinsel(tinsel);
+		} else if (parent1.is('.input-group')){
+			parent2.garland(garland);
+			if (parent2.is('[class^="col-"]')) {
+				parent3.tinsel(tinsel);
+			} else {
+				parent2.tinsel(tinsel);
+			}
+		} else {
+			parent3.garland(garland);
+			parent3.tinsel(tinsel);
+		}
+	};
 }(window.jQuery);
 
 !function ($) {
@@ -500,16 +514,14 @@
 			console.groupEnd();
 		}
 
-		function setup(input){
-			var container = input.huntout(options.placement);
+		function setup(container){
 			var garland = $(options.wrapper);
 			garland.addClass('garland-wrapper');
 			garland.text(options.message);
 			container.append(garland);
 		}
 
-		function teardown(input){
-			var container = input.huntout(options.placement);
+		function teardown(container){
 			container.find('.garland-wrapper').remove();
 		}
 
@@ -519,7 +531,6 @@
 		} else {
 			teardown(input);
 		}
-
 	};
 }(window.jQuery);
 
@@ -541,14 +552,14 @@
 			console.groupEnd();
 		}
 
-		function setup(input, state){
-			var container = input.huntout(options.placement);
+		function setup(container, state){
+			//var container = input.huntout(options.placement);
 			var klass = (state)? options.classSuccess : options.classFailure;
 			container.addClass(klass);
 		}
 
-		function teardown(input){
-			var container = input.huntout(options.placement);
+		function teardown(container){
+			//var container = input.huntout(options.placement);
 			container.removeClass(options.classFailure).removeClass(options.classSuccess);
 		}
 
@@ -590,7 +601,7 @@
 		},
 
 		multiple: function(el) {
-			var name = $(el).attr('name');
+			var name = $(el).attr('name') || '';
 			return (name.charAt(name.length - 1) === ']');
 		}
 
@@ -769,7 +780,6 @@
 	};
 }(window.jQuery);
 
-
 !function ($) {
 	"use strict";
 
@@ -818,13 +828,54 @@
 !function ($) {
 	"use strict";
 
-	/**
-	* Pattern validator.
-	* @param {bool} config The validator configuration.
-	* @param {string or array} num2 The input value to validate.
-	* @param {object} values All input values.
-	* @return {bool or null} The result of the validation.
-	*/
+	$.fn.proveMin = function(options){
+
+		var input = (options.context)? options.context(this) : $(this);
+		var value = input.vals();
+		var isEnabled = $('body').booleanator(options.enabled);
+		var isValid = (isEnabled)? value <= options.max : undefined;
+
+		if (options.debug){
+			console.groupCollapsed('Validator.proveMin()', options.field);
+				console.log('options', options);
+				console.log('input', input);
+				console.log('value', value);
+				console.log('isEnabled', isEnabled);
+				console.log('isValid', isValid);
+			console.groupEnd();
+		}
+
+		return isValid;
+	};
+}(window.jQuery);
+
+!function ($) {
+	"use strict";
+
+	$.fn.proveMin = function(options){
+
+		var input = (options.context)? options.context(this) : $(this);
+		var value = input.vals();
+		var isEnabled = $('body').booleanator(options.enabled);
+		var isValid = (isEnabled)? value >= options.min : undefined;
+
+		if (options.debug){
+			console.groupCollapsed('Validator.proveMin()', options.field);
+				console.log('options', options);
+				console.log('input', input);
+				console.log('value', value);
+				console.log('isEnabled', isEnabled);
+				console.log('isValid', isValid);
+			console.groupEnd();
+		}
+
+		return isValid;
+	};
+}(window.jQuery);
+
+!function ($) {
+	"use strict";
+
 	$.fn.provePattern = function(options){
 
 		var input = $(this);
@@ -862,17 +913,34 @@
 
 }(window.jQuery);
 
+!function ($) {
+	"use strict";
+
+	$.fn.provePrecision = function(options){
+
+		var regex = /^(.)*(\.[0-9]{1,2})?$/;
+		var input = (options.context)? options.context(this) : $(this);
+		var value = input.vals();
+		var isEnabled = $('body').booleanator(options.enabled);
+		var isValid = (isEnabled)? regex.test(value) : undefined;
+
+		if (options.debug){
+			console.groupCollapsed('Validator.provePrecision()', options.field);
+				console.log('options', options);
+				console.log('input', input);
+				console.log('value', value);
+				console.log('isEnabled', isEnabled);
+				console.log('isValid', isValid);
+			console.groupEnd();
+		}
+
+		return isValid;
+	};
+}(window.jQuery);
 
 !function ($) {
 	"use strict";
 
-	/**
-	* Required validator.
-	* @param {object} options The validator configuration.
-	* @option {string or array} state The input value to validate.
-	* @option {object} values All input values.
-	* @return {bool or null} The result of the validation.
-	*/
 	$.fn.proveRequired = function(options){
 
 		var input = (options.context)? options.context(this) : $(this);

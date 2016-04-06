@@ -16,16 +16,14 @@
 			console.groupEnd();
 		}
 
-		function setup(input){
-			var container = input.huntout(options.placement);
+		function setup(container){
 			var garland = $(options.wrapper);
 			garland.addClass('garland-wrapper');
 			garland.text(options.message);
 			container.append(garland);
 		}
 
-		function teardown(input){
-			var container = input.huntout(options.placement);
+		function teardown(container){
 			container.find('.garland-wrapper').remove();
 		}
 
@@ -35,6 +33,5 @@
 		} else {
 			teardown(input);
 		}
-
 	};
 }(window.jQuery);

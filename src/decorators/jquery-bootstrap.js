@@ -9,26 +9,49 @@
 
 		options = options || {};
 		var input = $(this);
+		var parent1 = input.parent();
+		var parent2 = parent1.parent();
+		var parent3 = parent2.parent();
 
 		// add success class on options.state = true.
 		// add failure class on options.state = false.
 		// remove success and failure classes on options.state = undefined
-		input.tinsel({
+		var tinsel = {
 			state: options.state,
-			placement: ['.tinsel', '.form-group', '.checkbox', '.radio', 'td'], //first of
+			//placement: ['.tinsel', '.form-group', '.checkbox', '.radio', 'td'], //first of
 			classSuccess: 'has-success',
 			classFailure: 'has-error'
-		});
+		};
 
 		// show message on options.state = false.
 		// remove message on options.state = true.
 		// remove message on options.state = undefined.
-		input.garland({
+		var garland = {
 			state: inverse(options.state),
 			wrapper: '<span class="help-block"></span>',
-			placement: ['.garland', '.form-group', 'td', '.checkbox', '.radio'], //first of
 			message: options.message
-		});
-	};
+		};
 
+		//placement
+		if (parent1.is('[class^="col-"]')){
+			parent1.garland(garland);
+			parent2.tinsel(tinsel);
+		} else if (parent1.is('td')) {
+			parent1.garland(garland);
+			parent1.tinsel(tinsel);
+		} else if (parent1.is('.checkbox') || parent1.is('.radio')){
+			parent2.garland(garland);
+			parent2.tinsel(tinsel);
+		} else if (parent1.is('.input-group')){
+			parent2.garland(garland);
+			if (parent2.is('[class^="col-"]')) {
+				parent3.tinsel(tinsel);
+			} else {
+				parent2.tinsel(tinsel);
+			}
+		} else {
+			parent3.garland(garland);
+			parent3.tinsel(tinsel);
+		}
+	};
 }(window.jQuery);

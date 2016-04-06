@@ -16,14 +16,14 @@
 			console.groupEnd();
 		}
 
-		function setup(input, state){
-			var container = input.huntout(options.placement);
+		function setup(container, state){
+			//var container = input.huntout(options.placement);
 			var klass = (state)? options.classSuccess : options.classFailure;
 			container.addClass(klass);
 		}
 
-		function teardown(input){
-			var container = input.huntout(options.placement);
+		function teardown(container){
+			//var container = input.huntout(options.placement);
 			container.removeClass(options.classFailure).removeClass(options.classSuccess);
 		}
 
