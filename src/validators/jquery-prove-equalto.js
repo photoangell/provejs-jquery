@@ -15,8 +15,7 @@
 			input.addClass('validator-equalto-setup');
 			//on blur of other input
 			form.on('focusout', options.equalTo, function(){
-				//trigger validation of this input
-				input.trigger('validate.field.prove');
+				input.validate();
 			});
 		}
 
