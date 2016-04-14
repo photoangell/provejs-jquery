@@ -28,9 +28,18 @@ $.fn.requiredEmail = function(options){
 };
 ```
 
-## Validation State
+## Validation Return Value
 
-Each validator should only return the following values:
+Each validator should return an object:
+```javascript
+{
+	validator: 'proveRequired', // validator name
+	result: true, // either true, false, undefined
+	field: 'email' // field name
+}
+```
+
+Where a `result` value of:
 - `undefined`
 	- Indicates no validation happened.
 	- Decorators will teardown any decoration.
