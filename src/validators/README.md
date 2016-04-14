@@ -34,12 +34,12 @@ Each validator should return an object:
 ```javascript
 {
 	validator: 'proveRequired', // validator name
-	result: true, // either true, false, undefined
-	field: 'email' // field name
+	field: 'email', // field name
+	state: true // either true, false, undefined
 }
 ```
 
-Where a `result` value of:
+Where a `state` value of:
 - **undefined**
 	- Indicates no validation happened.
 	- Decorators will teardown any decoration.

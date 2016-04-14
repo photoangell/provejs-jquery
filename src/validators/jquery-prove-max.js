@@ -18,6 +18,10 @@
 			console.groupEnd();
 		}
 
-		return isValid;
+		return {
+			validator: 'proveMax',
+			field: options.field,
+			state: isValid
+		};
 	};
 }(window.jQuery);

@@ -33,7 +33,11 @@
 			console.groupEnd();
 		}
 
-		return isValid;
+		return {
+			validator: 'provePattern',
+			field: options.field,
+			state: isValid
+		};
 	};
 
 }(window.jQuery);

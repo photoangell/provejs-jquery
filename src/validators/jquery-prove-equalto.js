@@ -20,6 +20,10 @@
 		}
 
 		//return current validation state
-		return isValid;
+		return {
+			validator: 'proveEqualTo',
+			field: options.field,
+			state: isValid
+		};
 	};
 }(window.jQuery);

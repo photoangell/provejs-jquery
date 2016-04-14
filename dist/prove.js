@@ -151,7 +151,7 @@
 			return events;
 		},
 
-		pluginExists: function(plugin){
+		isPlugin: function(plugin){
 			var exist = (typeof $.fn[plugin] === 'function');
 			if (!exist) console.error('Missing validator plugin "%s".', plugin);
 			return exist;
@@ -294,7 +294,7 @@
 		},
 
 		//todo: make this a plugin
-		checkField: function(field, input){
+		checkField: function(field, input){ //todo: rename proveInput
 
 			var data, isValid;
 			var that = this;
@@ -310,26 +310,26 @@
 			}
 
 			// loop each validator
-			$.each(validators, function(validatorName, validatorConfig){
+			$.each(validators, function(validatorName, config){
 
-				validatorConfig.field = fieldName;
+				config.field = fieldName;
 
 				//invoke validator plugin
-				if (!that.pluginExists(validatorName)) return false;
-				var state = input[validatorName](validatorConfig);
+				if (!that.isPlugin(validatorName)) return false;
+				var result = input[validatorName](config);
 
 				// Compose data the decorator will be interested in
 				data = {
-					field: field.name,
-					state: state,
-					message: validatorConfig.message,
+					field: result.field,
+					state: result.state,
+					message: config.message,
 					validator: {
-						name: validatorName,
-						config: clone(validatorConfig)
+						name: result.validator,
+						config: clone(config)
 					}
 				};
 
-				isValid = state;
+				isValid = result.state;
 
 				//return of false to break loop
 				return isValid;
@@ -617,13 +617,16 @@
 			input.addClass('validator-equalto-setup');
 			//on blur of other input
 			form.on('focusout', options.equalTo, function(){
-				//trigger validation of this input
-				input.trigger('validate.field.prove');
+				input.validate();
 			});
 		}
 
 		//return current validation state
-		return isValid;
+		return {
+			validator: 'proveEqualTo',
+			field: options.field,
+			state: isValid
+		};
 	};
 }(window.jQuery);
 
@@ -668,7 +671,11 @@
 			console.groupEnd();
 		}
 
-		return isValid;
+		return {
+			validator: 'proveLength',
+			field: options.field,
+			state: isValid
+		};
 	};
 }(window.jQuery);
 
@@ -692,7 +699,11 @@
 			console.groupEnd();
 		}
 
-		return isValid;
+		return {
+			validator: 'proveMax',
+			field: options.field,
+			state: isValid
+		};
 	};
 }(window.jQuery);
 
@@ -716,7 +727,11 @@
 			console.groupEnd();
 		}
 
-		return isValid;
+		return {
+			validator: 'proveMin',
+			field: options.field,
+			state: isValid
+		};
 	};
 }(window.jQuery);
 
@@ -755,7 +770,11 @@
 			console.groupEnd();
 		}
 
-		return isValid;
+		return {
+			validator: 'provePattern',
+			field: options.field,
+			state: isValid
+		};
 	};
 
 }(window.jQuery);
@@ -781,7 +800,11 @@
 			console.groupEnd();
 		}
 
-		return isValid;
+		return {
+			validator: 'provePrecision',
+			field: options.field,
+			state: isValid
+		};
 	};
 }(window.jQuery);
 
@@ -805,6 +828,10 @@
 			console.groupEnd();
 		}
 
-		return isValid;
+		return {
+			validator: 'proveRequired',
+			field: options.field,
+			state: isValid
+		};
 	};
 }(window.jQuery);

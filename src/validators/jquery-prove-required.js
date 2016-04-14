@@ -18,6 +18,10 @@
 			console.groupEnd();
 		}
 
-		return isValid;
+		return {
+			validator: 'proveRequired',
+			field: options.field,
+			state: isValid
+		};
 	};
 }(window.jQuery);

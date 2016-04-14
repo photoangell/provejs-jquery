@@ -19,6 +19,10 @@
 			console.groupEnd();
 		}
 
-		return isValid;
+		return {
+			validator: 'provePrecision',
+			field: options.field,
+			state: isValid
+		};
 	};
 }(window.jQuery);

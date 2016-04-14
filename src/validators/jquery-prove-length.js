@@ -39,6 +39,10 @@
 			console.groupEnd();
 		}
 
-		return isValid;
+		return {
+			validator: 'proveLength',
+			field: options.field,
+			state: isValid
+		};
 	};
 }(window.jQuery);

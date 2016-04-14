@@ -18,6 +18,10 @@
 			console.groupEnd();
 		}
 
-		return isValid;
+		return {
+			validator: 'proveMin',
+			field: options.field,
+			state: isValid
+		};
 	};
 }(window.jQuery);

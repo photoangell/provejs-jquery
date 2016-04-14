@@ -18,5 +18,5 @@ module.exports = function(grunt) {
 		'uglify:prove',
 		'uglify:decorator'
 	]);
-	grunt.registerTask('default', ['check']);
+	grunt.registerTask('default', ['lint']);
 };
