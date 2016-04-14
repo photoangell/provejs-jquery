@@ -40,13 +40,13 @@ Each validator should return an object:
 ```
 
 Where a `result` value of:
-- `undefined`
+- **undefined**
 	- Indicates no validation happened.
 	- Decorators will teardown any decoration.
-- `true`
+- **true**
 	- Indicates the input is valid.
 	- Decorators will decorate for success.
-- `false`
+- **false**
 	- Indicates the input is not-valid.
 	- Decorators will decorate for failure.
 
