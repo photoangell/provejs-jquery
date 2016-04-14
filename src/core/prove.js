@@ -272,9 +272,9 @@
 			var validators = field.validators || {};
 			var isEnabled = input.booleanator(field.enabled);
 
-			//return early if nothing to do
+			// return early if nothing to do
 			if (!isEnabled) {
-				//trigger event indicating validation state
+				// trigger event indicating validation state
 				input.trigger('validated.field.prove', data);
 				return isValid;
 			}
@@ -284,7 +284,7 @@
 
 				config.field = fieldName;
 
-				//invoke validator plugin
+				// invoke validator plugin
 				if (!that.isPlugin(validatorName)) return false;
 				var result = input[validatorName](config);
 
@@ -301,7 +301,7 @@
 
 				isValid = result.state;
 
-				//return of false to break loop
+				// return of false to break loop
 				return isValid;
 			});
 
