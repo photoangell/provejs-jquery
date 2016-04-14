@@ -28,7 +28,7 @@ $.fn.requiredEmail = function(options){
 };
 ```
 
-## Validation Return Value
+## Validator Return Value
 
 Each validator should return an object:
 ```javascript
