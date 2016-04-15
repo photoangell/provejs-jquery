@@ -15,6 +15,7 @@
 		var name = input.attr('name');
 		var val, idx, selector;
 
+		//todo: why are we not handling multiple values here?
 
 		if (isSelect){
 			val = input.val();

@@ -140,10 +140,10 @@
 			if (submitStop) event.preventDefault();
 		},
 		//return jquery selector that represents the element in the DOM
-		domSelector: function(field){
+		domSelector: function(field, name){
 			return (field.selector)
 				? field.selector
-				: '[name="' + field.name + '"]';
+				: '[name="' + name + '"]';
 		},
 		//return string of space seperated events used to detect change to the DOM element
 		fieldDomEvents: function(field){
@@ -174,14 +174,17 @@
 
 			$.each(fields, function(name, field){
 
+				var selector = that.domSelector(field, name);
+				var input = that.$form.find(selector);
+
 				//copy field name inside field config
 				field.name = name;
+				field.selector = selector;
 
 				that.bindDomFieldEvents(field);
 				that.bindFieldProveEvent(field);
 
-				var selector = that.domSelector(field);
-				that.$form.find(selector).trigger('setup.field.prove');
+				input.trigger('setup.field.prove');
 			});
 		},
 		teardownFields: function(options){
@@ -196,8 +199,7 @@
 				that.unbindDomFieldEvents(field);
 				that.unbindFieldProveEvent(field);
 
-				var selector = that.domSelector(field);
-				that.$form.find(selector).trigger('destroyed.field.prove');
+				that.$form.find(field.selector).trigger('destroyed.field.prove');
 			});
 		},
 		html5NoValidate: function(state){
@@ -210,7 +212,6 @@
 
 			var el = this.$form;
 			var domEvents = this.fieldDomEvents(field);
-			var selector = this.domSelector(field);
 			var handler = $.proxy(this.domFieldEventsHandler, this);
 			var data = clone(field);
 
@@ -218,16 +219,15 @@
 			if (field.trigger === false) return;
 
 			// http://api.jquery.com/on/
-			el.on(domEvents, selector, data, handler);
+			el.on(domEvents, field.selector, data, handler);
 		},
 		unbindDomFieldEvents: function(field){
 
 			var el = this.$form;
 			var domEvents = this.fieldDomEvents(field);
-			var selector = this.domSelector(field);
 
 			// http://api.jquery.com/off/
-			el.off(domEvents, selector);
+			el.off(domEvents, field.selector);
 		},
 		domFieldEventsHandler: function(event){
 
@@ -272,17 +272,13 @@
 		*/
 		bindFieldProveEvent: function(field){
 
-			var selector = this.domSelector(field);
 			var handler = $.proxy(this.proveEventHandler2, this);
 			var data = clone(field);
 
-			this.$form.on('validate.field.prove', selector, data, handler);
+			this.$form.on('validate.field.prove', field.selector, data, handler);
 		},
 		unbindFieldProveEvent: function(field){
-
-			//go from field config to selector
-			var selector = this.domSelector(field);
-			this.$form.off('validate.field.prove', selector);
+			this.$form.off('validate.field.prove', field.selector);
 		},
 		proveEventHandler2: function(event){
 
@@ -302,9 +298,9 @@
 			var validators = field.validators || {};
 			var isEnabled = input.booleanator(field.enabled);
 
-			//return early if nothing to do
+			// return early if nothing to do
 			if (!isEnabled) {
-				//trigger event indicating validation state
+				// trigger event indicating validation state
 				input.trigger('validated.field.prove', data);
 				return isValid;
 			}
@@ -314,7 +310,7 @@
 
 				config.field = fieldName;
 
-				//invoke validator plugin
+				// invoke validator plugin
 				if (!that.isPlugin(validatorName)) return false;
 				var result = input[validatorName](config);
 
@@ -331,7 +327,7 @@
 
 				isValid = result.state;
 
-				//return of false to break loop
+				// return of false to break loop
 				return isValid;
 			});
 
@@ -353,13 +349,13 @@
 
 			$.each(fields, function(index, field){
 
-				var selector = that.domSelector(field);
-				var input = that.$form.find(selector);
+				var input = that.$form.find(field.selector);
 				var isMultiple = input.is(':multiple');
 				var isValidField;
 
 				if (isMultiple){
 					//handle case when name="field[]"
+					// todo: understand why we
 					input.each(function(){
 						var input = $(this);
 						isValidField = checkField(field, input);
@@ -562,6 +558,7 @@
 		var name = input.attr('name');
 		var val, idx, selector;
 
+		//todo: why are we not handling multiple values here?
 
 		if (isSelect){
 			val = input.val();
@@ -834,4 +831,48 @@
 			state: isValid
 		};
 	};
+}(window.jQuery);
+
+!function ($) {
+	"use strict";
+
+	$.fn.proveUnique = function(options){
+
+		var input = $(this);
+		var value = input.vals();
+		var hasValue = input.hasValue();
+		var isEnabled = $('body').booleanator(options.enabled);
+		var isValid;
+
+		if (!isEnabled){
+			// Validators should return undefined when there is no value.
+			// Decoraters will teardown any decoration when they receive an `undefined` validation state.
+			isValid = undefined;
+		} else if (!hasValue) {
+			// All validators (except proveRequired) should return undefined when there is no value.
+			// Decoraters will teardown any decoration when they receive an `undefined` validation state.
+			isValid = undefined;
+		} else {
+			//todo: validate uniqueness this here. Options include:
+			// 1. use options.selector to find other inputs
+			// 2. change $.fn.vals() to return other values like it does for checkboxes and radios
+			isValid = false;
+		}
+
+		if (options.debug){
+			console.groupCollapsed('Validator.proveUnique()', options.field);
+				console.log('options', options);
+				console.log('value', value);
+				//console.log('values', values);
+				console.log('isValid', isValid);
+			console.groupEnd();
+		}
+
+		return {
+			validator: 'proveUnique',
+			field: options.field,
+			state: isValid
+		};
+	};
+
 }(window.jQuery);
