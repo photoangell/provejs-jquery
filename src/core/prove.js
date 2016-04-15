@@ -111,9 +111,11 @@
 		},
 		//return jquery selector that represents the element in the DOM
 		domSelector: function(field){
-			return (field.selector)
+			var selector = (field.selector)
 				? field.selector
 				: '[name="' + field.name + '"]';
+			if (!field.selector) field.selector = selector;
+			return selector;
 		},
 		//return string of space seperated events used to detect change to the DOM element
 		fieldDomEvents: function(field){
@@ -268,7 +270,6 @@
 
 			var data, isValid;
 			var that = this;
-			var fieldName = field.name;
 			var validators = field.validators || {};
 			var isEnabled = input.booleanator(field.enabled);
 
@@ -282,7 +283,8 @@
 			// loop each validator
 			$.each(validators, function(validatorName, config){
 
-				config.field = fieldName;
+				config.field = field.name;
+				config.selector = field.selector;
 
 				// invoke validator plugin
 				if (!that.isPlugin(validatorName)) return false;
@@ -330,6 +332,7 @@
 
 				if (isMultiple){
 					//handle case when name="field[]"
+					// todo: understand why we need to do this!
 					input.each(function(){
 						var input = $(this);
 						isValidField = checkField(field, input);
