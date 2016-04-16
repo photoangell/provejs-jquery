@@ -20,6 +20,7 @@
 
 		this.checkOptions();
 		this.setupFields();
+		this.setupInputs();
 		this.setupForm();
 		this.setupSubmitIntercept();
 
@@ -39,6 +40,7 @@
 				twice: false //todo: allow some forms to submit twice
 			}
 		},
+		uuids: {},
 		constructor: Prove,
 		destroy: function() {
 			this.teardownFields();
@@ -142,18 +144,12 @@
 
 			$.each(fields, function(name, field){
 
-				var selector = that.domSelector(field, name);
-				var input = that.$form.find(selector);
-
-				//copy field name inside field config
+				// augment field
 				field.name = name;
-				field.selector = selector;
+				field.selector = that.domSelector(field, name);
 
 				that.bindDomFieldEvents(field);
 				that.bindFieldProveEvent(field);
-
-				var uuid = input.uuid(); //todo: perhaps do this in a this.setupInputs() which calls $.fn.provable()
-				input.trigger('setup.field.prove');
 			});
 		},
 		teardownFields: function(options){
@@ -173,6 +169,25 @@
 		},
 		html5NoValidate: function(state){
 			this.$form.attr("novalidate", state);
+		},
+		setupInputs: function(){ // todo: setupState()
+
+			var form = this.$form;
+			var fields = this.options.fields || {};
+			var that = this;
+
+			form.provables(this.options).each(function(){
+				var input = $(this);
+				var uuid = input.uuid();
+
+				// inialized state
+				that.uuids[uuid] = {
+					dirty: true,
+					valid: undefined
+				};
+
+				input.trigger('setup.field.prove');
+			});
 		},
 		/**
 		* DOM Input Events Listener
