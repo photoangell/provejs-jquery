@@ -17,8 +17,8 @@
 		var prove = form.data('prove');
 		var states = prove.states;
 		var fields = prove.options.fields;
-		var state = true;
 		var filter = true;
+		var state = true;
 
 		// Loop inputs and validate them. There may be multiple
 		// identical inputs (ie radios) for which we do not want to
@@ -34,9 +34,6 @@
 		});
 
 		// Trigger event indicating validation state.
-		// todo: perhaps, return validators (state and messages) so one could
-		// display messages at the top of the form. However, that could be the
-		// responsibility of a decorator to aggregate the prove error events.
 		form.trigger('validated.form.prove', {
 			state: state
 		});
