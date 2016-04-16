@@ -152,8 +152,7 @@
 				that.bindDomFieldEvents(field);
 				that.bindFieldProveEvent(field);
 
-				var uuid = input.uuid();
-				console.log(name, uuid, input.length);
+				var uuid = input.uuid(); //todo: perhaps do this in a this.setupInputs() which calls $.fn.provable()
 				input.trigger('setup.field.prove');
 			});
 		},
