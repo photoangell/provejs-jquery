@@ -140,7 +140,7 @@
 	function resetTags() {
 		console.log('resetTags()');
 		select.tagsinput('removeAll');
-		select.trigger('validate.field.prove');
+		select.validate();
 	}
 
 	function sumItemizationValues(){

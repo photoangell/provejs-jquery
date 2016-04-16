@@ -90,7 +90,7 @@
 		var input = $(this);
 		var checkbox = input.closest('.input-group').find('input[type="checkbox"]');
 
-		checkbox.validate(); // or checkbox.trigger('validate.field.prove');
+		checkbox.validate();
 	});
 
 	form.on('change', '[name="checkboxes"]', function(event){
@@ -108,7 +108,7 @@
 	// remove input group
 	form.on('click', '.del-input-group', function(event){
 		$(this).closest('.input-group').remove();
-		$('form').find('[name="checkboxes"]:first').trigger('validate.field.prove');
+		$('form').find('[name="checkboxes"]:first').validate();
 	});
 
 	// insert input group

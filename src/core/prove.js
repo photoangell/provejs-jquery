@@ -122,12 +122,6 @@
 			var events = field.trigger || 'change keyup click blur';
 			return events;
 		},
-
-		isPlugin: function(plugin){
-			var exist = (typeof $.fn[plugin] === 'function');
-			if (!exist) console.error('Missing validator plugin "%s".', plugin);
-			return exist;
-		},
 		setupForm: function(){
 			this.html5NoValidate(true);
 			this.bindDomFormEvents();
@@ -173,15 +167,14 @@
 		setupInputs: function(){ // todo: setupState()
 
 			var form = this.$form;
-			var fields = this.options.fields || {};
-			var that = this;
+			var uuids = this.uuids;
 
 			form.provables(this.options).each(function(){
 				var input = $(this);
 				var uuid = input.uuid();
 
 				// inialized state
-				that.uuids[uuid] = {
+				uuids[uuid] = {
 					dirty: true,
 					valid: undefined,
 					value: undefined
@@ -218,8 +211,7 @@
 
 			var input = $(event.target);
 			var field = event.data;
-
-			this.checkField(field, input);
+			input.proveInput(field);
 		},
 		/**
 		* DOM Form Events Listener
@@ -252,7 +244,7 @@
 					if (name === field || input.is(config.selector)) // found correct field
 				})
 			option 2: require the code that triggers the validate event to pass in
-			the field name: input.trigger('validate', {field: 'fieldName'})
+			the field name: input.trigger('validate.field.prove', {field: 'fieldName'})
 
 		*/
 		bindFieldProveEvent: function(field){
@@ -266,62 +258,10 @@
 			this.$form.off('validate.field.prove', field.selector);
 		},
 		proveEventHandler2: function(event){
-
 			event.preventDefault();
 			var input = $(event.target);
 			var field = event.data;
-
-			this.checkField(field, input);
-		},
-
-		//todo: make this a plugin
-		checkField: function(field, input){ //todo: rename proveInput
-
-			var data, isValid;
-			var that = this;
-			var fieldName = field.name;
-			var validators = field.validators || {};
-			var isEnabled = input.booleanator(field.enabled);
-
-			// return early if nothing to do
-			if (!isEnabled) {
-				// trigger event indicating validation state
-				input.trigger('validated.field.prove', data);
-				return isValid;
-			}
-
-			// loop each validator
-			$.each(validators, function(validatorName, config){
-
-				config.field = fieldName;
-
-				// invoke validator plugin
-				if (!that.isPlugin(validatorName)) return false;
-				var result = input[validatorName](config);
-
-				//todo: warn if result is not an object with the required properties
-
-				// Compose data the decorator will be interested in
-				data = {
-					field: result.field,
-					state: result.state,
-					message: config.message,
-					validator: {
-						name: result.validator,
-						config: clone(config)
-					}
-				};
-
-				isValid = result.state;
-
-				// return of false to break loop
-				return isValid;
-			});
-
-			//trigger event indicating validation state
-			input.trigger('validated.field.prove', data);
-
-			return isValid;
+			input.proveInput(field);
 		},
 
 		//validate entire form
@@ -329,7 +269,6 @@
 
 			var form = this.$form;
 			var fields = this.options.fields;
-			var checkField = $.proxy(this.checkField, this);
 			var isValid = true;
 			var completed = [];
 
@@ -344,13 +283,11 @@
 				if (!field) {
 					//skip inputs with no field config
 				} else if (!isCompleted) {
-					isProved = checkField(field, input);
-					//todo: isProved = input.proveField(field);
+					isProved = input.proveField(field);
 				} else if (isMultiple) {
 					// Any field for which you might have multiple inputs of the same name (checkbox, radio, name="fields[]")
 					// for which you want to be validated individually, you can set the field.multiple = true.
-					isProved = checkField(field, input);
-					//todo: isProved = input.proveField(field);
+					isProved = input.proveField(field);
 				}
 				isValid = toggleState(isValid, isProved);
 				completed.push(field.name);
