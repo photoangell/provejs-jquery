@@ -94,7 +94,7 @@
 
 			var shouldValidate = this.$form.booleanator(this.options.submit.validate);
 			var preventSubmit = this.$form.booleanator(this.options.submit.prevent);
-			var isValid = (shouldValidate)? this.validate() : undefined;
+			var isValid = (shouldValidate)? this.proveForm() : undefined;
 			var nosubmit = !!this.$form.attr('nosubmit');
 
 			var submitSetup = (isValid && !nosubmit);
@@ -248,7 +248,7 @@
 		},
 		proveEventHandler1: function(event){
 			event.preventDefault();
-			this.validate();
+			this.proveForm();
 		},
 		/**
 			Bind Event 'validate.field.prove'
@@ -288,7 +288,8 @@
 		},
 
 		//validate entire form
-		validate: function(){
+		// todo: perhaps $.fn.proveForm()
+		proveForm: function(){
 
 			var form = this.$form;
 			var fields = this.options.fields;
@@ -306,11 +307,11 @@
 				if (!field) {
 					//skip inputs with no field config
 				} else if (!isCompleted) {
-					isProved = input.proveField(field);
+					isProved = input.proveInput(field);
 				} else if (isMultiple) {
 					// Any field for which you might have multiple inputs of the same name (checkbox, radio, name="fields[]")
 					// for which you want to be validated individually, you can set the field.multiple = true.
-					isProved = input.proveField(field);
+					isProved = input.proveInput(field);
 				}
 				isValid = toggleState(isValid, isProved);
 				completed.push(field.name);

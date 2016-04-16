@@ -215,11 +215,6 @@ proveRequired
 1. why do we need the state now that we have field.enabled.
 2. should accept regex or regex.source.
 
-Prove.checkField() should be a jquery plugin so that we can:
-```javascript
-var isValid = input.proveField(field);
-```
-
 Reset input or form
 ```javascript
 input.resetField()
