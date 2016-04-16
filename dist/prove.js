@@ -206,7 +206,8 @@
 				// inialized state
 				that.uuids[uuid] = {
 					dirty: true,
-					valid: undefined
+					valid: undefined,
+					value: undefined
 				};
 
 				input.trigger('setup.field.prove');
