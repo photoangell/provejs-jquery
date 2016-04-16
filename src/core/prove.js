@@ -316,8 +316,6 @@
 			var isValid = true;
 			var completed = [];
 
-			console.log('validate()', 'start');
-
 			//loop inputs
 			form.provables().each(function(){
 				var isProved;
@@ -325,8 +323,6 @@
 				var field = fields[this.field];
 				var isCompleted = ($.inArray(this.field, completed) > -1);
 				var isMultiple = field.multiple;
-
-				console.log(this.field, isCompleted, isMultiple);
 
 				if (!field) {
 					//skip inputs with no field config
@@ -342,8 +338,6 @@
 				isValid = toggleState(isValid, isProved);
 				completed.push(field.name);
 			});
-
-			console.log('validate()', isValid);
 
 			//trigger event indicating validation state
 			// todo: return validators (state and messages)

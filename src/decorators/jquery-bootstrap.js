@@ -7,8 +7,6 @@
 
 	$.fn.bootstrap = function(options){
 
-		console.log('bootstrap()', options);
-
 		options = options || {};
 		var input = $(this);
 		var parent1 = input.parent();
