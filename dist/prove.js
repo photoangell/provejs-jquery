@@ -63,7 +63,7 @@
 				twice: false //todo: allow some forms to submit twice
 			}
 		},
-		uuids: {},
+		states: {},
 		constructor: Prove,
 		destroy: function() {
 			this.teardownFields();
@@ -187,21 +187,17 @@
 		html5NoValidate: function(state){
 			this.$form.attr("novalidate", state);
 		},
-		setupInputs: function(){ // todo: setupState()
+		setupInputs: function(){ // todo: perhas setupState()?
 
 			var form = this.$form;
-			var uuids = this.uuids;
+			var states = this.states;
 
 			form.provables(this.options).each(function(){
 				var input = $(this);
 				var uuid = input.uuid();
 
 				// inialized state
-				uuids[uuid] = {
-					dirty: true,
-					valid: undefined,
-					value: undefined
-				};
+				states[uuid] = {};
 
 				input.trigger('setup.field.prove');
 			});
@@ -231,10 +227,9 @@
 			el.off(domEvents, field.selector);
 		},
 		domFieldEventsHandler: function(event){
-
 			var input = $(event.target);
 			var field = event.data;
-			input.proveInput(field);
+			input.proveInput(field, this.states);
 		},
 		/**
 		* DOM Form Events Listener
@@ -284,7 +279,7 @@
 			event.preventDefault();
 			var input = $(event.target);
 			var field = event.data;
-			input.proveInput(field);
+			input.proveInput(field, this.states);
 		}
 	};
 
@@ -336,11 +331,16 @@
 	$.fn.proveForm = function() {
 
 		var form = $(this);
-		var fields = form.data('prove').options.fields;
+		var prove = form.data('prove');
+		var states = prove.states;
+		var fields = prove.options.fields;
 		var isValid = true;
 		var completed = [];
 
-		//loop inputs
+		// Loop inputs and validate them. Threre may be multiple
+		// identical inputs (ie checkboxes or radios) for which we
+		// do not want to validate twice unless they field.multiple
+		// is set to true.
 		form.provables().each(function(){
 			var isProved;
 			var input = $(this);
@@ -351,11 +351,11 @@
 			if (!field) {
 				//skip inputs with no field config
 			} else if (!isCompleted) {
-				isProved = input.proveInput(field);
+				isProved = input.proveInput(field, states);
 			} else if (isMultiple) {
 				// Any field for which you might have multiple inputs of the same name (checkbox, radio, name="fields[]")
 				// for which you want to be validated individually, you can set the field.multiple = true.
-				isProved = input.proveInput(field);
+				isProved = input.proveInput(field, states);
 			}
 			isValid = toggleState(isValid, isProved);
 			completed.push(field.name);
@@ -820,6 +820,22 @@
 			validator: 'proveMin',
 			field: options.field,
 			state: isValid
+		};
+	};
+}(window.jQuery);
+
+!function ($) {
+	"use strict";
+
+	$.fn.proveMissing = function( options ) {
+
+		options.message = 'Prove validator "' + options.validator+ '" not found.';
+
+		//return current validation state
+		return {
+			validator: options.validator,
+			field: options.field,
+			state: false
 		};
 	};
 }(window.jQuery);

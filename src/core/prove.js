@@ -40,7 +40,7 @@
 				twice: false //todo: allow some forms to submit twice
 			}
 		},
-		uuids: {},
+		states: {},
 		constructor: Prove,
 		destroy: function() {
 			this.teardownFields();
@@ -164,21 +164,17 @@
 		html5NoValidate: function(state){
 			this.$form.attr("novalidate", state);
 		},
-		setupInputs: function(){ // todo: setupState()
+		setupInputs: function(){ // todo: perhas setupState()?
 
 			var form = this.$form;
-			var uuids = this.uuids;
+			var states = this.states;
 
 			form.provables(this.options).each(function(){
 				var input = $(this);
 				var uuid = input.uuid();
 
 				// inialized state
-				uuids[uuid] = {
-					dirty: true,
-					valid: undefined,
-					value: undefined
-				};
+				states[uuid] = {};
 
 				input.trigger('setup.field.prove');
 			});
@@ -208,10 +204,9 @@
 			el.off(domEvents, field.selector);
 		},
 		domFieldEventsHandler: function(event){
-
 			var input = $(event.target);
 			var field = event.data;
-			input.proveInput(field);
+			input.proveInput(field, this.states);
 		},
 		/**
 		* DOM Form Events Listener
@@ -261,7 +256,7 @@
 			event.preventDefault();
 			var input = $(event.target);
 			var field = event.data;
-			input.proveInput(field);
+			input.proveInput(field, this.states);
 		}
 	};
 

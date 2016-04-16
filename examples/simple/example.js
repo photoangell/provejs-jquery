@@ -26,6 +26,7 @@
 				}
 			},
 			'fruit[]': {
+				trigger: 'click',
 				validators: {
 					proveRequired: {
 						message: 'A fruit is required.',
