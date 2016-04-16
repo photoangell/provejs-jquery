@@ -15,6 +15,7 @@
 	var cfg = {
 		fields: {
 			toggle: {
+				trigger: 'click',
 				validators: {
 					proveRequired: {
 						debug: true,

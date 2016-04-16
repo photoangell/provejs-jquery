@@ -1,24 +1,47 @@
 !function ($) {
 	"use strict";
 
-	$.fn.provables = function(options) {
+	// Called at setup and while validating entire form.
+	$.fn.provables = function(fields, filter) {
 
 		var inputs = $();
 		var form = $(this);
-		var prove = form.data('prove');
-		var opts = (options)? options : prove.options;
-		var fields = opts.fields || {};
+		fields = fields || {};
 
 		// build selector
 		$.each(fields, function(name, field){
+
 			var found = form.find(field.selector);
-			found.each(function(){
+			var filtered = (filter)? found.filterables(field) : found;
+
+			filtered.each(function(){
 				this.field = name;
 				inputs.push(this);
 			});
 		});
 		return inputs;
 	};
+
+	// Any field for which you might have multiple inputs of the same name (checkbox, radio, name="fields[]")
+	// for which you want to be validated individually, you can set the field.multiple = true.
+	$.fn.filterables = function(field){
+		var found = $(this);
+		var isRadio = found.is('[type="radio"]');
+		var hasChecked = (found.filter(':checked').length > 0);
+
+		var filtered = found.filter(function(index, element){
+
+			//only filter a radios if atleast one is selected and then filter to the selected radio
+			if (isRadio && hasChecked && !field.multiple){
+				return $(element).is(':checked');
+			} else {
+				return true;
+			}
+		});
+
+		return filtered;
+	};
+
 }(window.jQuery);
 
 /**
@@ -319,13 +342,14 @@
 !function ($) {
 	"use strict";
 
-	function toggleState(isValid, isProved){
+	//isProved can be true, false, undefined.
+	function toggleState(state, isProved){
 		if (isProved === false) {
-			isValid = false;
+			state = false;
 		} else {
-			if (isProved === true && isValid !== false) isValid = true;
+			if (isProved === true && state !== false) state = true;
 		}
-		return isValid;
+		return state;
 	}
 
 	$.fn.proveForm = function() {
@@ -334,39 +358,28 @@
 		var prove = form.data('prove');
 		var states = prove.states;
 		var fields = prove.options.fields;
-		var isValid = true;
-		var completed = [];
+		var state = true;
+		var filter = true;
 
-		// Loop inputs and validate them. Threre may be multiple
-		// identical inputs (ie checkboxes or radios) for which we
-		// do not want to validate twice unless they field.multiple
-		// is set to true.
-		form.provables().each(function(){
-			var isProved;
+		// Loop inputs and validate them. There may be multiple
+		// identical inputs (ie radios) for which we do not want to
+		// validate twice. Therefore, $.fn.provables() will filter
+		// these multiples for us unless less field.multiple is true.
+		form.provables(fields, filter).each(function(){
+
 			var input = $(this);
 			var field = fields[this.field];
-			var isCompleted = ($.inArray(this.field, completed) > -1);
-			var isMultiple = field.multiple;
+			var isProved = input.proveInput(field, states);
 
-			if (!field) {
-				//skip inputs with no field config
-			} else if (!isCompleted) {
-				isProved = input.proveInput(field, states);
-			} else if (isMultiple) {
-				// Any field for which you might have multiple inputs of the same name (checkbox, radio, name="fields[]")
-				// for which you want to be validated individually, you can set the field.multiple = true.
-				isProved = input.proveInput(field, states);
-			}
-			isValid = toggleState(isValid, isProved);
-			completed.push(field.name);
+			state = toggleState(state, isProved);
 		});
 
-		// trigger event indicating validation state
+		// Trigger event indicating validation state.
 		// todo: perhaps, return validators (state and messages) so one could
 		// display messages at the top of the form. However, that could be the
 		// responsibility of a decorator to aggregate the prove error events.
 		form.trigger('validated.form.prove', {
-			state: isValid
+			state: state
 		});
 
 	};
