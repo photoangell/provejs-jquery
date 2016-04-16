@@ -1,36 +1,6 @@
 !function ($) {
 	"use strict";
 
-	$.fn.validate = function(options) {
-
-		var el = $(this);
-		var prove = el.data('prove');
-
-		if (options && prove) {
-
-			// alias prove plugin
-			el.prove(options);
-		} else if (prove) {
-
-			// alias prove form validate
-			return el.data('prove').validate();
-		} else {
-
-			//alias input trigger validation
-			el.each(function(){
-				var input = $(this);
-				var prove = el.data('prove');
-				var event = (prove)? 'validate.form.prove' : 'validate.field.prove';
-				input.trigger(event);
-			});
-		}
-		return this;
-	};
-}(window.jQuery);
-
-!function ($) {
-	"use strict";
-
 	$.fn.provables = function() {
 
 		var inputs = $();
@@ -205,6 +175,8 @@
 				that.bindDomFieldEvents(field);
 				that.bindFieldProveEvent(field);
 
+				var uuid = input.uuid();
+				console.log(name, uuid, input.length);
 				input.trigger('setup.field.prove');
 			});
 		},
@@ -445,6 +417,36 @@
 !function ($) {
 	"use strict";
 
+	$.fn.validate = function(options) {
+
+		var el = $(this);
+		var prove = el.data('prove');
+
+		if (options && prove) {
+
+			// alias prove plugin
+			el.prove(options);
+		} else if (prove) {
+
+			// alias prove form validate
+			return el.data('prove').validate();
+		} else {
+
+			//alias input trigger validation
+			el.each(function(){
+				var input = $(this);
+				var prove = el.data('prove');
+				var event = (prove)? 'validate.form.prove' : 'validate.field.prove';
+				input.trigger(event);
+			});
+		}
+		return this;
+	};
+}(window.jQuery);
+
+!function ($) {
+	"use strict";
+
 	// Custom selectors
 	$.extend( $.expr[":"], {
 
@@ -568,6 +570,46 @@
 		return container;
 	};
 
+}(window.jQuery);
+
+!function ($) {
+	"use strict";
+
+	/**
+	* Fast UUID generator, RFC4122 version 4 compliant.
+	* @author Jeff Ward (jcward.com).
+	* @license MIT license
+	* @link http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/21963136#21963136
+	**/
+	var UUID = (function() {
+	var self = {};
+	var lut = []; for (var i=0; i<256; i++) { lut[i] = (i<16?'0':'')+(i).toString(16); }
+	self.generate = function() {
+		var d0 = Math.random()*0xffffffff|0;
+		var d1 = Math.random()*0xffffffff|0;
+		var d2 = Math.random()*0xffffffff|0;
+		var d3 = Math.random()*0xffffffff|0;
+		return lut[d0&0xff]+lut[d0>>8&0xff]+lut[d0>>16&0xff]+lut[d0>>24&0xff]+'-'+
+			lut[d1&0xff]+lut[d1>>8&0xff]+'-'+lut[d1>>16&0x0f|0x40]+lut[d1>>24&0xff]+'-'+
+			lut[d2&0x3f|0x80]+lut[d2>>8&0xff]+'-'+lut[d2>>16&0xff]+lut[d2>>24&0xff]+
+			lut[d3&0xff]+lut[d3>>8&0xff]+lut[d3>>16&0xff]+lut[d3>>24&0xff];
+		};
+		return self;
+	})();
+
+
+	$.fn.uuid = function() {
+
+		//todo: handle array elements
+
+		var el = $(this);
+		var uuid = el.data('uuid');
+		if (!uuid) {
+			uuid = UUID.generate();
+			el.data('uuid', uuid);
+		}
+		return uuid;
+	};
 }(window.jQuery);
 
 !function ($) {

@@ -152,6 +152,8 @@
 				that.bindDomFieldEvents(field);
 				that.bindFieldProveEvent(field);
 
+				var uuid = input.uuid();
+				console.log(name, uuid, input.length);
 				input.trigger('setup.field.prove');
 			});
 		},
