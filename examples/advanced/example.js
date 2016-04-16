@@ -17,6 +17,7 @@
 			toggle: {
 				validators: {
 					proveRequired: {
+						debug: true,
 						message: 'Choose one.',
 					}
 				}
@@ -45,13 +46,14 @@
 			},
 			'dynamic1[]': {
 				enabled:'#itemize:checked', //booleanator
+				multiple: true,
 				validators:{
 					proveRequired: {
-						debug: true,
+						//debug: true,
 						message: 'Description is required.',
 					},
 					provePattern: {
-						debug: true,
+						//debug: true,
 						regex: regex,
 						message: 'Invalid description.'
 					}

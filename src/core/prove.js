@@ -88,12 +88,12 @@
 				the this intercept handler.
 			*/
 
-			console.groupCollapsed('submitInterceptHandler()');
+/*			console.groupCollapsed('submitInterceptHandler()');
 			console.log('shouldValidate', shouldValidate);
 			console.log('preventSubmit', preventSubmit);
 			console.log('nosubmit', nosubmit);
 			console.log('isValid', isValid);
-			console.groupEnd();
+			console.groupEnd();*/
 
 			if (submitSetup) {
 
@@ -139,8 +139,6 @@
 			var opts = options || this.options;
 			var fields = opts.fields || {};
 			var that = this;
-
-			//console.log('setupFields()');
 
 			$.each(fields, function(name, field){
 
@@ -284,6 +282,8 @@
 				if (!that.isPlugin(validatorName)) return false;
 				var result = input[validatorName](config);
 
+				//todo: warn if result is not an object with the required properties
+
 				// Compose data the decorator will be interested in
 				data = {
 					field: result.field,
@@ -308,45 +308,48 @@
 		},
 
 		//validate entire form
-		// todo: this could be plugin where the plugin gets prove instance via $(this).data('prove')
 		validate: function(){
-			//console.log('Prove.validate()');
 
+			var form = this.$form;
 			var fields = this.options.fields;
 			var checkField = $.proxy(this.checkField, this);
 			var isValid = true;
-			var that = this;
+			var completed = [];
 
-			$.each(fields, function(index, field){
+			console.log('validate()', 'start');
 
-				var input = that.$form.find(field.selector);
-				var isMultiple = input.is(':multiple');
-				var isValidField;
+			//loop inputs
+			form.provables().each(function(){
+				var isProved;
+				var input = $(this);
+				var field = fields[this.field];
+				var isCompleted = ($.inArray(this.field, completed) > -1);
+				var isMultiple = field.multiple;
 
-				if (isMultiple){
-					//handle case when name="field[]"
-					// todo: understand why we
-					input.each(function(){
-						var input = $(this);
-						isValidField = checkField(field, input);
-						if (isValidField === false) isValid = false;
-						if (isValidField === true && isValid !== false) isValid = true;
-					});
-				}  else {
-					//handle case where name="field"
-					isValidField = checkField(field, input);
-					if (isValidField === false) isValid = false;
-					if (isValidField === true && isValid !== false) isValid = true;
+				console.log(this.field, isCompleted, isMultiple);
+
+				if (!field) {
+					//skip inputs with no field config
+				} else if (!isCompleted) {
+					isProved = checkField(field, input);
+					//todo: isProved = input.proveField(field);
+				} else if (isMultiple) {
+					// Any field for which you might have multiple inputs of the same name (checkbox, radio, name="fields[]")
+					// for which you want to be validated individually, you can set the field.multiple = true.
+					isProved = checkField(field, input);
+					//todo: isProved = input.proveField(field);
 				}
+				isValid = toggleState(isValid, isProved);
+				completed.push(field.name);
 			});
+
+			console.log('validate()', isValid);
 
 			//trigger event indicating validation state
 			// todo: return validators (state and messages)
-			this.$form.trigger('validated.form.prove', {
+			form.trigger('validated.form.prove', {
 				state: isValid
 			});
-
-			return isValid;
 		}
 	};
 
@@ -379,6 +382,15 @@
 
 	function clone(obj){
 		return $.extend({}, obj);
+	}
+
+	function toggleState(isValid, isProved){
+		if (isProved === false) {
+			isValid = false;
+		} else {
+			if (isProved === true && isValid !== false) isValid = true;
+		}
+		return isValid;
 	}
 
 }(window.jQuery);

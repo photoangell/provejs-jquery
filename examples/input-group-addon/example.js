@@ -15,10 +15,15 @@
 			console.log('input', input);
 			console.log('value', value);
 			console.log('hasValue', hasValue);
+			console.log('isValid', hasValue);
 			console.groupEnd();
 		}
 
-		return hasValue;
+		return {
+			validator: 'otherDescriptionRequired',
+			field: options.field,
+			state: hasValue
+		};
 	};
 
 	// check related input has a value
@@ -40,7 +45,11 @@
 			console.groupEnd();
 		}
 
-		return isValid;
+		return {
+			validator: 'otherDescriptionRequired',
+			field: options.field,
+			state: isValid
+		};
 	};
 
 
@@ -51,14 +60,18 @@
 	var cfg = {
 		fields: {
 			checkboxes: {
+				multiple: false,
 				validators:{
 					proveRequired: {
+						//debug: true,
 						message: 'Please choose browsers you use for developing.',
 					},
 					otherDescriptionRequired: {
+						//debug: true,
 						message: 'Please enter the description of the other charge.',
 					},
 					otherDescriptionPattern: {
+						//debug: true,
 						message: 'Invalid character in the description of the other charge.'
 					}
 				}
