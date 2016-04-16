@@ -71,7 +71,7 @@
 
 			var shouldValidate = this.$form.booleanator(this.options.submit.validate);
 			var preventSubmit = this.$form.booleanator(this.options.submit.prevent);
-			var isValid = (shouldValidate)? this.proveForm() : undefined;
+			var isValid = (shouldValidate)? this.$form.proveForm() : undefined;
 			var nosubmit = !!this.$form.attr('nosubmit');
 
 			var submitSetup = (isValid && !nosubmit);
@@ -225,7 +225,7 @@
 		},
 		proveEventHandler1: function(event){
 			event.preventDefault();
-			this.proveForm();
+			this.$form.proveForm();
 		},
 		/**
 			Bind Event 'validate.field.prove'
@@ -262,43 +262,6 @@
 			var input = $(event.target);
 			var field = event.data;
 			input.proveInput(field);
-		},
-
-		//validate entire form
-		// todo: perhaps $.fn.proveForm()
-		proveForm: function(){
-
-			var form = this.$form;
-			var fields = this.options.fields;
-			var isValid = true;
-			var completed = [];
-
-			//loop inputs
-			form.provables().each(function(){
-				var isProved;
-				var input = $(this);
-				var field = fields[this.field];
-				var isCompleted = ($.inArray(this.field, completed) > -1);
-				var isMultiple = field.multiple;
-
-				if (!field) {
-					//skip inputs with no field config
-				} else if (!isCompleted) {
-					isProved = input.proveInput(field);
-				} else if (isMultiple) {
-					// Any field for which you might have multiple inputs of the same name (checkbox, radio, name="fields[]")
-					// for which you want to be validated individually, you can set the field.multiple = true.
-					isProved = input.proveInput(field);
-				}
-				isValid = toggleState(isValid, isProved);
-				completed.push(field.name);
-			});
-
-			//trigger event indicating validation state
-			// todo: return validators (state and messages)
-			form.trigger('validated.form.prove', {
-				state: isValid
-			});
 		}
 	};
 
@@ -331,15 +294,6 @@
 
 	function clone(obj){
 		return $.extend({}, obj);
-	}
-
-	function toggleState(isValid, isProved){
-		if (isProved === false) {
-			isValid = false;
-		} else {
-			if (isProved === true && isValid !== false) isValid = true;
-		}
-		return isValid;
 	}
 
 }(window.jQuery);
