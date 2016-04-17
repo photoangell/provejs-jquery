@@ -129,14 +129,14 @@ You can also perform form validation by:
 var isValid = form.data('prove').validate();
 ```
 
-#### Event: `validate.field.prove` ####
+#### Event: `validate.input.prove` ####
 
 - **Description** When Prove hears this event it will validate just this input.
 - **Target** Form input.
 - **Publisher** Your code.
 
 ```javascript
-input.trigger('validate.field.prove'); // or input.validate()
+input.trigger('validate.input.prove'); // or input.validate()
 ```
 
 ## Form Submission

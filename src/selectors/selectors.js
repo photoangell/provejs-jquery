@@ -31,6 +31,13 @@
 		multiple: function(el) {
 			var name = $(el).attr('name') || '';
 			return (name.charAt(name.length - 1) === ']');
+		},
+
+		'prove-form': function(el) {
+			return ($(el).data('prove'))? true : false;
+		},
+		'prove-input': function(el) {
+			return ($(el).data('uuid'))? true : false;
 		}
 
 	});

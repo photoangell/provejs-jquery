@@ -269,7 +269,7 @@
 			this.$form.proveForm();
 		},
 		/**
-			Bind Event 'validate.field.prove'
+			Bind Event 'validate.input.prove'
 			https://github.com/dhollenbeck/jquery-prove#event-validatefieldprove
 
 			The concern with this code is that for every prove field we bind a new
@@ -285,7 +285,7 @@
 					if (name === field || input.is(config.selector)) // found correct field
 				})
 			option 2: require the code that triggers the validate event to pass in
-			the field name: input.trigger('validate.field.prove', {field: 'fieldName'})
+			the field name: input.trigger('validate.input.prove', {field: 'fieldName'})
 
 		*/
 		bindFieldProveEvent: function(field){
@@ -293,10 +293,10 @@
 			var handler = $.proxy(this.proveEventHandler2, this);
 			var data = clone(field);
 
-			this.$form.on('validate.field.prove', field.selector, data, handler);
+			this.$form.on('validate.input.prove', field.selector, data, handler);
 		},
 		unbindFieldProveEvent: function(field){
-			this.$form.off('validate.field.prove', field.selector);
+			this.$form.off('validate.input.prove', field.selector);
 		},
 		proveEventHandler2: function(event){
 			event.preventDefault();
@@ -358,8 +358,8 @@
 		var prove = form.data('prove');
 		var states = prove.states;
 		var fields = prove.options.fields;
-		var state = true;
 		var filter = true;
+		var state = true;
 
 		// Loop inputs and validate them. There may be multiple
 		// identical inputs (ie radios) for which we do not want to
@@ -375,9 +375,6 @@
 		});
 
 		// Trigger event indicating validation state.
-		// todo: perhaps, return validators (state and messages) so one could
-		// display messages at the top of the form. However, that could be the
-		// responsibility of a decorator to aggregate the prove error events.
 		form.trigger('validated.form.prove', {
 			state: state
 		});
@@ -451,29 +448,32 @@
 !function ($) {
 	"use strict";
 
-	$.fn.validate = function(options) {
+	$.fn.validate = function() {
 
-		var el = $(this);
-		var prove = el.data('prove');
+		$(this).each(function(){
+			var el = $(this);
+			var isForm = el.is(':prove-form');
+			var isInput = el.is(':prove-input');
 
-		if (options && prove) {
-
-			// alias prove plugin
-			el.prove(options);
-		} else if (prove) {
-
-			// alias prove form validate
-			return el.data('prove').validate();
-		} else {
-
-			//alias input trigger validation
-			el.each(function(){
-				var input = $(this);
-				var prove = el.data('prove');
-				var event = (prove)? 'validate.form.prove' : 'validate.field.prove';
-				input.trigger(event);
-			});
-		}
+			// We trigger events here because the event
+			// handlers bound to the form already have the
+			// field data bound to the event handlers. These
+			// event handlers will call the $.fn.proveForm()
+			// or $.fn.proveInput() with the correct field data.
+			if (isForm) {
+				el.trigger('validate.form.prove');
+			} else if (isInput) {
+				el.trigger('validate.input.prove');
+			} else {
+				// If the el is a dynamically inserted element then
+				// it will be validated. Otherwise, prove defaults
+				// to validating the entire form. So yes, all of the
+				// above logic is not required, but it made me feel
+				// good writing it. So I left it as was. Never know
+				// what we might break in the future.
+				el.trigger('validate.input.prove');
+			}
+		});
 		return this;
 	};
 }(window.jQuery);
@@ -511,6 +511,13 @@
 		multiple: function(el) {
 			var name = $(el).attr('name') || '';
 			return (name.charAt(name.length - 1) === ']');
+		},
+
+		'prove-form': function(el) {
+			return ($(el).data('prove'))? true : false;
+		},
+		'prove-input': function(el) {
+			return ($(el).data('uuid'))? true : false;
 		}
 
 	});

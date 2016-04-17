@@ -223,7 +223,7 @@
 			this.$form.proveForm();
 		},
 		/**
-			Bind Event 'validate.field.prove'
+			Bind Event 'validate.input.prove'
 			https://github.com/dhollenbeck/jquery-prove#event-validatefieldprove
 
 			The concern with this code is that for every prove field we bind a new
@@ -239,7 +239,7 @@
 					if (name === field || input.is(config.selector)) // found correct field
 				})
 			option 2: require the code that triggers the validate event to pass in
-			the field name: input.trigger('validate.field.prove', {field: 'fieldName'})
+			the field name: input.trigger('validate.input.prove', {field: 'fieldName'})
 
 		*/
 		bindFieldProveEvent: function(field){
@@ -247,10 +247,10 @@
 			var handler = $.proxy(this.proveEventHandler2, this);
 			var data = clone(field);
 
-			this.$form.on('validate.field.prove', field.selector, data, handler);
+			this.$form.on('validate.input.prove', field.selector, data, handler);
 		},
 		unbindFieldProveEvent: function(field){
-			this.$form.off('validate.field.prove', field.selector);
+			this.$form.off('validate.input.prove', field.selector);
 		},
 		proveEventHandler2: function(event){
 			event.preventDefault();
