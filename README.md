@@ -24,7 +24,7 @@ Below is a list design considerations that address the design problems of the ot
 
 Many of the form validation libraries will not validate hidden or readonly inputs. This fine for simple forms, but becomes a huge pain when you have a multiple input plugins that hide inputs and overlay them with dynamically generated DOM elements modeling an advanced input control. Form validation should be explicit. If you define a field to be validated it should be validated.
 
-I would rather be able to directly control enable/disable of field validation using a [booleanator](./src/utilities/jquery-booleanator.js) that is evaluated at time of validation. A booleanator can be defined as either boolean, selector, or callback which is later evaluated to a boolean (true or false).
+I would rather be able to directly control enable/disable of field validation using a [booleanator](./src/utilities/booleanator.js) that is evaluated at time of validation. A booleanator can be defined as either boolean, selector, or callback which is later evaluated to a boolean (true or false).
 
 ```javascript
 fields: {
