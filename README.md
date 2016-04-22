@@ -214,14 +214,13 @@ There are many other form validation libraries. Just about any of them will work
 ### Virtual State
 
 - Initalize state on setup.
-- On checkField/$.fn.proveField()
-	- if dirty, validate
-	- if not-dirty check value change? if no value change do not validate.
-	- Can pass force option into checkField() to force validation.
-	- After validation update state
-- Perhaps field.stateful = false will disable virtual state
+	- save input value in state. 
+- On $.fn.proveField()
+	- If input value is not different than state value then do not validate. Return the previously computed validation result.
+	- Can pass field.stateful = false which make $.fn.proveField() to ingore the state and therefore always validate.
+	- After validation save validation result in virtual state.
 
-Should reconsider the state value returned the validators. Perhaps, call it something else like `valid`.
+Should reconsider renaming the `state` value returned by the validators. Perhaps, call it something else like `valid` instead.
 
 ### Reset Input and Forms
 
