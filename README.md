@@ -12,6 +12,7 @@
 - [Events](#prove-events)
 - [Destroy](#destory)
 - [Other Libraries](#other-libraries)
+- [Roadmap](#roadmap)
 
 ## Introduction
 
@@ -209,11 +210,20 @@ There are many other form validation libraries. Just about any of them will work
 	- Concerns: Merges decoration and validation into single lib.
 	- Development:
 
-## Todo
+## Roadmap
+### Virtual State
 
-proveRequired
-1. why do we need the state now that we have field.enabled.
-2. should accept regex or regex.source.
+- Initalize state on setup.
+- On checkField/$.fn.proveField()
+	- if dirty, validate
+	- if not-dirty check value change? if no value change do not validate.
+	- Can pass force option into checkField() to force validation.
+	- After validation update state
+- Perhaps field.stateful = false will disable virtual state
+
+Should reconsider the state value returned the validators. Perhaps, call it something else like `valid`.
+
+### Reset Input and Forms
 
 Reset input or form
 ```javascript
