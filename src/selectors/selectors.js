@@ -37,7 +37,7 @@
 			return ($(el).data('prove'))? true : false;
 		},
 		'prove-input': function(el) {
-			return ($(el).data('uuid'))? true : false;
+			return ($(el).data('prove-uuid'))? true : false;
 		}
 
 	});

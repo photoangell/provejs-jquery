@@ -517,7 +517,7 @@
 			return ($(el).data('prove'))? true : false;
 		},
 		'prove-input': function(el) {
-			return ($(el).data('uuid'))? true : false;
+			return ($(el).data('prove-uuid'))? true : false;
 		}
 
 	});
@@ -644,10 +644,10 @@
 		//todo: handle array elements
 
 		var el = $(this);
-		var uuid = el.data('uuid');
+		var uuid = el.data('prove-uuid');
 		if (!uuid) {
 			uuid = UUID.generate();
-			el.data('uuid', uuid);
+			el.data('prove-uuid', uuid);
 		}
 		return uuid;
 	};
