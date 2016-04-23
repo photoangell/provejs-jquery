@@ -222,8 +222,6 @@ There are many other form validation libraries. Just about any of them will work
 	- Can pass field.stateful = false which make $.fn.proveField() to ingore the state and therefore always validate.
 	- After validation save validation result in virtual state.
 
-Should reconsider renaming the `state` value returned by the validators. Perhaps, call it something else like `valid` instead.
-
 ### Reset Input and Forms
 
 Reset input or form
