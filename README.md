@@ -60,7 +60,7 @@ This lib makes heavy use of the jQuery plugin framework. All validators and deco
 
 ## Examples
 
-Please see the examples folder (examples folder)[./examples].
+Please see the [examples folder](./examples).
 
 ## Prove Options
 
