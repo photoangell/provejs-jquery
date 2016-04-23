@@ -7,10 +7,6 @@
 		return exist;
 	}
 
-	function clone(obj){
-		return $.extend({}, obj);
-	}
-
 	$.fn.proveInput = function(field) {
 
 		var data, isValid;
@@ -21,7 +17,7 @@
 		// return early if nothing to do
 		if (!isEnabled) {
 			// trigger event indicating validation result
-			input.trigger('validated.field.prove', data);
+			input.trigger('validated.input.prove', data);
 			return isValid;
 		}
 
@@ -51,7 +47,7 @@
 		});
 
 		//trigger event indicating validation results
-		input.trigger('validated.field.prove', data);
+		input.trigger('validated.input.prove', data);
 
 		return isValid;
 

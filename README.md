@@ -56,7 +56,7 @@ This lib introduces a number of [decorator plugins](./src/decorators) to decorat
 
 All other form validation libraries are jQuery plugins, but they stop there. They all create thier own proprietary framework for their validation rules and methods. Instead they should have just created their validator methods as jQuery plugins. This would allow the sharing of validators between form validation libs. As a general rule if you are passing in a DOM reference into a method, then you should consider making that method a jQuery plugin.
 
-This lib makes heavy use of the jQuery plugin framework. All validators and decorators are standalone jQuery plugins. All of them are very composable, extendable, and widely understood by the development community. The only draw back of making a jquery plugin built from a suit of other jquery plugins is populuting the $.fn.* namespace. However, after working with design goal the benefits out weight the drawbacks. I believe the code easier to understand and maintain. The result is much cleaner smaller modules. 
+This lib makes heavy use of the jQuery plugin framework. All validators and decorators are standalone jQuery plugins. All of them are very composable, extendable, and widely understood by the development community. The only draw back of making a jquery plugin built from a suit of other jquery plugins is populuting the $.fn.* namespace. However, after working with design goal the benefits out weight the drawbacks. I believe the code easier to understand and maintain. The result is much cleaner smaller modules.
 
 ## Examples
 
@@ -82,13 +82,13 @@ Prove is both a consumer and publisher of events.
 
 The following events are published (emitted) by Prove. The decorator plugin listens to these events in order to decorate the form. Your code may also listen to these events.
 
-#### Event: `validated.field.prove` ####
+#### Event: `validated.input.prove` ####
 - **Description** A field has been validated.
 - **Publisher** Form input DOM element.
 - **Listener** Attach your listener to the form container.
 
 ```javascript
-form.on('validated.field.prove', function(event, data){
+form.on('validated.input.prove', function(event, data){
 	var input = $(event.target);
 	var state = data.state; //validation state of input (true, false, null)
 	var validator = data.validator;
@@ -216,7 +216,7 @@ There are many other form validation libraries. Just about any of them will work
 ### Virtual State
 
 - Initalize state on setup.
-	- save input value in state. 
+	- save input value in state.
 - On $.fn.proveField()
 	- If input value is not different than state value then do not validate. Return the previously computed validation result.
 	- Can pass field.stateful = false which make $.fn.proveField() to ingore the state and therefore always validate.

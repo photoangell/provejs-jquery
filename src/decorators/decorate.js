@@ -7,7 +7,7 @@
 		var form = $(this);
 
 		// decorate the form
-		form.on('validated.field.prove', function(event, data){
+		form.on('validated.input.prove', function(event, data){
 			var input = $(event.target);
 			if (framework === 'bootstrap') {
 				input.bootstrap(data);

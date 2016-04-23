@@ -7,7 +7,7 @@
 		'setup.form.prove',
 
 		'validate.input.prove',
-		'validated.field.prove',
+		'validated.input.prove',
 		'validated.form.prove',
 
 		'destroyed.field.prove',

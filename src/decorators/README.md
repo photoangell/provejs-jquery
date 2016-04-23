@@ -11,4 +11,4 @@ Decorators should do the following on validation result valid:
 	- Indicates the input is not-valid.
 	- Decorators should decorate for failure.
 
-The **validation valid** will be passed to the decorators via the `validated.field.prove` event data.
+The **validation valid** will be passed to the decorators via the `validated.input.prove` event data.
