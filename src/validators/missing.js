@@ -5,11 +5,11 @@
 
 		options.message = 'Prove validator "' + options.validator+ '" not found.';
 
-		//return current validation state
+		//return validation result
 		return {
 			validator: options.validator,
 			field: options.field,
-			state: false
+			valid: false
 		};
 	};
 }(window.jQuery);

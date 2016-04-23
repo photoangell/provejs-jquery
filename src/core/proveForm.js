@@ -2,13 +2,13 @@
 	"use strict";
 
 	//isProved can be true, false, undefined.
-	function toggleState(state, isProved){
+	function toggleState(isValid, isProved){
 		if (isProved === false) {
-			state = false;
+			isValid = false;
 		} else {
-			if (isProved === true && state !== false) state = true;
+			if (isProved === true && isValid !== false) isValid = true;
 		}
-		return state;
+		return isValid;
 	}
 
 	$.fn.proveForm = function() {
@@ -18,7 +18,7 @@
 		var states = prove.states;
 		var fields = prove.options.fields;
 		var filter = true;
-		var state = true;
+		var valid = true;
 
 		// Loop inputs and validate them. There may be multiple
 		// identical inputs (ie radios) for which we do not want to
@@ -30,12 +30,12 @@
 			var field = fields[this.field];
 			var isProved = input.proveInput(field, states);
 
-			state = toggleState(state, isProved);
+			valid = toggleState(valid, isProved);
 		});
 
-		// Trigger event indicating validation state.
+		// Trigger event indicating validation result
 		form.trigger('validated.form.prove', {
-			state: state
+			valid: valid
 		});
 
 	};

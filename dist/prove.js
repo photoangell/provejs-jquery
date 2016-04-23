@@ -343,13 +343,13 @@
 	"use strict";
 
 	//isProved can be true, false, undefined.
-	function toggleState(state, isProved){
+	function toggleState(isValid, isProved){
 		if (isProved === false) {
-			state = false;
+			isValid = false;
 		} else {
-			if (isProved === true && state !== false) state = true;
+			if (isProved === true && isValid !== false) isValid = true;
 		}
-		return state;
+		return isValid;
 	}
 
 	$.fn.proveForm = function() {
@@ -359,7 +359,7 @@
 		var states = prove.states;
 		var fields = prove.options.fields;
 		var filter = true;
-		var state = true;
+		var valid = true;
 
 		// Loop inputs and validate them. There may be multiple
 		// identical inputs (ie radios) for which we do not want to
@@ -371,12 +371,12 @@
 			var field = fields[this.field];
 			var isProved = input.proveInput(field, states);
 
-			state = toggleState(state, isProved);
+			valid = toggleState(valid, isProved);
 		});
 
-		// Trigger event indicating validation state.
+		// Trigger event indicating validation result
 		form.trigger('validated.form.prove', {
-			state: state
+			valid: valid
 		});
 
 	};
@@ -404,7 +404,7 @@
 
 		// return early if nothing to do
 		if (!isEnabled) {
-			// trigger event indicating validation state
+			// trigger event indicating validation result
 			input.trigger('validated.field.prove', data);
 			return isValid;
 		}
@@ -423,21 +423,18 @@
 			// Compose data the decorator will be interested in
 			data = {
 				field: result.field,
-				state: result.state,
+				valid: result.valid,
 				message: config.message,
-				validator: {
-					name: result.validator,
-					config: clone(config)
-				}
+				validator: result.validator
 			};
 
-			isValid = result.state;
+			isValid = result.valid;
 
 			// return of false to break loop
 			return isValid;
 		});
 
-		//trigger event indicating validation state
+		//trigger event indicating validation results
 		input.trigger('validated.field.prove', data);
 
 		return isValid;
@@ -730,11 +727,11 @@
 			});
 		}
 
-		//return current validation state
+		//return validation result
 		return {
 			validator: 'proveEqualTo',
 			field: options.field,
-			state: isValid
+			valid: isValid
 		};
 	};
 }(window.jQuery);
@@ -742,13 +739,6 @@
 !function ($) {
 	"use strict";
 
-	/**
-	* Required validator.
-	* @param {object} options The validator configuration.
-	* @option {string or array} state The input value to validate.
-	* @option {object} values All input values.
-	* @return {bool or null} The result of the validation.
-	*/
 	$.fn.proveLength = function(options){
 
 		var input = $(this);
@@ -783,7 +773,7 @@
 		return {
 			validator: 'proveLength',
 			field: options.field,
-			state: isValid
+			valid: isValid
 		};
 	};
 }(window.jQuery);
@@ -811,7 +801,7 @@
 		return {
 			validator: 'proveMax',
 			field: options.field,
-			state: isValid
+			valid: isValid
 		};
 	};
 }(window.jQuery);
@@ -839,7 +829,7 @@
 		return {
 			validator: 'proveMin',
 			field: options.field,
-			state: isValid
+			valid: isValid
 		};
 	};
 }(window.jQuery);
@@ -851,11 +841,11 @@
 
 		options.message = 'Prove validator "' + options.validator+ '" not found.';
 
-		//return current validation state
+		//return validation result
 		return {
 			validator: options.validator,
 			field: options.field,
-			state: false
+			valid: false
 		};
 	};
 }(window.jQuery);
@@ -876,11 +866,11 @@
 
 		if (!isEnabled){
 			// Validators should return undefined when there is no value.
-			// Decoraters will teardown any decoration when they receive an `undefined` validation state.
+			// Decoraters will teardown any decoration when they receive an `undefined` validation result.
 			isValid = undefined;
 		} else if (!hasValue) {
 			// All validators (except proveRequired) should return undefined when there is no value.
-			// Decoraters will teardown any decoration when they receive an `undefined` validation state.
+			// Decoraters will teardown any decoration when they receive an `undefined` validation result.
 			isValid = undefined;
 		} else if (regex instanceof RegExp) {
 			isValid = regex.test(value);
@@ -898,7 +888,7 @@
 		return {
 			validator: 'provePattern',
 			field: options.field,
-			state: isValid
+			valid: isValid
 		};
 	};
 
@@ -928,7 +918,7 @@
 		return {
 			validator: 'provePrecision',
 			field: options.field,
-			state: isValid
+			valid: isValid
 		};
 	};
 }(window.jQuery);
@@ -956,7 +946,7 @@
 		return {
 			validator: 'proveRequired',
 			field: options.field,
-			state: isValid
+			valid: isValid
 		};
 	};
 }(window.jQuery);
@@ -974,11 +964,11 @@
 
 		if (!isEnabled){
 			// Validators should return undefined when there is no value.
-			// Decoraters will teardown any decoration when they receive an `undefined` validation state.
+			// Decoraters will teardown any decoration when they receive an `undefined` validation result.
 			isValid = undefined;
 		} else if (!hasValue) {
 			// All validators (except proveRequired) should return undefined when there is no value.
-			// Decoraters will teardown any decoration when they receive an `undefined` validation state.
+			// Decoraters will teardown any decoration when they receive an `undefined` validation result.
 			isValid = undefined;
 		} else {
 			//todo: validate uniqueness this here. Options include:
@@ -999,7 +989,7 @@
 		return {
 			validator: 'proveUnique',
 			field: options.field,
-			state: isValid
+			valid: isValid
 		};
 	};
 

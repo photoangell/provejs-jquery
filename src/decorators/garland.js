@@ -9,7 +9,7 @@
 		if (options.debug){
 			console.groupCollapsed('Decorators.garland()');
 				console.log('input', input);
-				console.log('state', options.state);
+				console.log('valid', options.valid);
 				console.log('wrapper', options.wrapper);
 				console.log('placement', options.placement);
 				console.log('message', options.message);
@@ -27,7 +27,7 @@
 			container.find('.garland-wrapper').remove();
 		}
 
-		if (options.state === true) {
+		if (options.valid === true) {
 			teardown(input);
 			setup(input, options);
 		} else {

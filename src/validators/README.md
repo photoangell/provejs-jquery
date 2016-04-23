@@ -35,11 +35,11 @@ Each validator should return an object:
 {
 	validator: 'proveRequired', // validator name
 	field: 'email', // field name
-	state: true // either true, false, undefined
+	valid: true // either true, false, undefined
 }
 ```
 
-Where a `state` value of:
+Where a `valid` value of:
 - **undefined**
 	- Indicates no validation happened.
 	- Decorators will teardown any decoration.

@@ -19,11 +19,11 @@
 			});
 		}
 
-		//return current validation state
+		//return validation result
 		return {
 			validator: 'proveEqualTo',
 			field: options.field,
-			state: isValid
+			valid: isValid
 		};
 	};
 }(window.jQuery);

@@ -1,13 +1,6 @@
 !function ($) {
 	"use strict";
 
-	/**
-	* Required validator.
-	* @param {object} options The validator configuration.
-	* @option {string or array} state The input value to validate.
-	* @option {object} values All input values.
-	* @return {bool or null} The result of the validation.
-	*/
 	$.fn.proveLength = function(options){
 
 		var input = $(this);
@@ -42,7 +35,7 @@
 		return {
 			validator: 'proveLength',
 			field: options.field,
-			state: isValid
+			valid: isValid
 		};
 	};
 }(window.jQuery);

@@ -9,16 +9,16 @@
 		if (options.debug){
 			console.groupCollapsed('Decorators.tinsel()');
 				console.log('input', input);
-				console.log('state', options.state);
+				console.log('valid', options.valid);
 				console.log('placement', options.placement);
 				console.log('classSuccess', options.classSuccess);
 				console.log('classFailure', options.classFailure);
 			console.groupEnd();
 		}
 
-		function setup(container, state){
+		function setup(container, valid){
 			//var container = input.huntout(options.placement);
-			var klass = (state)? options.classSuccess : options.classFailure;
+			var klass = (valid)? options.classSuccess : options.classFailure;
 			container.addClass(klass);
 		}
 
@@ -28,8 +28,8 @@
 		}
 
 		teardown(input);
-		if (options.state === true || options.state === false) {
-			setup(input, options.state);
+		if (options.valid === true || options.valid === false) {
+			setup(input, options.valid);
 		}
 	};
 }(window.jQuery);

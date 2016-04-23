@@ -1,8 +1,8 @@
 !function ($) {
 	"use strict";
 
-	function inverse(state){
-		return (state === undefined)? state : !state;
+	function inverse(valid){
+		return (valid === undefined)? valid : !valid;
 	}
 
 	$.fn.bootstrap = function(options){
@@ -13,20 +13,20 @@
 		var parent2 = parent1.parent();
 		var parent3 = parent2.parent();
 
-		// add success class on options.state = true.
-		// add failure class on options.state = false.
-		// remove success and failure classes on options.state = undefined
+		// add success class on options.valid = true.
+		// add failure class on options.valid = false.
+		// remove success and failure classes on options.valid = undefined
 		var tinsel = {
-			state: options.state,
+			valid: options.valid,
 			classSuccess: 'has-success',
 			classFailure: 'has-error'
 		};
 
-		// show message on options.state = false.
-		// remove message on options.state = true.
-		// remove message on options.state = undefined.
+		// show message on options.valid = false.
+		// remove message on options.valid = true.
+		// remove message on options.valid = undefined.
 		var garland = {
-			state: inverse(options.state),
+			valid: inverse(options.valid),
 			wrapper: '<span class="help-block"></span>',
 			message: options.message
 		};
@@ -90,7 +90,7 @@
 		if (options.debug){
 			console.groupCollapsed('Decorators.garland()');
 				console.log('input', input);
-				console.log('state', options.state);
+				console.log('valid', options.valid);
 				console.log('wrapper', options.wrapper);
 				console.log('placement', options.placement);
 				console.log('message', options.message);
@@ -108,7 +108,7 @@
 			container.find('.garland-wrapper').remove();
 		}
 
-		if (options.state === true) {
+		if (options.valid === true) {
 			teardown(input);
 			setup(input, options);
 		} else {
@@ -128,16 +128,16 @@
 		if (options.debug){
 			console.groupCollapsed('Decorators.tinsel()');
 				console.log('input', input);
-				console.log('state', options.state);
+				console.log('valid', options.valid);
 				console.log('placement', options.placement);
 				console.log('classSuccess', options.classSuccess);
 				console.log('classFailure', options.classFailure);
 			console.groupEnd();
 		}
 
-		function setup(container, state){
+		function setup(container, valid){
 			//var container = input.huntout(options.placement);
-			var klass = (state)? options.classSuccess : options.classFailure;
+			var klass = (valid)? options.classSuccess : options.classFailure;
 			container.addClass(klass);
 		}
 
@@ -147,8 +147,8 @@
 		}
 
 		teardown(input);
-		if (options.state === true || options.state === false) {
-			setup(input, options.state);
+		if (options.valid === true || options.valid === false) {
+			setup(input, options.valid);
 		}
 	};
 }(window.jQuery);

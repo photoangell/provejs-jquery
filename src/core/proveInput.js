@@ -20,7 +20,7 @@
 
 		// return early if nothing to do
 		if (!isEnabled) {
-			// trigger event indicating validation state
+			// trigger event indicating validation result
 			input.trigger('validated.field.prove', data);
 			return isValid;
 		}
@@ -39,21 +39,18 @@
 			// Compose data the decorator will be interested in
 			data = {
 				field: result.field,
-				state: result.state,
+				valid: result.valid,
 				message: config.message,
-				validator: {
-					name: result.validator,
-					config: clone(config)
-				}
+				validator: result.validator
 			};
 
-			isValid = result.state;
+			isValid = result.valid;
 
 			// return of false to break loop
 			return isValid;
 		});
 
-		//trigger event indicating validation state
+		//trigger event indicating validation results
 		input.trigger('validated.field.prove', data);
 
 		return isValid;

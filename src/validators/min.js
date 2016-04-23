@@ -21,7 +21,7 @@
 		return {
 			validator: 'proveMin',
 			field: options.field,
-			state: isValid
+			valid: isValid
 		};
 	};
 }(window.jQuery);

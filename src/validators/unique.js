@@ -11,11 +11,11 @@
 
 		if (!isEnabled){
 			// Validators should return undefined when there is no value.
-			// Decoraters will teardown any decoration when they receive an `undefined` validation state.
+			// Decoraters will teardown any decoration when they receive an `undefined` validation result.
 			isValid = undefined;
 		} else if (!hasValue) {
 			// All validators (except proveRequired) should return undefined when there is no value.
-			// Decoraters will teardown any decoration when they receive an `undefined` validation state.
+			// Decoraters will teardown any decoration when they receive an `undefined` validation result.
 			isValid = undefined;
 		} else {
 			//todo: validate uniqueness this here. Options include:
@@ -36,7 +36,7 @@
 		return {
 			validator: 'proveUnique',
 			field: options.field,
-			state: isValid
+			valid: isValid
 		};
 	};
 

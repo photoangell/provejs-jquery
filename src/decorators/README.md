@@ -1,6 +1,6 @@
 ## Decorators
 
-Decorators should do the following on **validation state**:
+Decorators should do the following on validation result valid:
 - `undefined`
 	- Indicates no validation happened.
 	- Decorators should teardown any decoration.
@@ -11,4 +11,4 @@ Decorators should do the following on **validation state**:
 	- Indicates the input is not-valid.
 	- Decorators should decorate for failure.
 
-The **validation state** will be passed to the decorators via the `validated.field.prove` event data. 
+The **validation valid** will be passed to the decorators via the `validated.field.prove` event data.

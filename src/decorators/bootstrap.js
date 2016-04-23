@@ -1,8 +1,8 @@
 !function ($) {
 	"use strict";
 
-	function inverse(state){
-		return (state === undefined)? state : !state;
+	function inverse(valid){
+		return (valid === undefined)? valid : !valid;
 	}
 
 	$.fn.bootstrap = function(options){
@@ -13,20 +13,20 @@
 		var parent2 = parent1.parent();
 		var parent3 = parent2.parent();
 
-		// add success class on options.state = true.
-		// add failure class on options.state = false.
-		// remove success and failure classes on options.state = undefined
+		// add success class on options.valid = true.
+		// add failure class on options.valid = false.
+		// remove success and failure classes on options.valid = undefined
 		var tinsel = {
-			state: options.state,
+			valid: options.valid,
 			classSuccess: 'has-success',
 			classFailure: 'has-error'
 		};
 
-		// show message on options.state = false.
-		// remove message on options.state = true.
-		// remove message on options.state = undefined.
+		// show message on options.valid = false.
+		// remove message on options.valid = true.
+		// remove message on options.valid = undefined.
 		var garland = {
-			state: inverse(options.state),
+			valid: inverse(options.valid),
 			wrapper: '<span class="help-block"></span>',
 			message: options.message
 		};

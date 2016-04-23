@@ -14,11 +14,11 @@
 
 		if (!isEnabled){
 			// Validators should return undefined when there is no value.
-			// Decoraters will teardown any decoration when they receive an `undefined` validation state.
+			// Decoraters will teardown any decoration when they receive an `undefined` validation result.
 			isValid = undefined;
 		} else if (!hasValue) {
 			// All validators (except proveRequired) should return undefined when there is no value.
-			// Decoraters will teardown any decoration when they receive an `undefined` validation state.
+			// Decoraters will teardown any decoration when they receive an `undefined` validation result.
 			isValid = undefined;
 		} else if (regex instanceof RegExp) {
 			isValid = regex.test(value);
@@ -36,7 +36,7 @@
 		return {
 			validator: 'provePattern',
 			field: options.field,
-			state: isValid
+			valid: isValid
 		};
 	};
 
