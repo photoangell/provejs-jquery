@@ -22,7 +22,8 @@
 		return {
 			validator: 'otherDescriptionRequired',
 			field: options.field,
-			state: hasValue
+			valid: hasValue,
+			message: options.message
 		};
 	};
 
@@ -48,7 +49,8 @@
 		return {
 			validator: 'otherDescriptionRequired',
 			field: options.field,
-			state: isValid
+			valid: isValid,
+			message: options.message
 		};
 	};
 
@@ -59,21 +61,30 @@
 	var inputs = form.find('input[name="charges"]');
 	var cfg = {
 		fields: {
+			// This field config will match multiple form inputs. Therefore, when the entire
+			// form is validated we can either validate each individually or as a collection.
+			// In this case we specify to validate the inputs as a single collection. When
+			// we set `validateIndividually` to false prove will only validate the first found
+			// input. However, the live input validation may validate any of the inputs.
 			checkboxes: {
-				multiple: false,
+				stateful: false,
+				validateIndividually: false, //todo: perhas `group` = true
+				trigger: 'change',
 				validators:{
+					//
 					proveRequired: {
 						//debug: true,
 						message: 'Please choose browsers you use for developing.',
 					},
 					otherDescriptionRequired: {
 						//debug: true,
-						message: 'Please enter the description of the other charge.',
+						message: 'Please enter your browser name.',
 					},
+					/*
 					otherDescriptionPattern: {
 						//debug: true,
-						message: 'Invalid character in the description of the other charge.'
-					}
+						message: 'Invalid character.'
+					}*/
 				}
 			}
 		}

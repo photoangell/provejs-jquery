@@ -22,7 +22,9 @@
 		return {
 			validator: 'provePrecision',
 			field: options.field,
-			valid: isValid
+			valid: isValid,
+			value: value,
+			message: options.message
 		};
 	};
 }(window.jQuery);

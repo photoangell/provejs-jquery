@@ -18,7 +18,7 @@
 				trigger: 'click',
 				validators: {
 					proveRequired: {
-						debug: true,
+						//debug: true,
 						message: 'Choose one.',
 					}
 				}
@@ -32,6 +32,7 @@
 					}
 				}
 			},
+			// This field config will match single input.
 			charge_descriptions: {
 				enabled: '#summarize:checked', //booleanator (can't use :visible here)
 				trigger: 'change', //<-- tagsinput plugin triggers change
@@ -45,9 +46,11 @@
 					}
 				}
 			},
+			// This field config will match zero or more form inputs. By default prove will
+			// validate multiple matched inputs individually.
 			'dynamic1[]': {
 				enabled:'#itemize:checked', //booleanator
-				multiple: true,
+				//validateIndividually: true,
 				validators:{
 					proveRequired: {
 						//debug: true,
@@ -102,7 +105,7 @@
 	}
 
 	function addChargeRow(event){
-		console.log('addChargeRow()');
+		//console.log('addChargeRow()');
 
 		event.preventDefault();
 		var template = $('#row-principle-charge').text();
@@ -139,7 +142,7 @@
 	}
 
 	function resetTags() {
-		console.log('resetTags()');
+		//console.log('resetTags()');
 		select.tagsinput('removeAll');
 		select.validate();
 	}

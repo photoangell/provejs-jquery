@@ -25,15 +25,37 @@
 	// Any field for which you might have multiple inputs of the same name (checkbox, radio, name="fields[]")
 	// for which you want to be validated individually, you can set the field.multiple = true.
 	$.fn.filterables = function(field){
+
 		var found = $(this);
 		var isRadio = found.is('[type="radio"]');
-		var hasChecked = (found.filter(':checked').length > 0);
+		var hasAtLeastOneChecked = (found.filter(':checked').length > 0);
 
+		// determine how to handle multiple found
 		var filtered = found.filter(function(index, element){
 
-			//only filter a radios if atleast one is selected and then filter to the selected radio
-			if (isRadio && hasChecked && !field.multiple){
-				return $(element).is(':checked');
+			if (found.length === 0){
+				// No inputs found. Expect this is an unreachable condition, but
+				// seems ok to filter out the not found input.
+				return false;
+			} else if (found.length === 1) {
+				// We are only interested in filter multiple inputs,
+				// so with a single found input nothing to filter here.
+				return true;
+			} else if (field.validateIndividually === true){
+				// Field config indicates we should validate these inputs individually.
+				return true;
+			} else if (field.validateIndividually === false) {
+				// Field config indicates we should validate these inputs as a collection.
+				// Therefore, only validate the firsts element.
+				return (index === 0);
+			} else if (isRadio && hasAtLeastOneChecked){
+				if (hasAtLeastOneChecked){
+					// Since radio has at least one checked just validate the checked input.
+					return $(element).is(':checked');
+				} else {
+					// Since radio has no checked inputs just validate the first radio input.
+					return (index === 0);
+				}
 			} else {
 				return true;
 			}
@@ -391,49 +413,69 @@
 		return exist;
 	}
 
-	$.fn.proveInput = function(field) {
+	function noChange(state, value){
+		if (!state) return false;
+		return (state.value === value);
+	}
 
-		var data, isValid;
+	function warnIncorrectResult(result, validator){
+		if (!('valid' in result)) console.warn('Missing `valid` property in validator ($.fn.' + validator + ') result.');
+		if (!('field' in result)) console.warn('Missing `field` property in validator ($.fn.' + validator + ') result.');
+		if (!('validator' in result)) console.warn('Missing `validator` property in validator ($.fn.' + validator + ') result.');
+		if (!('message' in result)) console.warn('Missing `message` property in validator ($.fn.' + validator + ') result.');
+	}
+
+	// validate a single input
+	//todo: warn if result is not an object with the required properties
+	$.fn.proveInput = function(field, states) {
+
+		//var data;
+		var result;
 		var validators = field.validators || {};
 		var input = $(this);
 		var isEnabled = input.booleanator(field.enabled);
+		var uuid = input.uuid();
+		var state = states[uuid];
+		var value = input.vals();
+		var isStateful = (field.stateful !== false);
+		var noChanged = noChange(state, value);
 
-		// return early if nothing to do
+		console.log('proveInput()', field.name);
+
+		// return early
 		if (!isEnabled) {
-			// trigger event indicating validation result
-			input.trigger('validated.input.prove', data);
-			return isValid;
+			// trigger event
+			input.trigger('validated.input.prove', result);
+			return;
+		} else if (isStateful && noChanged) {
+			input.trigger('validated.input.prove', state); //clone here?
+			return state.valid;
 		}
 
-		// loop each validator
+		// loop validators
 		$.each(validators, function(validator, config){
 
 			config.field = field.name;
 
 			// invoke validator plugin
 			if (!isPlugin(validator)) return false;
-			var result = input[validator](config);
+			result = input[validator](config);
 
-			//todo: warn if result is not an object with the required properties
+			warnIncorrectResult(result, validator);
 
-			// Compose data the decorator will be interested in
-			data = {
-				field: result.field,
-				valid: result.valid,
-				message: config.message,
-				validator: result.validator
-			};
-
-			isValid = result.valid;
-
-			// return of false to break loop
-			return isValid;
+			// break loop
+			return result.valid;
 		});
 
-		//trigger event indicating validation results
-		input.trigger('validated.input.prove', data);
+		console.log('result', value, result.valid);
 
-		return isValid;
+		//save state
+		states[uuid] = result;
+
+		//trigger event
+		input.trigger('validated.input.prove', result);
+
+		return result.valid;
 
 	};
 }(window.jQuery);
@@ -710,9 +752,10 @@
 		var input = $(this);
 		var other = $(options.equalTo);
 		var form = input.closest('form');
+		var value = input.val();
 		var isSetup = input.hasClass('validator-equalto-setup');
 		var isEnabled = $('body').booleanator(options.enabled);
-		var isValid = (isEnabled)? (input.val() === other.val()) : undefined;
+		var isValid = (isEnabled)? (value === other.val()) : undefined;
 
 		//setup event to validate this input when other input value changes
 		if (!isSetup){
@@ -727,7 +770,9 @@
 		return {
 			validator: 'proveEqualTo',
 			field: options.field,
-			valid: isValid
+			valid: isValid,
+			value: value,
+			message: options.message
 		};
 	};
 }(window.jQuery);
@@ -769,7 +814,9 @@
 		return {
 			validator: 'proveLength',
 			field: options.field,
-			valid: isValid
+			valid: isValid,
+			value: value,
+			message: options.message
 		};
 	};
 }(window.jQuery);
@@ -797,7 +844,9 @@
 		return {
 			validator: 'proveMax',
 			field: options.field,
-			valid: isValid
+			valid: isValid,
+			value: value,
+			message: options.message
 		};
 	};
 }(window.jQuery);
@@ -825,7 +874,9 @@
 		return {
 			validator: 'proveMin',
 			field: options.field,
-			valid: isValid
+			valid: isValid,
+			value: value,
+			message: options.message
 		};
 	};
 }(window.jQuery);
@@ -835,13 +886,13 @@
 
 	$.fn.proveMissing = function( options ) {
 
-		options.message = 'Prove validator "' + options.validator+ '" not found.';
-
 		//return validation result
 		return {
 			validator: options.validator,
 			field: options.field,
-			valid: false
+			valid: false,
+			value: undefined,
+			message: 'Prove validator "' + options.validator+ '" not found.'
 		};
 	};
 }(window.jQuery);
@@ -884,7 +935,9 @@
 		return {
 			validator: 'provePattern',
 			field: options.field,
-			valid: isValid
+			valid: isValid,
+			value: value,
+			message: options.message
 		};
 	};
 
@@ -914,7 +967,9 @@
 		return {
 			validator: 'provePrecision',
 			field: options.field,
-			valid: isValid
+			valid: isValid,
+			value: value,
+			message: options.message
 		};
 	};
 }(window.jQuery);
@@ -942,7 +997,9 @@
 		return {
 			validator: 'proveRequired',
 			field: options.field,
-			valid: isValid
+			valid: isValid,
+			value: value,
+			message: options.message
 		};
 	};
 }(window.jQuery);

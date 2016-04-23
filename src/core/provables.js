@@ -25,15 +25,37 @@
 	// Any field for which you might have multiple inputs of the same name (checkbox, radio, name="fields[]")
 	// for which you want to be validated individually, you can set the field.multiple = true.
 	$.fn.filterables = function(field){
+
 		var found = $(this);
 		var isRadio = found.is('[type="radio"]');
-		var hasChecked = (found.filter(':checked').length > 0);
+		var hasAtLeastOneChecked = (found.filter(':checked').length > 0);
 
+		// determine how to handle multiple found
 		var filtered = found.filter(function(index, element){
 
-			//only filter a radios if atleast one is selected and then filter to the selected radio
-			if (isRadio && hasChecked && !field.multiple){
-				return $(element).is(':checked');
+			if (found.length === 0){
+				// No inputs found. Expect this is an unreachable condition, but
+				// seems ok to filter out the not found input.
+				return false;
+			} else if (found.length === 1) {
+				// We are only interested in filter multiple inputs,
+				// so with a single found input nothing to filter here.
+				return true;
+			} else if (field.validateIndividually === true){
+				// Field config indicates we should validate these inputs individually.
+				return true;
+			} else if (field.validateIndividually === false) {
+				// Field config indicates we should validate these inputs as a collection.
+				// Therefore, only validate the firsts element.
+				return (index === 0);
+			} else if (isRadio && hasAtLeastOneChecked){
+				if (hasAtLeastOneChecked){
+					// Since radio has at least one checked just validate the checked input.
+					return $(element).is(':checked');
+				} else {
+					// Since radio has no checked inputs just validate the first radio input.
+					return (index === 0);
+				}
 			} else {
 				return true;
 			}

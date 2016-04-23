@@ -7,49 +7,69 @@
 		return exist;
 	}
 
-	$.fn.proveInput = function(field) {
+	function noChange(state, value){
+		if (!state) return false;
+		return (state.value === value);
+	}
 
-		var data, isValid;
+	function warnIncorrectResult(result, validator){
+		if (!('valid' in result)) console.warn('Missing `valid` property in validator ($.fn.' + validator + ') result.');
+		if (!('field' in result)) console.warn('Missing `field` property in validator ($.fn.' + validator + ') result.');
+		if (!('validator' in result)) console.warn('Missing `validator` property in validator ($.fn.' + validator + ') result.');
+		if (!('message' in result)) console.warn('Missing `message` property in validator ($.fn.' + validator + ') result.');
+	}
+
+	// validate a single input
+	//todo: warn if result is not an object with the required properties
+	$.fn.proveInput = function(field, states) {
+
+		//var data;
+		var result;
 		var validators = field.validators || {};
 		var input = $(this);
 		var isEnabled = input.booleanator(field.enabled);
+		var uuid = input.uuid();
+		var state = states[uuid];
+		var value = input.vals();
+		var isStateful = (field.stateful !== false);
+		var noChanged = noChange(state, value);
 
-		// return early if nothing to do
+		console.log('proveInput()', field.name);
+
+		// return early
 		if (!isEnabled) {
-			// trigger event indicating validation result
-			input.trigger('validated.input.prove', data);
-			return isValid;
+			// trigger event
+			input.trigger('validated.input.prove', result);
+			return;
+		} else if (isStateful && noChanged) {
+			input.trigger('validated.input.prove', state); //clone here?
+			return state.valid;
 		}
 
-		// loop each validator
+		// loop validators
 		$.each(validators, function(validator, config){
 
 			config.field = field.name;
 
 			// invoke validator plugin
 			if (!isPlugin(validator)) return false;
-			var result = input[validator](config);
+			result = input[validator](config);
 
-			//todo: warn if result is not an object with the required properties
+			warnIncorrectResult(result, validator);
 
-			// Compose data the decorator will be interested in
-			data = {
-				field: result.field,
-				valid: result.valid,
-				message: config.message,
-				validator: result.validator
-			};
-
-			isValid = result.valid;
-
-			// return of false to break loop
-			return isValid;
+			// break loop
+			return result.valid;
 		});
 
-		//trigger event indicating validation results
-		input.trigger('validated.input.prove', data);
+		console.log('result', value, result.valid);
 
-		return isValid;
+		//save state
+		states[uuid] = result;
+
+		//trigger event
+		input.trigger('validated.input.prove', result);
+
+		return result.valid;
 
 	};
 }(window.jQuery);

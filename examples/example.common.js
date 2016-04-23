@@ -18,7 +18,7 @@
 
 	// stop form submit
 	form.submit(function(event){
-		console.log('stopping submit because only a demo');
+		console.log('demo: stopping submit...');
 		event.preventDefault();
 	});
 
@@ -34,14 +34,24 @@
 
 		var input = $(event.target);
 		var ts = new Date(event.timeStamp);
-		var tr = $('<tr><td></td><td></td><td></td><td></td><td></td></tr>');
+		var tr = $('<tr><td></td><td></td><td></td><td></td></tr>');
 		var td = tr.find('td');
-		td.eq(0).text(event.type);
-		td.eq(1).text(event.namespace);
-		td.eq(2).text(input.attr('name') || 'form');
-		td.eq(3).text(data.state);
-		td.eq(4).text(ts.toISOString());
+		var valid = validDecorator(data.valid);
+		td.eq(0).text(event.type + '.' + event.namespace);
+		td.eq(1).text(input.attr('name') || 'form');
+		td.eq(2).html(valid);
+		td.eq(3).text(ts.toISOString().split('T')[1].replace('Z', ''));
 		return tr;
+	}
+
+	function validDecorator(valid){
+		if (valid === true) {
+			return '<span class="label label-success">TRUE</span>';
+		} else if (valid === false) {
+			return '<span class="label label-danger">FALSE</span>';
+		} else {
+			return '<span class="label label-warning">RESET</span>';
+		}
 	}
 
 })();

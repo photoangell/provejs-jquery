@@ -36,7 +36,9 @@
 		return {
 			validator: 'provePattern',
 			field: options.field,
-			valid: isValid
+			valid: isValid,
+			value: value,
+			message: options.message
 		};
 	};
 

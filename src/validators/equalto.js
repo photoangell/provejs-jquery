@@ -6,9 +6,10 @@
 		var input = $(this);
 		var other = $(options.equalTo);
 		var form = input.closest('form');
+		var value = input.val();
 		var isSetup = input.hasClass('validator-equalto-setup');
 		var isEnabled = $('body').booleanator(options.enabled);
-		var isValid = (isEnabled)? (input.val() === other.val()) : undefined;
+		var isValid = (isEnabled)? (value === other.val()) : undefined;
 
 		//setup event to validate this input when other input value changes
 		if (!isSetup){
@@ -23,7 +24,9 @@
 		return {
 			validator: 'proveEqualTo',
 			field: options.field,
-			valid: isValid
+			valid: isValid,
+			value: value,
+			message: options.message
 		};
 	};
 }(window.jQuery);
