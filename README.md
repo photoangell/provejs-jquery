@@ -126,10 +126,10 @@ Prove listens to the following events on the form container and inputs (delegate
 ```javascript
 form.trigger('validate.form.prove');
 ```
-You can also perform form validation by:
+However, you should can simply call:
 
 ```javascript
-var isValid = form.data('prove').validate();
+var isValid = form.validate();
 ```
 
 #### Event: `validate.input.prove` ####
@@ -146,11 +146,11 @@ input.trigger('validate.input.prove'); // or input.validate()
 
 todo: document submit intercept options here.
 
-You will need to stop browser from submitting the form by:
+Should you want to stop the normally form submittion you will need to bind a handler to the form submit event:
 
 ```javascript
 form.submit(function(event){
-	event.preventDefault();
+	event.preventDefault(); // stop form submit
 
 	//do something else, like ajax submission of form
 });
