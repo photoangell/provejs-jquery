@@ -214,7 +214,7 @@ There are many other form validation libraries. Just about any of them will work
 
 ## Roadmap
 
-1. Deferred [validators](./src/core/README.md).
+1. Deferred [validators](./src/core/README.md#deferred-validation).
 
 
 ### Reset Input and Forms
