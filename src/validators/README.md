@@ -1,45 +1,26 @@
 # Prove Validators
 
 ## Anatomy of Validators
-- jQuery plugin with `this` context of the input to validate.
-- Single input param of options:
-	- `boolean` debug option: makes validator verbose
-	- `booleanator` enabled option: enables or disables the validator
-	- anything else the validator might need to perform validation.
-- Returns
-	- `true` on validation success
-	- `false` on validation was not successful
-	- `undefined` on validation was not performed (eg blank or empty input)
-- If validator binds any events they should be bound to the form container
-```javascript
-//inside validator
-$(this).closest('form').on()
-```
 
-You can make your own custom validator which is composed of other validators.
-
-```javascript
-//composable validator plugin - required email
-$.fn.requiredEmail = function(options){
-	var input = $(this);
-	var check1 = input.proveRequired(options1);
-	var check2 = input.provePattern(options2);
-	return (check1 && check2);
-};
-```
+Each validator is simply a jquery plugin which validates the input(s) value.
 
 ## Validator Return Value
 
-Each validator should return an object:
+Each validator should return either:
+- result object defined below,
+- jquery deferred which promises to return the result object below.
+
+Validation returned result object:
 ```javascript
 {
-	validator: 'proveRequired', // validator name
+	validator: 'nameOfValidator', // validator name
+	message: 'Your error message or error code used by the validation decorator.',
 	field: 'email', // field name
 	valid: true // either true, false, undefined
 }
 ```
 
-Where a `valid` value of:
+Where `valid` is either:
 - **undefined**
 	- Indicates no validation happened.
 	- Decorators will teardown any decoration.
