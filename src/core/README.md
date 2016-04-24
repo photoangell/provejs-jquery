@@ -17,3 +17,9 @@ prove.states[uuid].hash = hash
 ```
 The next time we encounter this input we can determine if the input value has changed.
 
+```javascript
+var uuid = input.uuid();
+var hash = input.hash();
+var state = prove.states[uuid];
+var dirty = (state.hash !== hash);
+```
