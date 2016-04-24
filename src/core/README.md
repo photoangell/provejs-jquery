@@ -6,17 +6,19 @@ Prove saves the validation state of inputs in memory, but does this without savi
 
 ### Initialization
 
-On initialization of prove each input is:
-- a uuid is created and saved on the input ($.fn.uuid),
-- the input's value is hashed and saved on the input ($.fn.dirty),
+On initialization of each input we create and save an uuid as data attribute:
 ```javascript
 var uuid = input.uuid();
-var dirty = input.dirty();
 ```
-The next time we encounter this input we can determine if the input value has changed.
+### On Validation
+
+During input validation we can retrieve the previous validation result using the uuid.
 
 ```javascript
 var uuid = input.uuid();
-var previousValidationResult = prove.states[uuid];
-var dirty = input.dirty(); // => true or false
+var previous = prove.states[uuid];
+```
+We also make use of a plugin to detect dirty inputs where the value has changed. The dirty plugin uses a hash algorithm to save a hash of the previous input's value to determine between validation attempts if the value has changed.
+```javascript
+var dirty = input.dirty();
 ```
