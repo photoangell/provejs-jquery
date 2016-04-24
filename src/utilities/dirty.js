@@ -14,24 +14,7 @@
 		return hash;
 	}
 
-/*	//https://github.com/darkskyapp/string-hash/blob/master/index.js
-	function hashCode2(str) {
-
-		var hash = 5381;
-		var i = str.length;
-
-		while(i) {
-			var code = str.charCodeAt(--i);
-			hash = (hash * 33) ^ code;
-		}
-
-		return hash >>> 0;
-	}*/
-
-
-	$.fn.dirty = function(field) {
-
-		field = field || {};
+	$.fn.dirty = function(makeDirty) {
 
 		var el = $(this);
 		var val = el.val() || '';
@@ -43,9 +26,9 @@
 		hash2 = hashCode(val);
 		dirty = (hash1 !== hash2);
 
-		// override dirty state for inputs which could be grouped
-		if (field.group) {
-			//groups are already dirty
+		// override dirty state
+		if (makeDirty) {
+			el.data('prove-hash', false);
 			return true;
 		} else if (el.is(':radio')){
 			return true;

@@ -23,20 +23,21 @@
 		var input = $(this);
 		var enabled = input.booleanator(field.enabled);
 		var stateful = input.booleanator(field.stateful);
-		var dirty = input.dirty(field);
+		var dirty = input.dirty(field.group);
 		var uuid = input.uuid();
 		var state = states[uuid];
 
 		console.groupCollapsed('proveInput()', field.name);
+		console.log('enabled', enabled);
 		console.log('state', state);
 		console.log('dirty', dirty);
 		console.groupEnd();
 
 		// return early
 		if (!enabled) {
-			// trigger event
 			input.trigger('validated.input.prove', result);
-			return;
+			states[uuid] = false;
+			return undefined;
 		} else if (stateful && state && !dirty) {
 			input.trigger('validated.input.prove', state); //clone here?
 			return state.valid;

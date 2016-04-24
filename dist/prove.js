@@ -426,20 +426,21 @@
 		var input = $(this);
 		var enabled = input.booleanator(field.enabled);
 		var stateful = input.booleanator(field.stateful);
-		var dirty = input.dirty(field);
+		var dirty = input.dirty(field.group);
 		var uuid = input.uuid();
 		var state = states[uuid];
 
 		console.groupCollapsed('proveInput()', field.name);
+		console.log('enabled', enabled);
 		console.log('state', state);
 		console.log('dirty', dirty);
 		console.groupEnd();
 
 		// return early
 		if (!enabled) {
-			// trigger event
 			input.trigger('validated.input.prove', result);
-			return;
+			states[uuid] = false;
+			return undefined;
 		} else if (stateful && state && !dirty) {
 			input.trigger('validated.input.prove', state); //clone here?
 			return state.valid;
@@ -610,24 +611,7 @@
 		return hash;
 	}
 
-/*	//https://github.com/darkskyapp/string-hash/blob/master/index.js
-	function hashCode2(str) {
-
-		var hash = 5381;
-		var i = str.length;
-
-		while(i) {
-			var code = str.charCodeAt(--i);
-			hash = (hash * 33) ^ code;
-		}
-
-		return hash >>> 0;
-	}*/
-
-
-	$.fn.dirty = function(field) {
-
-		field = field || {};
+	$.fn.dirty = function(makeDirty) {
 
 		var el = $(this);
 		var val = el.val() || '';
@@ -639,9 +623,9 @@
 		hash2 = hashCode(val);
 		dirty = (hash1 !== hash2);
 
-		// override dirty state for inputs which could be grouped
-		if (field.group) {
-			//groups are already dirty
+		// override dirty state
+		if (makeDirty) {
+			el.data('prove-hash', false);
 			return true;
 		} else if (el.is(':radio')){
 			return true;
