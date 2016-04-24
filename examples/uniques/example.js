@@ -4,15 +4,17 @@
 	var cfg = {
 		fields: {
 			'emails[]': {
+				group: false,
 				trigger: 'keyup',
 				validators: {
-/*					provePattern: {
+					provePattern: {
 						debug: false,
 						regex: '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,63}',
 						message: 'Invalid email address.' //optional, passed to decorator
-					},*/
+					},
 					proveUnique: {
 						debug: true,
+						uniqueTo: '[name="emails[]"]',
 						message: 'Not unique value.' //optional, passed to decorator
 					}
 				}
