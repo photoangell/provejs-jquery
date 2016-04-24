@@ -13,7 +13,7 @@ On initialization of prove each input is:
 ```javascript
 var uuid = input.uuid();
 var hash = input.hash();
-prove.states[uuid].hash = hash
+prove.states[uuid].hash = hash;
 ```
 The next time we encounter this input we can determine if the input value has changed.
 
