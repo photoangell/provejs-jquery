@@ -22,10 +22,6 @@
 		}
 	};
 
-	form.on('click', '#optout', function () {
-		email.validate();
-	});
-
 	//form plugins
 	form.prove(cfg);
 	form.decorate('bootstrap');

@@ -5,7 +5,6 @@
 		fields: {
 			email: {
 				//trigger: 'keyup',
-				//stateful: false, //can't be stateful because of the validator enabled booleanator
 				validators: {
 					proveRequired: {
 						//debug: true,
