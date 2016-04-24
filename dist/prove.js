@@ -27,7 +27,7 @@
 	$.fn.filterables = function(field){
 
 		var found = $(this);
-		var isRadio = found.is('[type="radio"]');
+		var isRadio = found.is(':radio');
 		var hasAtLeastOneChecked = (found.filter(':checked').length > 0);
 
 		// determine how to handle multiple found
@@ -239,12 +239,7 @@
 			form.provables(this.options.fields).each(function(){
 				var input = $(this);
 
-
-				// inialize input state
 				input.uuid();
-				//input.dirty();
-				//states[uuid] = {};
-
 				input.trigger('setup.field.prove');
 			});
 		},
@@ -423,28 +418,29 @@
 	}
 
 	// validate a single input
-	//todo: warn if result is not an object with the required properties
 	$.fn.proveInput = function(field, states) {
 
 		//var data;
 		var result;
 		var validators = field.validators || {};
 		var input = $(this);
-		var isEnabled = input.booleanator(field.enabled);
-		var isStateful = input.booleanator(field.stateful);
-		var isDirty = input.dirty();
+		var enabled = input.booleanator(field.enabled);
+		var stateful = input.booleanator(field.stateful);
+		var dirty = input.dirty(field);
 		var uuid = input.uuid();
 		var state = states[uuid];
 
-
-		console.log('proveInput()', field.name, isDirty);
+		console.groupCollapsed('proveInput()', field.name);
+		console.log('state', state);
+		console.log('dirty', dirty);
+		console.groupEnd();
 
 		// return early
-		if (!isEnabled) {
+		if (!enabled) {
 			// trigger event
 			input.trigger('validated.input.prove', result);
 			return;
-		} else if (isStateful &&  state && !isDirty) {
+		} else if (stateful && state && !dirty) {
 			input.trigger('validated.input.prove', state); //clone here?
 			return state.valid;
 		}
@@ -467,13 +463,12 @@
 		//console.log('result', value, result.valid);
 
 		//save state
-		states[uuid] = result;
+		if (stateful) states[uuid] = result;
 
 		//trigger event
 		input.trigger('validated.input.prove', result);
 
 		return result.valid;
-
 	};
 }(window.jQuery);
 
@@ -615,15 +610,27 @@
 		return hash;
 	}
 
-	$.fn.dirty = function() {
+	$.fn.dirty = function(field) {
+
+		field = field || {};
 
 		var el = $(this);
+		var val = el.val() || '';
 		var hash1 = el.data('prove-hash');
-		var hash2 = hashCode(el.val());
+		var hash2 = hashCode(val);
 		var dirty = (hash1 !== hash2);
 
-		if (dirty) el.data('prove-hash', hash2);
+		console.log('dirty', el.length);
 
+		// override dirty state for inputs which could be grouped
+		if (field.group) {
+			//groups are already dirty
+			return true;
+		} else if (el.is(':radio')){
+			return true;
+		}
+
+		if (dirty) el.data('prove-hash', hash2);
 		return dirty;
 	};
 }(window.jQuery);

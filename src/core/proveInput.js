@@ -15,18 +15,22 @@
 	}
 
 	// validate a single input
-	//todo: warn if result is not an object with the required properties
 	$.fn.proveInput = function(field, states) {
 
 		//var data;
 		var result;
 		var validators = field.validators || {};
 		var input = $(this);
-		var dnabled = input.booleanator(field.enabled);
+		var enabled = input.booleanator(field.enabled);
 		var stateful = input.booleanator(field.stateful);
-		var dirty = input.dirty();
+		var dirty = input.dirty(field);
 		var uuid = input.uuid();
 		var state = states[uuid];
+
+		console.groupCollapsed('proveInput()', field.name);
+		console.log('state', state);
+		console.log('dirty', dirty);
+		console.groupEnd();
 
 		// return early
 		if (!enabled) {

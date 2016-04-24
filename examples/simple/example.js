@@ -4,7 +4,7 @@
 	var cfg = {
 		fields: {
 			email: {
-				//triggers: [{events: 'blur change', target: '#optout'}],
+				//trigger: 'keyup',
 				validators: {
 					proveRequired: {
 						debug: true,
@@ -12,7 +12,7 @@
 						message: 'Your email is required unless you opt out.',
 					},
 					provePattern: {
-						debug: false,
+						debug: true,
 						regex: '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,63}',
 						message: 'Invalid email address.' //optional, passed to decorator
 					}
@@ -27,6 +27,7 @@
 			},
 			'fruit[]': {
 				trigger: 'click',
+				group: true,
 				validators: {
 					proveRequired: {
 						message: 'A fruit is required.',

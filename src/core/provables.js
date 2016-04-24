@@ -27,7 +27,7 @@
 	$.fn.filterables = function(field){
 
 		var found = $(this);
-		var isRadio = found.is('[type="radio"]');
+		var isRadio = found.is(':radio');
 		var hasAtLeastOneChecked = (found.filter(':checked').length > 0);
 
 		// determine how to handle multiple found

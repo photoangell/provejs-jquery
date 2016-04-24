@@ -14,15 +14,27 @@
 		return hash;
 	}
 
-	$.fn.dirty = function() {
+	$.fn.dirty = function(field) {
+
+		field = field || {};
 
 		var el = $(this);
+		var val = el.val() || '';
 		var hash1 = el.data('prove-hash');
-		var hash2 = hashCode(el.val());
+		var hash2 = hashCode(val);
 		var dirty = (hash1 !== hash2);
 
-		if (dirty) el.data('prove-hash', hash2);
+		console.log('dirty', el.length);
 
+		// override dirty state for inputs which could be grouped
+		if (field.group) {
+			//groups are already dirty
+			return true;
+		} else if (el.is(':radio')){
+			return true;
+		}
+
+		if (dirty) el.data('prove-hash', hash2);
 		return dirty;
 	};
 }(window.jQuery);
