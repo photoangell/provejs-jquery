@@ -11,14 +11,14 @@
 						enabled: '#optout:not(:checked)', // true, false, selector string, callback
 						message: 'Your email is required unless you opt out.',
 					},
-/*					provePattern: {
+					provePattern: {
 						debug: false,
 						regex: '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,63}',
 						message: 'Invalid email address.' //optional, passed to decorator
-					}*/
+					}
 				}
 			},
-			/*file: {
+			file: {
 				validators: {
 					proveRequired: {
 						message: 'A file is required.', //optional, passed to decorator
@@ -40,7 +40,7 @@
 						message: 'This input does not exist, but might sometime in the future. When it does exist prove will validate it.',
 					}
 				}
-			}*/
+			}
 		}
 	};
 

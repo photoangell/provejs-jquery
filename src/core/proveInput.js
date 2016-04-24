@@ -22,21 +22,18 @@
 		var result;
 		var validators = field.validators || {};
 		var input = $(this);
-		var isEnabled = input.booleanator(field.enabled);
-		var isStateful = input.booleanator(field.stateful);
-		var isDirty = input.dirty();
+		var dnabled = input.booleanator(field.enabled);
+		var stateful = input.booleanator(field.stateful);
+		var dirty = input.dirty();
 		var uuid = input.uuid();
 		var state = states[uuid];
 
-
-		console.log('proveInput()', field.name, isDirty);
-
 		// return early
-		if (!isEnabled) {
+		if (!enabled) {
 			// trigger event
 			input.trigger('validated.input.prove', result);
 			return;
-		} else if (isStateful &&  state && !isDirty) {
+		} else if (stateful && state && !dirty) {
 			input.trigger('validated.input.prove', state); //clone here?
 			return state.valid;
 		}
@@ -59,12 +56,11 @@
 		//console.log('result', value, result.valid);
 
 		//save state
-		states[uuid] = result;
+		if (stateful) states[uuid] = result;
 
 		//trigger event
 		input.trigger('validated.input.prove', result);
 
 		return result.valid;
-
 	};
 }(window.jQuery);
