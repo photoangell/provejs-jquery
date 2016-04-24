@@ -1,10 +1,8 @@
 # Prove Validators
 
-## Anatomy of Validators
-
 Each validator is simply a jquery plugin which validates the input(s) value.
 
-## Validator Return Value
+## Validator Return Object
 
 Each validator should return either:
 - result object defined below,
