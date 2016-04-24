@@ -400,6 +400,7 @@
 			valid: valid
 		});
 
+		return valid;
 	};
 }(window.jQuery);
 

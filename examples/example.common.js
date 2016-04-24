@@ -1,6 +1,7 @@
 (function() {
 
 	var form = $('form');
+	var status = $('#form-status');
 	var events = $('#events');
 	var all = [
 		'setup.field.prove',
@@ -14,6 +15,24 @@
 		'destroyed.form.prove',
 		'submitted.form.prove'
 	].join(' ');
+
+	form.on('validated.form.prove', function(event, data){
+
+		status.removeClass('alert-success');
+		status.removeClass('alert-danger');
+		status.removeClass('alert-warning');
+
+		if (data.valid === true) {
+			status.text('Valid Form');
+			status.addClass('alert-success');
+		} else if (data.valid === false) {
+			status.text('Invalid Form');
+			status.addClass('alert-danger');
+		} else if (data.valid === undefined) {
+			status.text('Reset Form');
+			status.addClass('alert-warning');
+		}
+	});
 
 
 	// stop form submit
