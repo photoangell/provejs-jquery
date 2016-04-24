@@ -6,7 +6,7 @@ Prove saves the validation state of inputs in memory, but does this without savi
 
 ### Initialization
 
-On initialization of prove inputs each input:
+On initialization of prove each input is:
 - a uuid is created and saved on the iput (input.uuid()),
 - the input's value is hashed (input.hash()),
 - the input value hash is saved in the state (prove.states[uuid].hash = hash).
