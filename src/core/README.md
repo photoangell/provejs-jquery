@@ -10,3 +10,10 @@ On initialization of prove inputs each input:
 - a uuid is created and saved on the iput (input.uuid()),
 - the input's value is hashed (input.hash()),
 - the input value hash is saved in the state (prove.states[uuid].hash = hash).
+```javascript
+var uuid = input.uuid();
+var hash = input.hash();
+prove.states[uuid].hash = hash
+```
+The next time we encounter this input we can determine if the input value has changed.
+
