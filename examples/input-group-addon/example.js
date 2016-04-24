@@ -4,25 +4,32 @@
 	$.fn.otherDescriptionRequired = function(options){
 
 		var checkbox = $(this);
-		var input = checkbox.closest('.input-group').find('input[type="text"]');
-		var value = input.val() || '';
-		var hasValue = (value !== '');
+		var inputs = checkbox
+			.closest('.form-group')
+			.find('[type="checkbox"]:checked')
+			.closest('.input-group')
+			.find('[type="text"]');
+
+		// loop each input
+		var valid = true;
+		inputs.each(function(){
+			var input = $(this);
+			var hasValue = input.hasValue();
+			if (!hasValue) valid = false;
+			return hasValue;
+		});
 
 		if (options.debug){
 			console.groupCollapsed('Validators.otherDescriptionRequired()', options.field);
 			console.log('options', options);
-			console.log('checkbox', checkbox);
-			console.log('input', input);
-			console.log('value', value);
-			console.log('hasValue', hasValue);
-			console.log('isValid', hasValue);
+			console.log('valid', valid);
 			console.groupEnd();
 		}
 
 		return {
-			validator: 'otherDescriptionRequired',
+			validator: options.validator,
 			field: options.field,
-			valid: hasValue,
+			valid: valid,
 			message: options.message
 		};
 	};
@@ -31,25 +38,33 @@
 	$.fn.otherDescriptionPattern = function(options){
 
 		var checkbox = $(this);
-		var input = checkbox.closest('.input-group').find('input[type="text"]');
-		var val = input.val();
+		var inputs = checkbox
+			.closest('.form-group')
+			.find('[type="checkbox"]:checked')
+			.closest('.input-group')
+			.find('[type="text"]');
 
-		var isValid = (/^[a-zA-z0-9]+$/).test(val);
+		// loop each input
+		var valid = true;
+		inputs.each(function(){
+			var input = $(this);
+			var val = input.val();
+			var isValid = (/^[a-zA-z0-9]+$/).test(val);
+			if (!isValid) valid = false;
+			return isValid;
+		});
 
 		if (options.debug){
 			console.groupCollapsed('Validators.otherDescriptionPattern()', options.field);
 			console.log('options', options);
-			console.log('checkbox', checkbox);
-			console.log('input', input);
-			console.log('value', val);
-			console.log('isValid', isValid);
+			console.log('valid', valid);
 			console.groupEnd();
 		}
 
 		return {
-			validator: 'otherDescriptionRequired',
+			validator: options.validator,
 			field: options.field,
-			valid: isValid,
+			valid: valid,
 			message: options.message
 		};
 	};
@@ -64,14 +79,16 @@
 			// This field config will match multiple form inputs. Therefore, when the entire
 			// form is validated we can either validate each individually or as a collection.
 			// In this case we specify to validate the inputs as a single collection. When
-			// we set `validateIndividually` to false prove will only validate the first found
+			// we set `group` to true prove will only validate the first found
 			// input. However, the live input validation may validate any of the inputs.
+
+			// Since we are validating the inputs as a group the validators below need to
+			// validate the group of inputs. The proveRequired already does this.
 			checkboxes: {
 				stateful: false,
-				validateIndividually: false, //todo: perhas `group` = true
+				group: true,
 				trigger: 'change',
 				validators:{
-					//
 					proveRequired: {
 						//debug: true,
 						message: 'Please choose browsers you use for developing.',
@@ -80,11 +97,10 @@
 						//debug: true,
 						message: 'Please enter your browser name.',
 					},
-					/*
 					otherDescriptionPattern: {
 						//debug: true,
 						message: 'Invalid character.'
-					}*/
+					}
 				}
 			}
 		}

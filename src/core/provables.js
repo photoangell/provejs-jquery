@@ -41,10 +41,10 @@
 				// We are only interested in filter multiple inputs,
 				// so with a single found input nothing to filter here.
 				return true;
-			} else if (field.validateIndividually === true){
+			} else if (field.group === false){
 				// Field config indicates we should validate these inputs individually.
 				return true;
-			} else if (field.validateIndividually === false) {
+			} else if (field.group === true) {
 				// Field config indicates we should validate these inputs as a collection.
 				// Therefore, only validate the firsts element.
 				return (index === 0);
@@ -63,5 +63,4 @@
 
 		return filtered;
 	};
-
 }(window.jQuery);

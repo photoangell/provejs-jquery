@@ -34,7 +34,7 @@
 		var isStateful = (field.stateful !== false);
 		var noChanged = noChange(state, value);
 
-		console.log('proveInput()', field.name);
+		//console.log('proveInput()', field.name);
 
 		// return early
 		if (!isEnabled) {
@@ -61,7 +61,7 @@
 			return result.valid;
 		});
 
-		console.log('result', value, result.valid);
+		//console.log('result', value, result.valid);
 
 		//save state
 		states[uuid] = result;

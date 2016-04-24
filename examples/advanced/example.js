@@ -50,7 +50,7 @@
 			// validate multiple matched inputs individually.
 			'dynamic1[]': {
 				enabled:'#itemize:checked', //booleanator
-				//validateIndividually: true,
+				//group: false,
 				validators:{
 					proveRequired: {
 						//debug: true,
