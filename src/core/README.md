@@ -7,19 +7,16 @@ Prove saves the validation state of inputs in memory, but does this without savi
 ### Initialization
 
 On initialization of prove each input is:
-- a uuid is created and saved on the iput (input.uuid()),
-- the input's value is hashed (input.hash()),
-- the input value hash is saved in the state (prove.states[uuid].hash = hash).
+- a uuid is created and saved on the input ($.fn.uuid),
+- the input's value is hashed and saved on the input ($.fn.dirty),
 ```javascript
 var uuid = input.uuid();
-var hash = input.hash();
-prove.states[uuid].hash = hash;
+var dirty = input.dirty();
 ```
 The next time we encounter this input we can determine if the input value has changed.
 
 ```javascript
 var uuid = input.uuid();
-var hash = input.hash();
-var state = prove.states[uuid];
-var dirty = (state.hash !== hash);
+var previousValidationResult = prove.states[uuid];
+var dirty = input.dirty(); // => true or false
 ```
