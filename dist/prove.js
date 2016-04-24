@@ -620,8 +620,6 @@
 		var hash2 = hashCode(val);
 		var dirty = (hash1 !== hash2);
 
-		console.log('dirty', el.length);
-
 		// override dirty state for inputs which could be grouped
 		if (field.group) {
 			//groups are already dirty
