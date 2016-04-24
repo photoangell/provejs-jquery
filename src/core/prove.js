@@ -167,15 +167,12 @@
 		setupInputs: function(){ // todo: perhas setupState()?
 
 			var form = this.$form;
-			var states = this.states;
+			//var states = this.states;
 
-			form.provables(this.options).each(function(){
+			form.provables(this.options.fields).each(function(){
 				var input = $(this);
-				var uuid = input.uuid();
 
-				// inialized state
-				states[uuid] = {};
-
+				input.uuid();
 				input.trigger('setup.field.prove');
 			});
 		},

@@ -7,11 +7,6 @@
 		return exist;
 	}
 
-	function noChange(state, value){
-		if (!state) return false;
-		return (state.value === value);
-	}
-
 	function warnIncorrectResult(result, validator){
 		if (!('valid' in result)) console.warn('Missing `valid` property in validator ($.fn.' + validator + ') result.');
 		if (!('field' in result)) console.warn('Missing `field` property in validator ($.fn.' + validator + ') result.');
@@ -28,20 +23,20 @@
 		var validators = field.validators || {};
 		var input = $(this);
 		var isEnabled = input.booleanator(field.enabled);
+		var isStateful = input.booleanator(field.stateful);
+		var isDirty = input.dirty();
 		var uuid = input.uuid();
 		var state = states[uuid];
-		var value = input.vals();
-		var isStateful = (field.stateful !== false);
-		var noChanged = noChange(state, value);
 
-		//console.log('proveInput()', field.name);
+
+		console.log('proveInput()', field.name, isDirty);
 
 		// return early
 		if (!isEnabled) {
 			// trigger event
 			input.trigger('validated.input.prove', result);
 			return;
-		} else if (isStateful && noChanged) {
+		} else if (isStateful &&  state && !isDirty) {
 			input.trigger('validated.input.prove', state); //clone here?
 			return state.valid;
 		}

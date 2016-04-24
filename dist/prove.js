@@ -234,14 +234,16 @@
 		setupInputs: function(){ // todo: perhas setupState()?
 
 			var form = this.$form;
-			var states = this.states;
+			//var states = this.states;
 
-			form.provables(this.options).each(function(){
+			form.provables(this.options.fields).each(function(){
 				var input = $(this);
-				var uuid = input.uuid();
 
-				// inialized state
-				states[uuid] = {};
+
+				// inialize input state
+				input.uuid();
+				//input.dirty();
+				//states[uuid] = {};
 
 				input.trigger('setup.field.prove');
 			});
@@ -413,11 +415,6 @@
 		return exist;
 	}
 
-	function noChange(state, value){
-		if (!state) return false;
-		return (state.value === value);
-	}
-
 	function warnIncorrectResult(result, validator){
 		if (!('valid' in result)) console.warn('Missing `valid` property in validator ($.fn.' + validator + ') result.');
 		if (!('field' in result)) console.warn('Missing `field` property in validator ($.fn.' + validator + ') result.');
@@ -434,20 +431,20 @@
 		var validators = field.validators || {};
 		var input = $(this);
 		var isEnabled = input.booleanator(field.enabled);
+		var isStateful = input.booleanator(field.stateful);
+		var isDirty = input.dirty();
 		var uuid = input.uuid();
 		var state = states[uuid];
-		var value = input.vals();
-		var isStateful = (field.stateful !== false);
-		var noChanged = noChange(state, value);
 
-		//console.log('proveInput()', field.name);
+
+		console.log('proveInput()', field.name, isDirty);
 
 		// return early
 		if (!isEnabled) {
 			// trigger event
 			input.trigger('validated.input.prove', result);
 			return;
-		} else if (isStateful && noChanged) {
+		} else if (isStateful &&  state && !isDirty) {
 			input.trigger('validated.input.prove', state); //clone here?
 			return state.valid;
 		}
@@ -599,6 +596,35 @@
 		}
 
 		return state;
+	};
+}(window.jQuery);
+
+!function ($) {
+	"use strict";
+
+	//http://stackoverflow.com/a/26057776/2620505
+	function hashCode (str){
+		var hash = 0;
+		var i, char;
+		if (str.length == 0) return hash;
+		for (i = 0; i < str.length; i++) {
+			char = str.charCodeAt(i);
+			hash = ((hash<<5)-hash)+char;
+			hash = hash & hash; // Convert to 32bit integer
+		}
+		return hash;
+	}
+
+	$.fn.dirty = function() {
+
+		var el = $(this);
+		var hash1 = el.data('prove-hash');
+		var hash2 = hashCode(el.val());
+		var dirty = (hash1 !== hash2);
+
+		if (dirty) el.data('prove-hash', hash2);
+
+		return dirty;
 	};
 }(window.jQuery);
 
