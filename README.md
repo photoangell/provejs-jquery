@@ -213,14 +213,9 @@ There are many other form validation libraries. Just about any of them will work
 	- Development:
 
 ## Roadmap
-### Virtual State
 
-- Initalize state on setup.
-	- save input value in state.
-- On $.fn.proveField()
-	- If input value is not different than state value then do not validate. Return the previously computed validation result.
-	- Can pass field.stateful = false which make $.fn.proveField() to ingore the state and therefore always validate.
-	- After validation save validation result in virtual state.
+1. Deferred [validators](./src/core/README.md).
+
 
 ### Reset Input and Forms
 
