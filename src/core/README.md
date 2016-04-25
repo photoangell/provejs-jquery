@@ -105,3 +105,26 @@ form.submit(function(event){
 	}
 });
 ```
+## Specification
+- Submit button
+	- disabled on prove init
+	- enabled on form valid
+	- disabled on form invalid
+- Input validation starting
+	- On starting 
+		- trigger input status (validating) event
+	- On valid
+		- update state 
+		- trigger input validated event
+	- On invalid
+		- update state
+		- trigger input validated event
+- Form 
+	- On Initalize
+		- input.initalize() 
+	- On Validate
+		- using only states determine validation status
+
+- Dynamically adding input
+	- app code calls input.initalize()
+	-   
