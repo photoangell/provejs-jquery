@@ -124,6 +124,7 @@ form.prove({
 		field1: {
 			validators: {
 				proveRequired: {
+					debug: true, // optional (bool), defaults to false
 					enabled: true, //optional (booleanator), defaults to true
 					message: 'Message to pass to the decorator.'
 				},
@@ -143,6 +144,10 @@ form.prove({
 	}
 });
 ```
+Each validator has it's own set of options but below is a set of the common options to all prove validators.
+- `debug` - optional (bool) defaults to false. Will enalbe the validator to print debug information in the developer console.
+- `enabled` - optional (booleanator) defaults to true. See [booleanator]() for more information.
+- `message` - optional (string) defaults to undefined. This string is passed into the validator which allows your custom validators to modifiy it. Utlimately, this message value is passed to the decorators via the event data.
 
 ## Prove Validators
 
