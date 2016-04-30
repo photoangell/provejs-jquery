@@ -430,11 +430,11 @@
 		var uuid = input.uuid();
 		var state = states[uuid];
 
-		console.groupCollapsed('proveInput()', field.name);
+/*		console.groupCollapsed('proveInput()', field.name);
 		console.log('enabled', enabled);
 		console.log('state', state);
 		console.log('dirty', dirty);
-		console.groupEnd();
+		console.groupEnd();*/
 
 		// return early
 		if (!enabled) {
@@ -450,6 +450,7 @@
 		$.each(validators, function(validator, config){
 
 			config.field = field.name;
+			config.validator = field.validator;
 
 			// invoke validator plugin
 			if (!isPlugin(validator)) return false;
