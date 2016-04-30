@@ -61,6 +61,7 @@
 				if (!field.validators) console.warn('Missing validators option for field "%s".', index);
 			});
 		},
+		//todo: $.fn.proveIntercept()
 		setupSubmitIntercept: function(){
 			var selector = this.options.submit.button;
 			var handler = $.proxy(this.submitInterceptHandler, this);
