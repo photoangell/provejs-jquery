@@ -8,12 +8,15 @@
 		var form = input.closest('form');
 		var value1 = input.val();
 		var value2 = other.val();
+		var hasValue = input.hasValue();
 		var isSetup = input.hasClass('validator-equalto-setup');
 		var isEnabled = $('body').booleanator(options.enabled);
 		var valid;
 
 		if (!isEnabled) {
 			valid = undefined;
+		} else if (!hasValue){
+			valid = true;
 		} else if (value1 === options.ignore) {
 			valid = true;
 		} else if (value2 === options.ignore) {
