@@ -1,8 +1,9 @@
-> BETA: still under active development
+
 
 # jquery-prove
 
 > An event based jQuery plugin for client-side validation of html forms.
+> Still under active development.
 
 ## Table Contents
 - [Introduction](#introduction)
