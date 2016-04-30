@@ -231,7 +231,7 @@ form.prove(options);
 
 ### Custom Decorators
 
-Provide the ability to specify a custom decotor for a specific field. We could have a field like:
+Provide the ability to specify a custom decorator for a specific field. We could have a field like:
 ```javascript
 form.prove({
 	fields: {
