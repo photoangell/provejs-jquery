@@ -18,6 +18,11 @@ During input validation we can retrieve the previous validation result using the
 var uuid = input.uuid();
 var previous = prove.states[uuid];
 ```
+Another option would be create a plugin which saves the validation state as json stringified data attribute.
+```javascript
+var previous = input.state(); // or input.store();
+```
+
 We also make use of a plugin to detect dirty inputs where the value has changed. The dirty plugin uses a hash algorithm to save a hash of the previous input's value to determine if the input value has changed since the last validation.
 ```javascript
 var dirty = input.dirty();
