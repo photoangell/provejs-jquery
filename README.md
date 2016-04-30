@@ -111,6 +111,7 @@ form.prove({
 - `selector` - optional (string) defaults to '[name="field"]'. There are rare cases in which you want to validate a non-input for which you can specify a selector.
 - `trigger` optional (string) defaults to 'change keyup click blur'. You change when live validation happens by changing the trigger value. 
 - `stateful` - optional (bool) defaults to true. Prove is a stateful validator. You can disable stateful validation by setting stateful to false. Prove hashes the input value to determine if the input value has changed since last validation. Prove does this stateful validation with keeping a DOM reference to any inputs.
+- `group` - optional (bool) which defaults to false for all but radio inputs. This option defines if prove should validate the inputs as a group or validate the found inputs indivdually. 
 
 ### Validator Options
 
