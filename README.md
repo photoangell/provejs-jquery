@@ -216,8 +216,35 @@ There are many other form validation libraries. Just about any of them will work
 
 ## Roadmap
 
-1. Deferred [validators](./src/core/README.md#deferred-validation).
 
+
+### Deferred [validators](./src/core/README.md#deferred-validation).
+
+### Server Errors Decotorator
+
+On intial load of the page we might have some server errors.
+```javascript
+var errors = {{{json errors}}}; //custom `json` handlebars helper
+form.decorate('bootstrap', errors);
+form.prove(options);
+```
+
+### Custom Decorators
+
+Provide the ability to specify a custom decotor for a specific field. We could have a field like:
+```javascript
+form.prove({
+	fields: {
+		field1: {
+			decorator: false,
+			validators: {
+			//...
+			}
+		}
+	}
+});
+```
+The default decorators could ignore these prove input events for this field. Which would allow us to create another dectorator which only dectorates this field's inputs. 
 
 ### Reset Input and Forms
 
