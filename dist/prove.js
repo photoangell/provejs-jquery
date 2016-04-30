@@ -450,7 +450,7 @@
 		$.each(validators, function(validator, config){
 
 			config.field = field.name;
-			config.validator = field.validator;
+			config.validator = validator;
 
 			// invoke validator plugin
 			if (!isPlugin(validator)) return false;
