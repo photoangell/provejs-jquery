@@ -430,11 +430,13 @@
 		var uuid = input.uuid();
 		var state = states[uuid];
 
-/*		console.groupCollapsed('proveInput()', field.name);
-		console.log('enabled', enabled);
-		console.log('state', state);
-		console.log('dirty', dirty);
-		console.groupEnd();*/
+		if (field.debug){
+			console.groupCollapsed('proveInput()', field.name);
+			console.log('enabled', enabled);
+			console.log('state', state);
+			console.log('dirty', dirty);
+			console.groupEnd();
+		}
 
 		// return early
 		if (!enabled) {
