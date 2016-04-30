@@ -66,7 +66,29 @@ Please see the [examples folder](./examples).
 
 ## Prove Options
 
-todo
+###  form.prove(options)
+
+Prove accepts only a sinle options configuration with.
+
+```javascript
+form.prove({
+	debug: false, //optional, bool, defaults to false
+	fields: {
+		field1: {
+			debug: false, //optional (bool)
+			enabled: true, //optional (booleanator), defaults to true 
+			selector: '.selector', //optional (string), defaults to '[name="field1"]'
+			trigger: 'click change', //optional, live validate on these events. Defaults to
+			stateful: true, //optional, bool
+			validators: {
+				// see validator options
+			}
+		},
+		field2: {
+		}
+	}
+});
+```
 
 ## Prove Validators
 
