@@ -255,9 +255,8 @@ input.trigger('reset.field.prove')
 form.trigger.('reset.form.prove')
 ```
 
+### FAQ
 
-Create an FAQ.
+Create an FAQ of frequenty asked questions and answers.
 
-Document events setup.field.prove and destroy.field.prove
 
-Document anatomy of validators.
