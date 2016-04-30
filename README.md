@@ -90,8 +90,8 @@ form.prove({
 			debug: false, //optional (bool)
 			enabled: true, //optional (booleanator), defaults to true 
 			selector: '.selector', //optional (string), defaults to '[name="field1"]'
-			trigger: 'click change', //optional, live validate on these events. Defaults to
-			stateful: true, //optional, bool
+			trigger: 'click change', //optional (string) defaults to 'change keyup click blur', live validate on these events.
+			stateful: true, //optional (bool), defaults to true.
 			validators: {
 				// see validator options
 			}
@@ -109,7 +109,8 @@ form.prove({
 - `debug` - optional (bool) will print out some debug info in the developer console. Debug defaults to false.
 - `enabled` - optional (booleanator) defaults to true. A [booleanator]() is something (bool, selector, sudo-selector, function) that evaluates to either true or false. So for example, you specify enabled: ':visible' and the field config will be enabled when the input is visible. Or perhaps, enable validation when the input is not empty by setting enabled to ':filled'.
 - `selector` - optional (string) defaults to '[name="field"]'. There are rare cases in which you want to validate a non-input for which you can specify a selector.
-- `trigger` optional (string) defaults to '...'. You change when live validation happens by changing the trigger value. 
+- `trigger` optional (string) defaults to 'change keyup click blur'. You change when live validation happens by changing the trigger value. 
+- `stateful` - optional (bool) defaults to true. Prove is a stateful validator. You can disable stateful validation by setting stateful to false. Prove hashes the input value to determine if the input value has changed since last validation. Prove does this stateful validation with keeping a DOM reference to any inputs.
 
 ### Validator Options
 
