@@ -222,7 +222,7 @@ There are many other form validation libraries. Just about any of them will work
 
 ### Server Errors Decotorator
 
-On intial load of the page we might have some server errors.
+On intial load of the page the form might have some server errors which need decoratoring.
 ```javascript
 var errors = {{{json errors}}}; //custom `json` handlebars helper
 form.decorate('bootstrap', errors);
@@ -243,6 +243,9 @@ form.prove({
 		}
 	}
 });
+
+form.decorate('bootstrap'); //default decorator, but will ignore the field1 events
+form.decorateCustom(); //will ignore all events, except field1
 ```
 The default decorators could ignore these prove input events for this field. Which would allow us to create another dectorator which only dectorates this field's inputs. 
 
