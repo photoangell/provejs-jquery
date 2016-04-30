@@ -129,7 +129,6 @@ form.submit(function(event){
 		- input.initalize() 
 	- On Validate
 		- using only states determine validation status
-
 - Dynamically adding input
 	- app code calls input.initalize()
-	-   
+
