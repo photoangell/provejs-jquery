@@ -92,6 +92,7 @@ form.prove({
 			selector: '.selector', //optional (string), defaults to '[name="field1"]'
 			trigger: 'click change', //optional (string) defaults to 'change keyup click blur', live validate on these events.
 			stateful: true, //optional (bool), defaults to true.
+			group: false, //optional (bool), defaults to false for all but radio inputs.
 			validators: {
 				// see validator options
 			}
