@@ -33,10 +33,10 @@
 		}
 
 		return {
-			validator: 'proveLength',
+			validator: options.validator,
 			field: options.field,
 			valid: isValid,
-			value: value,
+			//value: value,
 			message: options.message
 		};
 	};

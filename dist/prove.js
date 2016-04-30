@@ -128,6 +128,7 @@
 				if (!field.validators) console.warn('Missing validators option for field "%s".', index);
 			});
 		},
+		//todo: $.fn.proveIntercept()
 		setupSubmitIntercept: function(){
 			var selector = this.options.submit.button;
 			var handler = $.proxy(this.submitInterceptHandler, this);
@@ -784,6 +785,62 @@
 !function ($) {
 	"use strict";
 
+	$.fn.proveCompareTo = function( options ) {
+
+		var input = $(this);
+		var other = $(options.compareTo);
+		var form = input.closest('form');
+		var value1 = input.val();
+		var value2 = other.val();
+		var isSetup = input.hasClass('validator-equalto-setup');
+		var isEnabled = $('body').booleanator(options.enabled);
+		var valid;
+
+		if (!isEnabled) {
+			valid = undefined;
+		} else if (value1 === options.ignore) {
+			valid = true;
+		} else if (value2 === options.ignore) {
+			valid = true;
+		} else if (options.comparison === '=') {
+			valid = (value1 === value2);
+		} else if (options.comparison === '!=') {
+			valid = (value1 !== value2);
+		} else if (options.comparison === '>=') {
+			valid = (value1 >= value2);
+		} else if (options.comparison === '>') {
+			valid = (value1 > value2);
+		} else if (options.comparison === '<=') {
+			valid = (value1 <= value2);
+		} else if (options.comparison === '<') {
+			valid = (value1 < value2);
+		} else {
+			//
+		}
+
+		//setup event to validate this input when other input value changes
+		if (!isSetup){
+			input.addClass('validator-equalto-setup');
+			//on blur of other input
+			form.on('focusout', options.equalTo, function(){
+				input.validate();
+			});
+		}
+
+		//return validation result
+		return {
+			field: options.field,
+			validator: options.validator,
+			valid: valid,
+			//value1: value1,
+			message: options.message
+		};
+	};
+}(window.jQuery);
+
+!function ($) {
+	"use strict";
+
 	$.fn.proveEqualTo = function( options ) {
 
 		var input = $(this);
@@ -805,10 +862,10 @@
 
 		//return validation result
 		return {
-			validator: 'proveEqualTo',
+			validator: options.validator,
 			field: options.field,
 			valid: isValid,
-			value: value,
+			//value: value,
 			message: options.message
 		};
 	};
@@ -849,10 +906,10 @@
 		}
 
 		return {
-			validator: 'proveLength',
+			validator: options.validator,
 			field: options.field,
 			valid: isValid,
-			value: value,
+			//value: value,
 			message: options.message
 		};
 	};
@@ -879,10 +936,10 @@
 		}
 
 		return {
-			validator: 'proveMax',
+			validator: options.validator,
 			field: options.field,
 			valid: isValid,
-			value: value,
+			//value: value,
 			message: options.message
 		};
 	};
@@ -909,10 +966,10 @@
 		}
 
 		return {
-			validator: 'proveMin',
+			validator: options.validator,
 			field: options.field,
 			valid: isValid,
-			value: value,
+			//value: value,
 			message: options.message
 		};
 	};
@@ -928,7 +985,7 @@
 			validator: options.validator,
 			field: options.field,
 			valid: false,
-			value: undefined,
+			//value: undefined,
 			message: 'Prove validator "' + options.validator+ '" not found.'
 		};
 	};
@@ -970,10 +1027,10 @@
 		}
 
 		return {
-			validator: 'provePattern',
+			validator: options.validator,
 			field: options.field,
 			valid: isValid,
-			value: value,
+			//value: value,
 			message: options.message
 		};
 	};
@@ -1002,10 +1059,10 @@
 		}
 
 		return {
-			validator: 'provePrecision',
+			validator: options.validator,
 			field: options.field,
 			valid: isValid,
-			value: value,
+			//value: value,
 			message: options.message
 		};
 	};
@@ -1032,10 +1089,10 @@
 		}
 
 		return {
-			validator: 'proveRequired',
+			validator: options.validator,
 			field: options.field,
 			valid: isValid,
-			value: value,
+			//value: value,
 			message: options.message
 		};
 	};

@@ -8,7 +8,7 @@
 			validator: options.validator,
 			field: options.field,
 			valid: false,
-			value: undefined,
+			//value: undefined,
 			message: 'Prove validator "' + options.validator+ '" not found.'
 		};
 	};
