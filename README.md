@@ -66,7 +66,88 @@ Please see the [examples folder](./examples).
 
 ## Prove Options
 
-todo
+###  Prove Options
+
+Prove accepts only a single options config with only two properties: debug and fields.
+
+```javascript
+form.prove({
+	debug: false, //optional (bool), defaults to false
+	fields: { // fields to validate
+		// see fields configuration below
+	}
+});
+```
+
+- `debug` - (bool) will print out some debug info in the developer console. Debug defaults to false.
+- `fields` - (object) defines the field validations to be performed. See below for more details.
+
+### Field Options
+```javascript
+form.prove({
+	fields: {
+		field1: {
+			debug: false, //optional (bool)
+			enabled: true, //optional (booleanator), defaults to true 
+			selector: '.selector', //optional (string), defaults to '[name="field1"]'
+			trigger: 'click change', //optional (string) defaults to 'change keyup click blur', live validate on these events.
+			stateful: true, //optional (bool), defaults to true.
+			group: false, //optional (bool), defaults to false for all but radio inputs.
+			validators: {
+				// see validator options
+			}
+		},
+		field2: {
+			// ...
+		},
+		field3: {
+			// ...
+		}
+	}
+});
+```
+
+- `debug` - optional (bool) will print out some debug info in the developer console. Debug defaults to false.
+- `enabled` - optional (booleanator) defaults to true. A [booleanator]() is something (bool, selector, sudo-selector, function) that evaluates to either true or false. So for example, you specify enabled: ':visible' and the field config will be enabled when the input is visible. Or perhaps, enable validation when the input is not empty by setting enabled to ':filled'.
+- `selector` - optional (string) defaults to '[name="field"]'. There are rare cases in which you want to validate a non-input for which you can specify a selector.
+- `trigger` optional (string) defaults to 'change keyup click blur'. You change when live validation happens by changing the trigger value. 
+- `stateful` - optional (bool) defaults to true. Prove is a stateful validator. You can disable stateful validation by setting stateful to false. Prove hashes the input value to determine if the input value has changed since last validation. Prove does this stateful validation with keeping a DOM reference to any inputs.
+- `group` - optional (bool) which defaults to false for all but radio inputs. This option defines if prove should validate the inputs as a group or validate the found inputs indivdually. 
+
+### Validator Options
+
+Prove has a powerful set of validators. A validator is just a jquery plugin. See [validators](./src/validators) for more information.
+
+```javascript
+form.prove({
+	fields: {
+		field1: {
+			validators: {
+				proveRequired: {
+					debug: true, // optional (bool), defaults to false
+					enabled: true, //optional (booleanator), defaults to true
+					message: 'Message to pass to the decorator.'
+				},
+				provePattern: {
+					regex: /^[my regex pattern]$/,
+					message: 'Message to pass to the decorator'
+				},
+				// ...
+			}
+		},
+		field2: {
+			// ...
+		},
+		field3: {
+			// ...
+		}
+	}
+});
+```
+Each validator has it's own set of options but below is a set of the common options to all prove validators.
+- `debug` - optional (bool) defaults to false. Will enalbe the validator to print debug information in the developer console.
+- `enabled` - optional (booleanator) defaults to true. See [booleanator]() for more information.
+- `message` - optional (string) defaults to undefined. This string is passed into the validator which allows your custom validators to modifiy it. Utlimately, this message value is passed to the decorators via the event data.
 
 ## Prove Validators
 
@@ -216,8 +297,38 @@ There are many other form validation libraries. Just about any of them will work
 
 ## Roadmap
 
-1. Deferred [validators](./src/core/README.md#deferred-validation).
 
+
+### Deferred [validators](./src/core/README.md#deferred-validation).
+
+### Server Errors Decotorator
+
+On intial load of the page the form might have some server errors which need decoratoring.
+```javascript
+var errors = {{{json errors}}}; //custom `json` handlebars helper
+form.decorate('bootstrap', errors);
+form.prove(options);
+```
+
+### Custom Decorators
+
+Provide the ability to specify a custom decorator for a specific field. We could have a field like:
+```javascript
+form.prove({
+	fields: {
+		field1: {
+			decorator: false,
+			validators: {
+			//...
+			}
+		}
+	}
+});
+
+form.decorate('bootstrap'); //default decorator, but will ignore the field1 events
+form.decorateCustom(); //will ignore all events, except field1
+```
+The default decorators could ignore these prove input events for this field. Which would allow us to create another dectorator which only dectorates this field's inputs. 
 
 ### Reset Input and Forms
 
@@ -228,9 +339,8 @@ input.trigger('reset.field.prove')
 form.trigger.('reset.form.prove')
 ```
 
+### FAQ
 
-Create an FAQ.
+Create an FAQ of frequenty asked questions and answers.
 
-Document events setup.field.prove and destroy.field.prove
 
-Document anatomy of validators.
