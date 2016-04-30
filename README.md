@@ -66,13 +66,22 @@ Please see the [examples folder](./examples).
 
 ## Prove Options
 
-###  form.prove(options)
+###  Prove Options
 
-Prove accepts only a sinle options configuration with.
+Prove accepts only a single options config with only two properties: debug and fields.
 
 ```javascript
 form.prove({
 	debug: false, //optional, bool, defaults to false
+	fields: { // fields to validate
+		// see fields configuration below
+	}
+});
+```
+
+### Field Options
+```javascript
+form.prove({
 	fields: {
 		field1: {
 			debug: false, //optional (bool)
@@ -85,10 +94,45 @@ form.prove({
 			}
 		},
 		field2: {
+			// ...
+		},
+		field3: {
+			// ...
 		}
 	}
 });
 ```
+### Validator Options
+
+Prove has a powerful set of validators. A validator is just a jquery plugin. See [validators](./src/validators) for more information.
+
+```javascript
+form.prove({
+	fields: {
+		field1: {
+			validators: {
+				proveRequired: {
+					enabled: true, //optional (booleanator), defaults to true
+					message: 'Message to pass to the decorator.'
+				},
+				provePattern: {
+					regex: /^[my regex pattern]$/,
+					message: 'Message to pass to the decorator'
+				},
+				// ...
+			}
+		},
+		field2: {
+			// ...
+		},
+		field3: {
+			// ...
+		}
+	}
+});
+```
+
+
 
 ## Prove Validators
 
