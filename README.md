@@ -72,7 +72,7 @@ Prove accepts only a single options config with only two properties: debug and f
 
 ```javascript
 form.prove({
-	debug: false, //optional, bool, defaults to false
+	debug: false, //optional (bool), defaults to false
 	fields: { // fields to validate
 		// see fields configuration below
 	}
@@ -131,8 +131,6 @@ form.prove({
 	}
 });
 ```
-
-
 
 ## Prove Validators
 
