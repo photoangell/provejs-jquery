@@ -79,6 +79,9 @@ form.prove({
 });
 ```
 
+- `debug` - (bool) will print out some debug info in the developer console. Debug defaults to false.
+- `fields` - (object) defines the field validations to be performed. See below for more details.
+
 ### Field Options
 ```javascript
 form.prove({
@@ -102,6 +105,12 @@ form.prove({
 	}
 });
 ```
+
+- `debug` - optional (bool) will print out some debug info in the developer console. Debug defaults to false.
+- `enabled` - optional (booleanator) defaults to true. A [booleanator]() is something (bool, selector, sudo-selector, function) that evaluates to either true or false. So for example, you specify enabled: ':visible' and the field config will be enabled when the input is visible. Or perhaps, enable validation when the input is not empty by setting enabled to ':filled'.
+- `selector` - optional (string) defaults to '[name="field"]'. There are rare cases in which you want to validate a non-input for which you can specify a selector.
+- `trigger` optional (string) defaults to '...'. You change when live validation happens by changing the trigger value. 
+
 ### Validator Options
 
 Prove has a powerful set of validators. A validator is just a jquery plugin. See [validators](./src/validators) for more information.
