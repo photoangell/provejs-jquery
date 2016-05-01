@@ -202,6 +202,7 @@
 
 			var opts = options || this.options;
 			var fields = opts.fields || {};
+			var decorator = options.decorator || 'bootstrap';
 			var that = this;
 
 			$.each(fields, function(name, field){
@@ -209,6 +210,7 @@
 				// augment field
 				field.name = name;
 				field.selector = that.domSelector(field, name);
+				field.decorator = field.decorator || decorator;
 
 				that.bindDomFieldEvents(field);
 				that.bindFieldProveEvent(field);
@@ -923,7 +925,6 @@
 
 	$.fn.proveMin = function(options){
 
-		//var input = (options.context)? options.context(this) : $(this);
 		var input = $(this);
 		var value = input.vals();
 		var isEnabled = $('body').booleanator(options.enabled);
@@ -954,7 +955,6 @@
 
 	$.fn.proveMin = function(options){
 
-		//var input = (options.context)? options.context(this) : $(this);
 		var input = $(this);
 		var value = input.vals();
 		var isEnabled = $('body').booleanator(options.enabled);
@@ -1048,7 +1048,6 @@
 	$.fn.provePrecision = function(options){
 
 		var regex = /^(.)*(\.[0-9]{1,2})?$/;
-		//var input = (options.context)? options.context(this) : $(this);
 		var input = $(this);
 		var value = input.vals();
 		var isEnabled = $('body').booleanator(options.enabled);
@@ -1079,7 +1078,6 @@
 
 	$.fn.proveRequired = function(options){
 
-		//var input = (options.context)? options.context(this) : $(this);
 		var input = $(this);
 		var value = input.vals();
 		var isEnabled = $('body').booleanator(options.enabled);

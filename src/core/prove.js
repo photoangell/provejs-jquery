@@ -135,6 +135,7 @@
 
 			var opts = options || this.options;
 			var fields = opts.fields || {};
+			var decorator = options.decorator || 'bootstrap';
 			var that = this;
 
 			$.each(fields, function(name, field){
@@ -142,6 +143,7 @@
 				// augment field
 				field.name = name;
 				field.selector = that.domSelector(field, name);
+				field.decorator = field.decorator || decorator;
 
 				that.bindDomFieldEvents(field);
 				that.bindFieldProveEvent(field);
