@@ -4,7 +4,7 @@
 	$.fn.provePrecision = function(options){
 
 		var regex = /^(.)*(\.[0-9]{1,2})?$/;
-		var input = (options.context)? options.context(this) : $(this);
+		var input = $(this);
 		var value = input.vals();
 		var isEnabled = $('body').booleanator(options.enabled);
 		var isValid = (isEnabled)? regex.test(value) : undefined;

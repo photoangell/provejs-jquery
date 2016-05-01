@@ -792,12 +792,15 @@
 		var form = input.closest('form');
 		var value1 = input.val();
 		var value2 = other.val();
+		var hasValue = input.hasValue();
 		var isSetup = input.hasClass('validator-equalto-setup');
 		var isEnabled = $('body').booleanator(options.enabled);
 		var valid;
 
 		if (!isEnabled) {
 			valid = undefined;
+		} else if (!hasValue){
+			valid = true;
 		} else if (value1 === options.ignore) {
 			valid = true;
 		} else if (value2 === options.ignore) {
@@ -920,7 +923,8 @@
 
 	$.fn.proveMin = function(options){
 
-		var input = (options.context)? options.context(this) : $(this);
+		//var input = (options.context)? options.context(this) : $(this);
+		var input = $(this);
 		var value = input.vals();
 		var isEnabled = $('body').booleanator(options.enabled);
 		var isValid = (isEnabled)? value <= options.max : undefined;
@@ -950,7 +954,8 @@
 
 	$.fn.proveMin = function(options){
 
-		var input = (options.context)? options.context(this) : $(this);
+		//var input = (options.context)? options.context(this) : $(this);
+		var input = $(this);
 		var value = input.vals();
 		var isEnabled = $('body').booleanator(options.enabled);
 		var isValid = (isEnabled)? value >= options.min : undefined;
@@ -1043,7 +1048,8 @@
 	$.fn.provePrecision = function(options){
 
 		var regex = /^(.)*(\.[0-9]{1,2})?$/;
-		var input = (options.context)? options.context(this) : $(this);
+		//var input = (options.context)? options.context(this) : $(this);
+		var input = $(this);
 		var value = input.vals();
 		var isEnabled = $('body').booleanator(options.enabled);
 		var isValid = (isEnabled)? regex.test(value) : undefined;
@@ -1073,7 +1079,8 @@
 
 	$.fn.proveRequired = function(options){
 
-		var input = (options.context)? options.context(this) : $(this);
+		//var input = (options.context)? options.context(this) : $(this);
+		var input = $(this);
 		var value = input.vals();
 		var isEnabled = $('body').booleanator(options.enabled);
 		var isValid = (isEnabled)? input.hasValue() : undefined;

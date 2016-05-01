@@ -3,7 +3,7 @@
 
 	$.fn.proveRequired = function(options){
 
-		var input = (options.context)? options.context(this) : $(this);
+		var input = $(this);
 		var value = input.vals();
 		var isEnabled = $('body').booleanator(options.enabled);
 		var isValid = (isEnabled)? input.hasValue() : undefined;
