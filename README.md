@@ -307,8 +307,17 @@ There are many other form validation libraries. Just about any of them will work
 On intial load of the page the form might have some server errors which need decoratoring.
 ```javascript
 var errors = {{{json errors}}}; //custom `json` handlebars helper
-form.decorate('bootstrap', errors);
 form.prove(options);
+form.decorate('bootstrap');
+form.decorate(errors);
+
+//
+var errors = {{{json errors}}}; //custom `json` handlebars helper
+form.prove(options);
+form.decorate({
+	decorator: 'bootstrap',
+	errors: errors
+});
 ```
 
 ### Custom Decorators
