@@ -359,6 +359,16 @@ form.decorate('bootstrap'); //register default decorator of bootstrap
 form.decorate('myDecorator', ['field1']); //register a field specific decorator
 ```
 
+Option 3:
+Just call your decorator first and stop the event from propagating to the default decorator.
+```javascript
+// register field decorators
+form.decorate('myDecorator'); //register a field specific decorator which ignores all field execpt the one it's interested in.
+form.decorate('bootstrap'); //register default decorator of bootstrap
+```
+
+
+
 ### Reset Input and Forms
 
 Reset input or form
