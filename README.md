@@ -317,8 +317,11 @@ Provide the ability to specify a custom decorator for a specific field. We could
 ```javascript
 form.prove({
 	fields: {
+		field0: {
+			decorator: 'bootstrap',
+		},
 		field1: {
-			decorator: false,
+			decorator: 'myDecorator',
 			validators: {
 			//...
 			}
@@ -326,10 +329,16 @@ form.prove({
 	}
 });
 
-form.decorate('bootstrap'); //default decorator, but will ignore the field1 events
-form.decorateCustom(); //will ignore all events, except field1
+form.decorate('bootstrap'); //will decorator any field with a decorator value of 'bootstrap' using the bootstrap decorator
+form.decorate('myDecorator'); //will decorator any field with a decorator property of 'myDecorator'. Decorate plugin will invoke $.fn.myDecorator() on any field input with a decorator string of 'myDecorator'
 ```
-The default decorators could ignore these prove input events for this field. Which would allow us to create another dectorator which only dectorates this field's inputs. 
+
+A second option would be register field decorators by field config name. The value of this solution is you do not need add the field.decorator = 'myDecorator' config. The event data already contains the field name so we could use that instead to route field events to the correct decorators.
+```javascript
+// register field decorators
+form.decorate('bootstrap'); //register default decorator of bootstrap
+form.decorate('myDecorator', ['field1']); //register a field specific decorator
+```
 
 ### Reset Input and Forms
 
