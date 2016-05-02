@@ -311,7 +311,8 @@ form.prove(options);
 form.decorate('bootstrap');
 form.decorate(errors);
 
-//
+// another option
+
 var errors = {{{json errors}}}; //custom `json` handlebars helper
 form.prove(options);
 form.decorate({
