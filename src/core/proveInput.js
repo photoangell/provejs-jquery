@@ -18,7 +18,7 @@
 	$.fn.proveInput = function(field, states) {
 
 		//var data;
-		var result;
+		var result = {};
 		var validators = field.validators || {};
 		var input = $(this);
 		var enabled = input.booleanator(field.enabled);
@@ -37,6 +37,7 @@
 
 		// return early
 		if (!enabled) {
+			result.decorator = field.decorator;
 			input.trigger('validated.input.prove', result);
 			states[uuid] = false;
 			return undefined;
@@ -64,6 +65,7 @@
 		//console.log('result', value, result.valid);
 
 		//save state
+		result.decorator = field.decorator;
 		if (stateful) states[uuid] = result;
 
 		//trigger event

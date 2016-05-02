@@ -135,7 +135,7 @@
 
 			var opts = options || this.options;
 			var fields = opts.fields || {};
-			var decorator = options.decorator || 'bootstrap';
+			var decorator = opts.decorator || 'bootstrap';
 			var that = this;
 
 			$.each(fields, function(name, field){
