@@ -305,14 +305,16 @@ There are many other form validation libraries. Just about any of them will work
 ### Server Errors Decotorator
 
 On intial load of the page the form might have some server errors which need decoratoring.
+
+Option 1:
 ```javascript
 var errors = {{{json errors}}}; //custom `json` handlebars helper
 form.prove(options);
 form.decorate('bootstrap');
 form.decorate(errors);
-
-// another option
-
+```
+Option 2:
+```javascript
 var errors = {{{json errors}}}; //custom `json` handlebars helper
 form.prove(options);
 form.decorate({
@@ -320,7 +322,14 @@ form.decorate({
 	errors: errors
 });
 ```
-
+Options 3:
+```javascript
+var errors = {{{json errors}}}; //custom `json` handlebars helper
+form.prove(options);
+form.decorate('bootstrap');
+form.decorate('myCustomDecorator', 'myFieldName');
+form.decorateErrors(errors);
+```
 ### Custom Decorators
 
 Provide the ability to specify a custom decorator for a specific field. We could have a field like:
