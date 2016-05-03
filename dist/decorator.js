@@ -61,22 +61,19 @@
 !function ($) {
 	"use strict";
 
-	$.fn.decorate = function(framework){
+	$.fn.decorate = function(plugin){
 
-		framework = framework || 'bootstrap';
+		plugin = plugin || 'bootstrap';
+
 		var form = $(this);
+		var exists = ($.isFunction($.fn[plugin]));
+
+		if (!exists) return console.warn('Decorator plugin ($.fn.' + plugin + ') was not found.');
 
 		// decorate the form
 		form.on('validated.input.prove', function(event, data){
-
-			console.log('data', event.target, data);
-
 			var input = $(event.target);
-			if (framework === 'bootstrap') {
-				input.bootstrap(data);
-			} else {
-				console.warn('Unsupported decorator framework. Please make a pull request.');
-			}
+			if (exists) input[plugin](data);
 		});
 	};
 
