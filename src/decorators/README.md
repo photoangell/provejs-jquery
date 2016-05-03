@@ -1,5 +1,16 @@
 ## Decorators
 
+### Server Side Errors
+
+You can decorate your form with server side errors.
+```javascript
+var errors = {
+	field1: 'Your server side error message.',
+	field2: 'Your server side error message.'
+};
+form.decorateErrors(errors);
+```
+
 Decorators should do the following on validation result valid:
 - `undefined`
 	- Indicates no validation happened.
