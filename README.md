@@ -311,13 +311,13 @@ This change would allow for decoration of:
 - validating: start of validation, which is useful for async spinners
 - validated: validation completed, which is useful for garland and tinsel 
 
-`status.input.prove`
+`status.input.prove` or `workflow.input.prove`
 ```javascript
 {
     field: 'email',
-    validator: 'validator',
-    status: 'validated', //'setup', 'validating', 'validated', 'destroy'
-    validated: 'success', //'success', 'failure', 'warning', 'reset'
+    validator: 'validator', //validator name or undefined
+    workflow: 'validated', //'setup', 'validating', 'validated', 'destroy'
+    status: 'success', //'success', 'failure', 'warning', 'reset'
     message: 'Your error or warning message.'
 }
 ```
