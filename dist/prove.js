@@ -421,8 +421,6 @@
 	// validate a single input
 	$.fn.proveInput = function(field, states) {
 
-		//var data;
-		var result = {};
 		var validators = field.validators || {};
 		var input = $(this);
 		var enabled = input.booleanator(field.enabled);
@@ -430,6 +428,12 @@
 		var dirty = input.dirty(field.group);
 		var uuid = input.uuid();
 		var state = states[uuid];
+		var result = {
+			field: field.name,
+			validator: undefined,
+			valid: undefined,
+			message: undefined
+		};
 
 		if (field.debug){
 			console.groupCollapsed('proveInput()', field.name);
@@ -865,8 +869,8 @@
 
 		//return validation result
 		return {
-			validator: options.validator,
 			field: options.field,
+			validator: options.validator,
 			valid: isValid,
 			//value: value,
 			message: options.message
@@ -909,10 +913,9 @@
 		}
 
 		return {
-			validator: options.validator,
 			field: options.field,
+			validator: options.validator,
 			valid: isValid,
-			//value: value,
 			message: options.message
 		};
 	};
@@ -939,10 +942,9 @@
 		}
 
 		return {
-			validator: options.validator,
 			field: options.field,
+			validator: options.validator,
 			valid: isValid,
-			//value: value,
 			message: options.message
 		};
 	};
@@ -969,10 +971,9 @@
 		}
 
 		return {
-			validator: options.validator,
 			field: options.field,
+			validator: options.validator,
 			valid: isValid,
-			//value: value,
 			message: options.message
 		};
 	};
@@ -985,10 +986,9 @@
 
 		//return validation result
 		return {
-			validator: options.validator,
 			field: options.field,
+			validator: options.validator,
 			valid: false,
-			//value: undefined,
 			message: 'Prove validator "' + options.validator+ '" not found.'
 		};
 	};
@@ -1030,10 +1030,9 @@
 		}
 
 		return {
-			validator: options.validator,
 			field: options.field,
+			validator: options.validator,
 			valid: isValid,
-			//value: value,
 			message: options.message
 		};
 	};
@@ -1062,10 +1061,9 @@
 		}
 
 		return {
-			validator: options.validator,
 			field: options.field,
+			validator: options.validator,
 			valid: isValid,
-			//value: value,
 			message: options.message
 		};
 	};
@@ -1092,10 +1090,9 @@
 		}
 
 		return {
-			validator: options.validator,
 			field: options.field,
+			validator: options.validator,
 			valid: isValid,
-			//value: value,
 			message: options.message
 		};
 	};
@@ -1138,8 +1135,8 @@
 		}
 
 		return {
-			validator: options.validator,
 			field: options.field,
+			validator: options.validator,
 			valid: valid,
 			message: options.message
 		};

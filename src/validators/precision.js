@@ -20,10 +20,9 @@
 		}
 
 		return {
-			validator: options.validator,
 			field: options.field,
+			validator: options.validator,
 			valid: isValid,
-			//value: value,
 			message: options.message
 		};
 	};

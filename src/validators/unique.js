@@ -35,8 +35,8 @@
 		}
 
 		return {
-			validator: options.validator,
 			field: options.field,
+			validator: options.validator,
 			valid: valid,
 			message: options.message
 		};

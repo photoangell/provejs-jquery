@@ -17,8 +17,6 @@
 	// validate a single input
 	$.fn.proveInput = function(field, states) {
 
-		//var data;
-		var result = {};
 		var validators = field.validators || {};
 		var input = $(this);
 		var enabled = input.booleanator(field.enabled);
@@ -26,6 +24,12 @@
 		var dirty = input.dirty(field.group);
 		var uuid = input.uuid();
 		var state = states[uuid];
+		var result = {
+			field: field.name,
+			validator: undefined,
+			valid: undefined,
+			message: undefined
+		};
 
 		if (field.debug){
 			console.groupCollapsed('proveInput()', field.name);
