@@ -49,11 +49,11 @@ Where data.valid is:
 
 ### Utility Decorators
 
-The prove bootstrap decorator is uses two ulitity decorators which make creating easier:
-- Garland - displays messages on form inputs.
-- Tinsel - changes form CSS classes
+The prove bootstrap decorator uses two ulitity decorators which makes creating decorators easier:
+- $.fn.garland - displays messages on form inputs.
+- $.fn.tinsel - changes form CSS classes.
 
-If you make your own decorator consider using these utility decorators aid your development.
+If you make your own decorator consider using these utility decorators to aid your development.
 
 ### Making Your Own Decorators
 
