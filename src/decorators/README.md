@@ -8,6 +8,8 @@ var errors = {
 	field1: 'Your server side error message.',
 	field2: 'Your server side error message.'
 };
+form.prove(options);
+form.decorate('bootstrap');
 form.decorateErrors(errors);
 ```
 
