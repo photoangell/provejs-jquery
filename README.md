@@ -152,11 +152,11 @@ Each validator has it's own set of options but below is a set of the common opti
 
 ## Prove Validators
 
-todo
+Prove validators are handled by jQuery [validator plugins](./src/validators).
 
 ## Prove Decorators
 
-todo
+Form decoration is handled by jQuery [decorator plugins](./src/decorators). 
 
 ## Prove Events
 
