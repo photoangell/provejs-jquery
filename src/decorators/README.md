@@ -2,7 +2,7 @@
 
 ### Server Side Errors
 
-You can decorate your form with server side errors.
+On initial page load you might need to decorate your form with server-side errors. You can decorate your form with server side errors.
 ```javascript
 var errors = {
 	field1: 'Your server side error message.',
