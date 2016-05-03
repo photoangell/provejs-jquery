@@ -9,7 +9,6 @@
 	var wrapper1 = form.find('#wrapper-statement-attached');
 	var wrapper2 = form.find('#wrapper-itemized-amounts');
 	var regex = /^[-a-zA-Z0-9,.)( ]*$/;
-
 	var isItemization;
 
 	var cfg = {
@@ -79,6 +78,7 @@
 	// order does not matter
 	form.prove(cfg);
 	form.decorate('bootstrap');
+
 	select.tagsinput(config1);
 	monies.maskMoney(config2);
 

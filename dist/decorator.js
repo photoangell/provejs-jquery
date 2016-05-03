@@ -68,12 +68,38 @@
 
 		// decorate the form
 		form.on('validated.input.prove', function(event, data){
+
+			console.log('data', event.target, data);
+
 			var input = $(event.target);
 			if (framework === 'bootstrap') {
 				input.bootstrap(data);
 			} else {
 				console.warn('Unsupported decorator framework. Please make a pull request.');
 			}
+		});
+	};
+
+}(window.jQuery);
+
+!function ($) {
+	"use strict";
+
+	$.fn.decorateErrors = function(errors){
+
+		errors = errors || {};
+		var form = $(this);
+
+		$.each(errors, function(name, message){
+			var selector = '[name="' + name + '"]';
+			var data = {
+				validator: 'server',
+				field: name,
+				valid: false,
+				message: message
+			};
+			var input = form.find(selector);
+			input.trigger('validated.input.prove', data);
 		});
 	};
 

@@ -8,6 +8,9 @@
 
 		// decorate the form
 		form.on('validated.input.prove', function(event, data){
+
+			console.log('data', event.target, data);
+
 			var input = $(event.target);
 			if (framework === 'bootstrap') {
 				input.bootstrap(data);

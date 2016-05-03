@@ -44,8 +44,6 @@
 	if (events.length){
 		$('form').on(all, function(event, data){
 			data = data || {};
-
-			console.log('data', data);
 			events.prepend(eventRow(event, data));
 		});
 	}
