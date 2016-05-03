@@ -202,7 +202,6 @@
 
 			var opts = options || this.options;
 			var fields = opts.fields || {};
-			var decorator = opts.decorator || 'bootstrap';
 			var that = this;
 
 			$.each(fields, function(name, field){
@@ -210,7 +209,6 @@
 				// augment field
 				field.name = name;
 				field.selector = that.domSelector(field, name);
-				field.decorator = field.decorator || decorator;
 
 				that.bindDomFieldEvents(field);
 				that.bindFieldProveEvent(field);
@@ -443,7 +441,6 @@
 
 		// return early
 		if (!enabled) {
-			result.decorator = field.decorator;
 			input.trigger('validated.input.prove', result);
 			states[uuid] = false;
 			return undefined;
@@ -471,7 +468,6 @@
 		//console.log('result', value, result.valid);
 
 		//save state
-		result.decorator = field.decorator;
 		if (stateful) states[uuid] = result;
 
 		//trigger event
