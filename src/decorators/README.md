@@ -9,7 +9,7 @@ form.decorate('bootstrap');
 ```
 ### Server Side Errors
 
-On initial page load you might need to decorate your form with server-side errors. You can decorate your form with server side errors.
+On initial page load you might need to decorate your form with server-side errors.
 ```javascript
 var errors = {
 	field1: 'Your server side error message.',
@@ -23,14 +23,14 @@ form.decorateErrors(errors);
 ### Decorator Design
 
 A decorator is a jQuery plugin which:
-- Listens to prove events (validated.input.prove),
+- Listens to prove events,
 - Decorates the form inputs using event data.
  
 The event data passed to the decorators:
 ```javascript
 {
-	validator: "proveRequired", 
 	field: "toggle", 
+	validator: "proveRequired",
 	valid: false, // true, false, undefined
 	message: "Choose one."
 }
