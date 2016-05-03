@@ -1,5 +1,9 @@
 ## Decorators
 
+A decorator is a jQuery plugin which:
+- listens to prove events (validated.input.prove),
+- decorates the form inputs using event data.
+
 ### Server Side Errors
 
 On initial page load you might need to decorate your form with server-side errors. You can decorate your form with server side errors.
