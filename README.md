@@ -302,44 +302,25 @@ There are many other form validation libraries. Just about any of them will work
 
 ### Deferred [validators](./src/core/README.md#deferred-validation).
 
-### Custom Decorators
+### Change Event Data
 
-Provide the ability to specify a custom decorator for a specific field. We could have a field like:
+Consider changing `validated.input.prove` to `status.input.prove`. 
+
+This change would allow for decoration of:
+- setup: initialization of prove, which is useful for aria decoration
+- validating: start of validation, which is useful for async spinners
+- validated: validation completed, which is useful for garland and tinsel 
+
+`status.input.prove`
 ```javascript
-form.prove({
-	fields: {
-		field0: {
-			decorator: 'bootstrap',
-		},
-		field1: {
-			decorator: 'myDecorator',
-			validators: {
-			//...
-			}
-		}
-	}
-});
-
-form.decorate('bootstrap'); //will decorator any field with a decorator value of 'bootstrap' using the bootstrap decorator
-form.decorate('myDecorator'); //will decorator any field with a decorator property of 'myDecorator'. Decorate plugin will invoke $.fn.myDecorator() on any field input with a decorator string of 'myDecorator'
+{
+    field: 'email',
+    validator: 'validator',
+    status: 'validated', //'setup', 'validating', 'validated', 'destroy'
+    validated: 'success', //'success', 'failure', 'warning', 'reset'
+    message: 'Your error or warning message.'
+}
 ```
-
-A second option would be register field decorators by field config name. The value of this solution is you do not need add the field.decorator = 'myDecorator' config. The event data already contains the field name so we could use that instead to route field events to the correct decorators.
-```javascript
-// register field decorators
-form.decorate('bootstrap'); //register default decorator of bootstrap
-form.decorate('myDecorator', ['field1']); //register a field specific decorator
-```
-
-Option 3:
-Just call your decorator first and stop the event from propagating to the default decorator.
-```javascript
-// register field decorators
-form.decorate('myDecorator'); //register a field specific decorator which ignores all field execpt the one it's interested in.
-form.decorate('bootstrap'); //register default decorator of bootstrap
-```
-
-
 
 ### Reset Input and Forms
 
