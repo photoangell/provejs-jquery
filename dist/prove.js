@@ -497,7 +497,8 @@
 			// event handlers will call the $.fn.proveForm()
 			// or $.fn.proveInput() with the correct field data.
 			if (isForm) {
-				el.trigger('validate.form.prove');
+				//el.trigger('validate.form.prove');
+				return el.proveForm();
 			} else if (isInput) {
 				el.trigger('validate.input.prove');
 			} else {
