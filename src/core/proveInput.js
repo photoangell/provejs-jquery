@@ -30,6 +30,7 @@
 			valid: undefined,
 			message: undefined
 		};
+		var master = $.Deferred();
 
 		if (field.debug){
 			console.groupCollapsed('proveInput()', field.name);
@@ -43,36 +44,42 @@
 		if (!enabled) {
 			input.trigger('validated.input.prove', result);
 			states[uuid] = false;
-			return undefined;
+			//return undefined;
+			master.resolve(undefined);
+			return master;
 		} else if (stateful && state && !dirty) {
 			input.trigger('validated.input.prove', state); //clone here?
-			return state.valid;
+			//return state.valid;
+			master.resolve(state.valid);
+			return master;
+		} else {
+
+			// loop validators
+			$.each(validators, function(validator, config){
+
+				config.field = field.name;
+				config.validator = validator;
+
+				// invoke validator plugin
+				if (!isPlugin(validator)) return false;
+				result = input[validator](config);
+
+				warnIncorrectResult(result, validator);
+
+				// break loop
+				return result.valid;
+			});
+
+			//console.log('result', value, result.valid);
+
+			//save state
+			if (stateful) states[uuid] = result;
+
+			//trigger event
+			input.trigger('validated.input.prove', result);
+
+			master.resolve(result.valid);
+			return master;
 		}
-
-		// loop validators
-		$.each(validators, function(validator, config){
-
-			config.field = field.name;
-			config.validator = validator;
-
-			// invoke validator plugin
-			if (!isPlugin(validator)) return false;
-			result = input[validator](config);
-
-			warnIncorrectResult(result, validator);
-
-			// break loop
-			return result.valid;
-		});
-
-		//console.log('result', value, result.valid);
-
-		//save state
-		if (stateful) states[uuid] = result;
-
-		//trigger event
-		input.trigger('validated.input.prove', result);
-
-		return result.valid;
 	};
 }(window.jQuery);

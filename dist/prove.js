@@ -137,47 +137,44 @@
 		},
 		submitInterceptHandler: function(event){
 
-			var shouldValidate = this.$form.booleanator(this.options.submit.validate);
-			var preventSubmit = this.$form.booleanator(this.options.submit.prevent);
-			var isValid = (shouldValidate)? this.$form.proveForm() : undefined;
-			var nosubmit = !!this.$form.attr('nosubmit');
+			var form = this.$form;
+			var shouldValidate = form.booleanator(this.options.submit.validate);
+			var preventSubmit = form.booleanator(this.options.submit.prevent);
+			//var isValid = (shouldValidate)? this.$form.proveForm() : undefined;
+			var validation = (shouldValidate)? form.proveForm() : $.when();
+			var nosubmit = !!form.attr('nosubmit');
 
-			var submitSetup = (isValid && !nosubmit);
-			var submitStop = (isValid === false || preventSubmit || nosubmit);
+			validation.done(function(isValid){
+				//valid will be either true, false or undefined
 
-			/*
-				Of note, the following things did not work to stop double submits.
-				If you add the 'disabled' attribute to the button then the next
-				submit handler will not be invoked and the form will not be sumitted
-				either via ajax or traditional.
+				var submitSetup = (isValid && !nosubmit);
+				var submitStop = (isValid === false || preventSubmit || nosubmit);
 
-				todo: will adding the disabled attr stop double submits on on IE?
-				http://stackoverflow.com/a/17107357/2620505
+				if (submitSetup) {
 
-				If you add the bootstrap `disabled` class the button still invokes
-				the this intercept handler.
-			*/
+					// Add attribute to disable double form submissions.
+					form.attr('nosubmit', true);
 
-/*			console.groupCollapsed('submitInterceptHandler()');
-			console.log('shouldValidate', shouldValidate);
-			console.log('preventSubmit', preventSubmit);
-			console.log('nosubmit', nosubmit);
-			console.log('isValid', isValid);
-			console.groupEnd();*/
+					// trigger event - for decorator
+					form.trigger('submitted.form.prove', {
+						validated: shouldValidate
+					});
+				}
 
-			if (submitSetup) {
+				// submit the form
+				if (!submitStop) form.submit();
 
-				// Add attribute to disable double form submissions.
-				this.$form.attr('nosubmit', true);
+			});
 
-				// trigger event - for decorator
-				this.$form.trigger('submitted.form.prove', {
-					validated: shouldValidate
-				});
-			}
+			validation.fail(function(){
+			});
+
+			validation.progress(function(){
+			});
 
 			// stop form submit
-			if (submitStop) event.preventDefault();
+			//if (submitStop) event.preventDefault();
+			event.preventDefault();
 		},
 		//return jquery selector that represents the element in the DOM
 		domSelector: function(field, name){
@@ -371,6 +368,14 @@
 		return isValid;
 	}
 
+	function evaluate(results){
+		var isProved = undefined;
+		$.each(results, function(index, result){
+			isProved = toggleState(result, isProved);
+		});
+		return isProved;
+	}
+
 	$.fn.proveForm = function() {
 
 		var form = $(this);
@@ -378,7 +383,10 @@
 		var states = prove.states;
 		var fields = prove.options.fields;
 		var filter = true;
-		var valid = true;
+		//var valid = true;
+		//var master = $.Deferred();
+		var promises = [];
+		var combined;
 
 		// Loop inputs and validate them. There may be multiple
 		// identical inputs (ie radios) for which we do not want to
@@ -388,17 +396,33 @@
 
 			var input = $(this);
 			var field = fields[this.field];
-			var isProved = input.proveInput(field, states);
+			//var isProved = input.proveInput(field, states);
+			var promise = input.proveInput(field, states);
+			promises.push(promise);
 
-			valid = toggleState(valid, isProved);
+			//valid = toggleState(valid, isProved);
 		});
 
-		// Trigger event indicating validation result
-		form.trigger('validated.form.prove', {
-			valid: valid
+		// evaluate combined promises
+		combined = $.when.apply($, promises);
+
+		combined.done(function() {
+			var results = $.makeArray(arguments);
+			var valid = evaluate(results);
+
+			// Trigger event indicating validation result
+			form.trigger('validated.form.prove', {
+				valid: valid
+			});
+		});
+		combined.fail(function() {
+			console.log("async code failed so validation failed");
+		});
+		combined.progress(function(){
+			console.log('progress');
 		});
 
-		return valid;
+		return combined;
 	};
 }(window.jQuery);
 
@@ -434,6 +458,7 @@
 			valid: undefined,
 			message: undefined
 		};
+		var master = $.Deferred();
 
 		if (field.debug){
 			console.groupCollapsed('proveInput()', field.name);
@@ -447,37 +472,43 @@
 		if (!enabled) {
 			input.trigger('validated.input.prove', result);
 			states[uuid] = false;
-			return undefined;
+			//return undefined;
+			master.resolve(undefined);
+			return master;
 		} else if (stateful && state && !dirty) {
 			input.trigger('validated.input.prove', state); //clone here?
-			return state.valid;
+			//return state.valid;
+			master.resolve(state.valid);
+			return master;
+		} else {
+
+			// loop validators
+			$.each(validators, function(validator, config){
+
+				config.field = field.name;
+				config.validator = validator;
+
+				// invoke validator plugin
+				if (!isPlugin(validator)) return false;
+				result = input[validator](config);
+
+				warnIncorrectResult(result, validator);
+
+				// break loop
+				return result.valid;
+			});
+
+			//console.log('result', value, result.valid);
+
+			//save state
+			if (stateful) states[uuid] = result;
+
+			//trigger event
+			input.trigger('validated.input.prove', result);
+
+			master.resolve(result.valid);
+			return master;
 		}
-
-		// loop validators
-		$.each(validators, function(validator, config){
-
-			config.field = field.name;
-			config.validator = validator;
-
-			// invoke validator plugin
-			if (!isPlugin(validator)) return false;
-			result = input[validator](config);
-
-			warnIncorrectResult(result, validator);
-
-			// break loop
-			return result.valid;
-		});
-
-		//console.log('result', value, result.valid);
-
-		//save state
-		if (stateful) states[uuid] = result;
-
-		//trigger event
-		input.trigger('validated.input.prove', result);
-
-		return result.valid;
 	};
 }(window.jQuery);
 

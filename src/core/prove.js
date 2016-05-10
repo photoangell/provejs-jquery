@@ -70,47 +70,44 @@
 		},
 		submitInterceptHandler: function(event){
 
-			var shouldValidate = this.$form.booleanator(this.options.submit.validate);
-			var preventSubmit = this.$form.booleanator(this.options.submit.prevent);
-			var isValid = (shouldValidate)? this.$form.proveForm() : undefined;
-			var nosubmit = !!this.$form.attr('nosubmit');
+			var form = this.$form;
+			var shouldValidate = form.booleanator(this.options.submit.validate);
+			var preventSubmit = form.booleanator(this.options.submit.prevent);
+			//var isValid = (shouldValidate)? form.proveForm() : undefined;
+			var validation = (shouldValidate)? form.proveForm() : $.when();
+			var nosubmit = !!form.attr('nosubmit');
 
-			var submitSetup = (isValid && !nosubmit);
-			var submitStop = (isValid === false || preventSubmit || nosubmit);
+			validation.done(function(isValid){
 
-			/*
-				Of note, the following things did not work to stop double submits.
-				If you add the 'disabled' attribute to the button then the next
-				submit handler will not be invoked and the form will not be sumitted
-				either via ajax or traditional.
+				// The combined deferred returned from $.fn.proveForm() has resolved.
+				// The resolved value `isValid` will be either true, false, undefined.
+				var submitSetup = (isValid && !nosubmit);
+				var submitStop = (isValid === false || preventSubmit || nosubmit);
 
-				todo: will adding the disabled attr stop double submits on on IE?
-				http://stackoverflow.com/a/17107357/2620505
+				if (submitSetup) {
 
-				If you add the bootstrap `disabled` class the button still invokes
-				the this intercept handler.
-			*/
+					// Add attribute to disable double form submissions.
+					form.attr('nosubmit', true);
 
-/*			console.groupCollapsed('submitInterceptHandler()');
-			console.log('shouldValidate', shouldValidate);
-			console.log('preventSubmit', preventSubmit);
-			console.log('nosubmit', nosubmit);
-			console.log('isValid', isValid);
-			console.groupEnd();*/
+					// trigger event - for decorator
+					form.trigger('submitted.form.prove', {
+						validated: shouldValidate
+					});
+				}
 
-			if (submitSetup) {
+				// submit the form
+				if (!submitStop) form.submit();
+			});
 
-				// Add attribute to disable double form submissions.
-				this.$form.attr('nosubmit', true);
+			validation.fail(function(){
+			});
 
-				// trigger event - for decorator
-				this.$form.trigger('submitted.form.prove', {
-					validated: shouldValidate
-				});
-			}
+			validation.progress(function(){
+			});
 
-			// stop form submit
-			if (submitStop) event.preventDefault();
+			// Stop form submit event because we need
+			// to wait for the deferreds to resolve.
+			event.preventDefault();
 		},
 		//return jquery selector that represents the element in the DOM
 		domSelector: function(field, name){
