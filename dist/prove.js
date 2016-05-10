@@ -486,32 +486,33 @@
 
 	$.fn.validate = function() {
 
-		$(this).each(function(){
-			var el = $(this);
-			var isForm = el.is(':prove-form');
-			var isInput = el.is(':prove-input');
+		// Currently, it is not possible nor practical to have $.fn.validate()
+		// work on a colleciton of elements. The reason is that $.fn.validate()
+		// needs to return the form validation status or a (future) deferred.
 
-			// We trigger events here because the event
-			// handlers bound to the form already have the
-			// field data bound to the event handlers. These
-			// event handlers will call the $.fn.proveForm()
-			// or $.fn.proveInput() with the correct field data.
-			if (isForm) {
-				//el.trigger('validate.form.prove');
-				return el.proveForm();
-			} else if (isInput) {
-				el.trigger('validate.input.prove');
-			} else {
-				// If the el is a dynamically inserted element then
-				// it will be validated. Otherwise, prove defaults
-				// to validating the entire form. So yes, all of the
-				// above logic is not required, but it made me feel
-				// good writing it. So I left it as was. Never know
-				// what we might break in the future.
-				el.trigger('validate.input.prove');
-			}
-		});
-		return this;
+		var el = $(this);
+		var isForm = el.is(':prove-form');
+		var isInput = el.is(':prove-input');
+
+		// We trigger events here because the event
+		// handlers bound to the form already have the
+		// field data bound to the event handlers. These
+		// event handlers will call the $.fn.proveForm()
+		// or $.fn.proveInput() with the correct field data.
+		if (isForm) {
+			//el.trigger('validate.form.prove');
+			return el.proveForm();
+		} else if (isInput) {
+			el.trigger('validate.input.prove');
+			return this;
+		} else {
+			// An input could be dynamically inserted and therefore, it will not pass
+			// the is(':prove-input') or is(':prove-form'). Therefore, we need to assume
+			// here that it is an input.
+			el.trigger('validate.input.prove');
+			return this;
+		}
+
 	};
 }(window.jQuery);
 
