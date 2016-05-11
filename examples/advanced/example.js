@@ -15,9 +15,11 @@
 		fields: {
 			toggle: {
 				trigger: 'click',
+				//group: true,
+				stateful: false,
 				validators: {
 					proveRequired: {
-						//debug: true,
+						debug: true,
 						message: 'Choose one.',
 					}
 				}
@@ -27,6 +29,7 @@
 				trigger: 'change', //<!-- maskmoney plugin triggers change
 				validators: {
 					proveRequired: {
+						debug: true,
 						message: 'Amount required.',
 					}
 				}
@@ -37,9 +40,11 @@
 				trigger: 'change', //<-- tagsinput plugin triggers change
 				validators:{
 					proveRequired: {
+						debug: true,
 						message: 'Description is required.',
 					},
 					provePattern: {
+						debug: true,
 						regex: regex,
 						message: 'Invalid description.'
 					}
@@ -52,15 +57,16 @@
 				//group: false,
 				validators:{
 					proveRequired: {
-						//debug: true,
+						debug: true,
 						message: 'Description is required.',
 					},
 					provePattern: {
-						//debug: true,
+						debug: true,
 						regex: regex,
 						message: 'Invalid description.'
 					},
 					proveDeferred: {
+						debug: true,
 						delay: 3000,
 						valid: true,
 						message: 'Async validation failed.'

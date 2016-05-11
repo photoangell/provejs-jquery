@@ -409,6 +409,7 @@
 		combined.done(function() {
 			var results = $.makeArray(arguments);
 			var valid = evaluate(results);
+			console.log('proveform.combined.done', results, valid);
 
 			// Trigger event indicating validation result
 			form.trigger('validated.form.prove', {
@@ -481,7 +482,8 @@
 			valid: undefined,
 			message: undefined
 		};
-		var combined = $.Deferred();
+		var combined;
+		var master = $.Deferred();
 		var promises = [];
 
 		if (field.debug){
@@ -497,13 +499,15 @@
 			input.trigger('validated.input.prove', result);
 			states[uuid] = false;
 			//return undefined;
-			combined.resolve(undefined);
-			return combined;
+			//combined.resolve(undefined);
+			master.resolve(undefined);
+			return master;
 		} else if (stateful && state && !dirty) {
 			input.trigger('validated.input.prove', state); //clone here?
 			//return state.valid;
-			combined.resolve(state.valid);
-			return combined;
+			//combined.resolve(state.valid);
+			master.resolve(state.valid);
+			return master;
 		} else {
 
 			// loop validators
@@ -541,6 +545,9 @@
 			combined.done(function() {
 				var results = $.makeArray(arguments);
 				var result = pickResult(results);
+				console.log('proveInput.combined.done', result);
+
+				master.resolve(result.valid);
 
 				//save state
 				if (stateful) states[uuid] = result;
@@ -549,7 +556,7 @@
 				input.trigger('validated.input.prove', result);
 			});
 
-			return combined;
+			return master;
 		}
 	};
 }(window.jQuery);

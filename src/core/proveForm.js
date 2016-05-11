@@ -52,6 +52,7 @@
 		combined.done(function() {
 			var results = $.makeArray(arguments);
 			var valid = evaluate(results);
+			console.log('proveform.combined.done', results, valid);
 
 			// Trigger event indicating validation result
 			form.trigger('validated.form.prove', {
