@@ -59,6 +59,11 @@
 						//debug: true,
 						regex: regex,
 						message: 'Invalid description.'
+					},
+					proveDeferred: {
+						delay: 3000,
+						valid: true,
+						message: 'Async validation failed.'
 					}
 				}
 			}
