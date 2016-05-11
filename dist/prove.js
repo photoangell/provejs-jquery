@@ -140,13 +140,14 @@
 			var form = this.$form;
 			var shouldValidate = form.booleanator(this.options.submit.validate);
 			var preventSubmit = form.booleanator(this.options.submit.prevent);
-			//var isValid = (shouldValidate)? this.$form.proveForm() : undefined;
+			//var isValid = (shouldValidate)? form.proveForm() : undefined;
 			var validation = (shouldValidate)? form.proveForm() : $.when();
 			var nosubmit = !!form.attr('nosubmit');
 
 			validation.done(function(isValid){
-				//valid will be either true, false or undefined
 
+				// The combined deferred returned from $.fn.proveForm() has resolved.
+				// The resolved value `isValid` will be either true, false, undefined.
 				var submitSetup = (isValid && !nosubmit);
 				var submitStop = (isValid === false || preventSubmit || nosubmit);
 
@@ -163,7 +164,6 @@
 
 				// submit the form
 				if (!submitStop) form.submit();
-
 			});
 
 			validation.fail(function(){
@@ -172,8 +172,8 @@
 			validation.progress(function(){
 			});
 
-			// stop form submit
-			//if (submitStop) event.preventDefault();
+			// Stop form submit event because we need
+			// to wait for the deferreds to resolve.
 			event.preventDefault();
 		},
 		//return jquery selector that represents the element in the DOM
@@ -429,18 +429,41 @@
 !function ($) {
 	"use strict";
 
+	function clone(obj){
+		return $.extend({}, obj);
+	}
+
+	function last(arr){
+		return arr[arr.length - 1];
+	}
+
+	// return either:
+	// - the first result where result.valid === false or
+	// - the last result
+	function pickResult(results){
+		var pick = clone(last(results));
+		$.each(results, function(index, result){
+			if (result.valid === false) pick = clone(result);
+		});
+		return pick;
+	}
+
+/*	function isPromise (obj) {
+		return $.isFunction(obj.done);
+	}*/
+
 	function isPlugin (plugin){
 		var exist = ($.isFunction($.fn[plugin]));
 		if (!exist) console.error('Missing validator plugin "%s".', plugin);
 		return exist;
 	}
 
-	function warnIncorrectResult(result, validator){
+/*	function warnIncorrectResult(result, validator){
 		if (!('valid' in result)) console.warn('Missing `valid` property in validator ($.fn.' + validator + ') result.');
 		if (!('field' in result)) console.warn('Missing `field` property in validator ($.fn.' + validator + ') result.');
 		if (!('validator' in result)) console.warn('Missing `validator` property in validator ($.fn.' + validator + ') result.');
 		if (!('message' in result)) console.warn('Missing `message` property in validator ($.fn.' + validator + ') result.');
-	}
+	}*/
 
 	// validate a single input
 	$.fn.proveInput = function(field, states) {
@@ -458,7 +481,8 @@
 			valid: undefined,
 			message: undefined
 		};
-		var master = $.Deferred();
+		var combined = $.Deferred();
+		var promises = [];
 
 		if (field.debug){
 			console.groupCollapsed('proveInput()', field.name);
@@ -473,16 +497,26 @@
 			input.trigger('validated.input.prove', result);
 			states[uuid] = false;
 			//return undefined;
-			master.resolve(undefined);
-			return master;
+			combined.resolve(undefined);
+			return combined;
 		} else if (stateful && state && !dirty) {
 			input.trigger('validated.input.prove', state); //clone here?
 			//return state.valid;
-			master.resolve(state.valid);
-			return master;
+			combined.resolve(state.valid);
+			return combined;
 		} else {
 
 			// loop validators
+
+			// if none of the validator results are promises:
+			// - return the result of the first false result
+
+			// If one of the validators results is a promise:
+			// - push all validator results into promises array
+			// - combined = $.when.apply($, promises);
+			// - results = $.makeArray(arguments);
+			// - isValid = evaluate(results);
+			// - combined.resolve(isValid);
 			$.each(validators, function(validator, config){
 
 				config.field = field.name;
@@ -490,24 +524,32 @@
 
 				// invoke validator plugin
 				if (!isPlugin(validator)) return false;
-				result = input[validator](config);
+				//result = input[validator](config);
+				var promise = input[validator](config);
+				promises.push(promise);
 
-				warnIncorrectResult(result, validator);
+				//warnIncorrectResult(result, validator);
 
-				// break loop
-				return result.valid;
+				// break loop at first non-promise result.valid === false
+				//return result.valid;
+				return promise.valid;
 			});
 
-			//console.log('result', value, result.valid);
+			// evaluate combined promises
+			combined = $.when.apply($, promises);
 
-			//save state
-			if (stateful) states[uuid] = result;
+			combined.done(function() {
+				var results = $.makeArray(arguments);
+				var result = pickResult(results);
 
-			//trigger event
-			input.trigger('validated.input.prove', result);
+				//save state
+				if (stateful) states[uuid] = result;
 
-			master.resolve(result.valid);
-			return master;
+				// Trigger event indicating validation result
+				input.trigger('validated.input.prove', result);
+			});
+
+			return combined;
 		}
 	};
 }(window.jQuery);
