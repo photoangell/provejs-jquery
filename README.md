@@ -241,28 +241,6 @@ grunt lint
 grunt build
 ```
 
-## Other Libraries
-
-There are many other form validation libraries. Just about any of them will work great for simple forms. However, if you have complex forms good luck.
-
-- http://www.formvalidator.net/
-	- License:  MIT (declared in bower.json), but not license file.
-	- Focus: Unobtrusive form validation declorations.
-	- Concerns: It binds event handlers directly to the inputs rather delagate them to the form container. Merges decoration and validation together.
-	- Development: Maintained and under active development.
-
-- http://jqueryvalidation.org/
-	- License: MIT
-	- Concerns: not actively being maintained. Be prepared to monkey patch.
-
-- https://github.com/1000hz/bootstrap-validator
-	- License: MIT
-
-- http://formvalidation.io/
-	- License: Commercial
-	- Concerns: Merges decoration and validation into single lib.
-	- Development:
-
 ## Roadmap
 
 ### Deferred [validators](./src/core/README.md#deferred-validation).
@@ -297,6 +275,8 @@ form.prove(options);
 // or if you dynamically insert an input
 input.proveConfig();
 ```
+
+### Unit Tests
 
 ### Reset Input and Forms
 

@@ -41,3 +41,25 @@ This lib introduces a number of [decorator plugins](./src/decorators) to decorat
 All other form validation libraries are jQuery plugins, but they stop there. They all create thier own proprietary framework for their validation rules and methods. Instead they should have just created their validator methods as jQuery plugins. This would allow the sharing of validators between form validation libs. As a general rule if you are passing in a DOM reference into a method, then you should consider making that method a jQuery plugin.
 
 This lib makes heavy use of the jQuery plugin framework. All validators and decorators are standalone jQuery plugins. All of them are very composable, extendable, and widely understood by the development community. The only draw back of making a jquery plugin built from a suit of other jquery plugins is populuting the $.fn.* namespace. However, after working with design goal the benefits out weight the drawbacks. I believe the code easier to understand and maintain. The result is much cleaner smaller modules.
+
+## Other Libraries
+
+There are many other form validation libraries. Just about any of them will work great for simple forms. However, if you have complex forms good luck.
+
+- http://www.formvalidator.net/
+	- License:  MIT (declared in bower.json), but not license file.
+	- Focus: Unobtrusive form validation declorations.
+	- Concerns: It binds event handlers directly to the inputs rather delagate them to the form container. Merges decoration and validation together.
+	- Development: Maintained and under active development.
+
+- http://jqueryvalidation.org/
+	- License: MIT
+	- Concerns: not actively being maintained. Be prepared to monkey patch.
+
+- https://github.com/1000hz/bootstrap-validator
+	- License: MIT
+
+- http://formvalidation.io/
+	- License: Commercial
+	- Concerns: Merges decoration and validation into single lib.
+	- Development:
