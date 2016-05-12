@@ -1,13 +1,10 @@
-
-
 # jquery-prove
 
-> An event based jQuery plugin for client-side validation of html forms.
+> A jQuery plugin for client-side validation of html forms.
 > Still under active development.
 
 ## Table Contents
 - [Introduction](#introduction)
-- [Advantages](#advanages)
 - [Examples](#examples)
 - [Options](#prove-options)
 - [Validators](#prove-validators)
@@ -19,51 +16,21 @@
 
 ## Introduction
 
-All of the other form validation libraries work great for simple forms. However, they all have short-comings when trying to validate complex forms. Complex forms have many hidden inputs and collections of inputs (eg tabs or panels). Complex forms have input plugins which modify the form DOM and hide the original inputs. Complex forms have inputs that dynamically inserted or removed from the form. These other form validation libraries make validating complex forms painful.
+jquery-prove is a client-side form input validation with the following features:
+- Input validators are jQuery plugins.
+- Input decorators are jQuery plugins.
+- Validators share data with decorators via events.
+- Validators can return immediately or can return a deferred validation result.
+- Stateful validation results.
+- All events are delagated to the form so inputs can be dynamically inserted/removed at any time.
+- Explict control over configuration via [booleanators](#booleanator).
+- Modular design via a suite jQuery utility plugins.
 
-Below is a list design considerations that address the design problems of the other validators libraries.
-
-### Explict Validation ###
-
-Many of the form validation libraries will not validate hidden or readonly inputs. This fine for simple forms, but becomes a huge pain when you have a multiple input plugins that hide inputs and overlay them with dynamically generated DOM elements modeling an advanced input control. Form validation should be explicit. If you define a field to be validated it should be validated.
-
-I would rather be able to directly control enable/disable of field validation using a [booleanator](./src/utilities/booleanator.js) that is evaluated at time of validation. A booleanator can be defined as either boolean, selector, or callback which is later evaluated to a boolean (true or false).
-
-```javascript
-fields: {
-	field1: {
-		//evaluated at time of validation
-		//accepts true, false, selector, callback
-		enable: 'fieldset#panel1:visible',
-		validators: {
-		}
-	}
-}
-```
-
-### Delagated Events ###
-
-Form validation should not be dependent on an javascript references to the form DOM. This is particularly important if the form inputs are inserted or removed dynamically. If a field is defined to be validated, but there is no matching form inputs than the field validation should be skipped silently. If later during another validation attempt the inputs are now found in the form DOM then validation will happen as normally. This allows the developer to pre-define field validations before the inputs are actually in the DOM. This also allows for the removal of field inputs and re-inserting them later - validation will happen as expected.
-
-This lib does not bind any events directly to the input DOM elements. All event binding is delegated to the form. You can delete, insert, or modify form input at anypoint and it will not impact form validation.
-
-While unobtrusive form validation (ie defining the validation config as html data attributes) is not a design goal or feature of this library the goal of not saving a DOM reference would not preclude unbotrusive form validation.
-
-### Form Decoration ###
-
-Form validation libraries should not be directly decorating the form. The form validation libraries should not be adding validation classes, displaying messaging, changing ARIA attributes, or controlling internationalization of error messages. Form decoration should be handled by seperate plugins that are monitoring validation events and decorating the form and form inputs.
-
-This lib introduces a number of [decorator plugins](./src/decorators) to decorate the form on validation events. It is trival to create your own decorator plugins.  You should not need to monkey patch a form validation library to change where you want your error messages to be displayed.
-
-### jQuery Plugins ###
-
-All other form validation libraries are jQuery plugins, but they stop there. They all create thier own proprietary framework for their validation rules and methods. Instead they should have just created their validator methods as jQuery plugins. This would allow the sharing of validators between form validation libs. As a general rule if you are passing in a DOM reference into a method, then you should consider making that method a jQuery plugin.
-
-This lib makes heavy use of the jQuery plugin framework. All validators and decorators are standalone jQuery plugins. All of them are very composable, extendable, and widely understood by the development community. The only draw back of making a jquery plugin built from a suit of other jquery plugins is populuting the $.fn.* namespace. However, after working with design goal the benefits out weight the drawbacks. I believe the code easier to understand and maintain. The result is much cleaner smaller modules.
+Please read [background notes](./BACKGROUND.md) on why yet another jQuery plugin.
 
 ## Examples
 
-Please see the [examples folder](./examples).
+Please see [examples folder](./examples).
 
 ## Prove Options
 
@@ -89,7 +56,7 @@ form.prove({
 	fields: {
 		field1: {
 			debug: false, //optional (bool)
-			enabled: true, //optional (booleanator), defaults to true 
+			enabled: true, //optional (booleanator), defaults to true
 			selector: '.selector', //optional (string), defaults to '[name="field1"]'
 			trigger: 'click change', //optional (string) defaults to 'change keyup click blur', live validate on these events.
 			stateful: true, //optional (bool), defaults to true.
@@ -109,11 +76,11 @@ form.prove({
 ```
 
 - `debug` - optional (bool) will print out some debug info in the developer console. Debug defaults to false.
-- `enabled` - optional (booleanator) defaults to true. A [booleanator]() is something (bool, selector, sudo-selector, function) that evaluates to either true or false. So for example, you specify enabled: ':visible' and the field config will be enabled when the input is visible. Or perhaps, enable validation when the input is not empty by setting enabled to ':filled'.
+- `enabled` - optional (booleanator) defaults to true. A [booleanator](#booleanator) is something (bool, selector, sudo-selector, function) that evaluates to either true or false. So for example, you specify enabled: ':visible' and the field config will be enabled when the input is visible. Or perhaps, enable validation when the input is not empty by setting enabled to ':filled'.
 - `selector` - optional (string) defaults to '[name="field"]'. There are rare cases in which you want to validate a non-input for which you can specify a selector.
-- `trigger` optional (string) defaults to 'change keyup click blur'. You change when live validation happens by changing the trigger value. 
+- `trigger` optional (string) defaults to 'change keyup click blur'. You change when live validation happens by changing the trigger value.
 - `stateful` - optional (bool) defaults to true. Prove is a stateful validator. You can disable stateful validation by setting stateful to false. Prove hashes the input value to determine if the input value has changed since last validation. Prove does this stateful validation with keeping a DOM reference to any inputs.
-- `group` - optional (bool) which defaults to false for all but radio inputs. This option defines if prove should validate the inputs as a group or validate the found inputs indivdually. 
+- `group` - optional (bool) which defaults to false for all but radio inputs. This option defines if prove should validate the inputs as a group or validate the found inputs indivdually.
 
 ### Validator Options
 
@@ -147,7 +114,7 @@ form.prove({
 ```
 Each validator has it's own set of options but below is a set of the common options to all prove validators.
 - `debug` - optional (bool) defaults to false. Will enalbe the validator to print debug information in the developer console.
-- `enabled` - optional (booleanator) defaults to true. See [booleanator]() for more information.
+- `enabled` - optional (booleanator) defaults to true. See [booleanator](#booleanator) for more information.
 - `message` - optional (string) defaults to undefined. This string is passed into the validator which allows your custom validators to modifiy it. Utlimately, this message value is passed to the decorators via the event data.
 
 ## Prove Validators
@@ -156,7 +123,7 @@ Prove validators are handled by jQuery [validator plugins](./src/validators).
 
 ## Prove Decorators
 
-Form decoration is handled by jQuery [decorator plugins](./src/decorators). 
+Form decoration is handled by jQuery [decorator plugins](./src/decorators).
 
 ## Prove Events
 
@@ -298,18 +265,16 @@ There are many other form validation libraries. Just about any of them will work
 
 ## Roadmap
 
-
-
 ### Deferred [validators](./src/core/README.md#deferred-validation).
 
 ### Change Event Data
 
-Consider changing `validated.input.prove` to `status.input.prove`. 
+Consider changing `validated.input.prove` to `status.input.prove`.
 
 This change would allow for decoration of:
 - setup: initialization of prove, which is useful for aria decoration
 - validating: start of validation, which is useful for async spinners
-- validated: validation completed, which is useful for garland and tinsel 
+- validated: validation completed, which is useful for garland and tinsel
 
 `status.input.prove` or `workflow.input.prove`
 ```javascript
@@ -320,6 +285,17 @@ This change would allow for decoration of:
     status: 'success', //'success', 'failure', 'warning', 'reset'
     message: 'Your error or warning message.'
 }
+```
+
+### Unobtrusive Configuration
+
+Perhaps support unobtrusive configuration via $.fn.proveConfig().
+```javascript
+var options = form.proveConfig();
+form.prove(options);
+
+// or if you dynamically insert an input
+input.proveConfig();
 ```
 
 ### Reset Input and Forms
