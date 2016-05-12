@@ -30,6 +30,7 @@
 		//var master = $.Deferred();
 		var promises = [];
 		var combined;
+		var dfd = $.Deferred();
 
 		// Loop inputs and validate them. There may be multiple
 		// identical inputs (ie radios) for which we do not want to
@@ -52,20 +53,26 @@
 		combined.done(function() {
 			var results = $.makeArray(arguments);
 			var valid = evaluate(results);
-			console.log('proveform.combined.done', results, valid);
+
+			console.groupCollapsed('proveform.combined.done()');
+			console.log('results', results);
+			console.log('valid', valid);
+			console.groupEnd();
 
 			// Trigger event indicating validation result
 			form.trigger('validated.form.prove', {
 				valid: valid
 			});
+
+			dfd.resolve(valid);
 		});
-		combined.fail(function() {
+/*		combined.fail(function() {
 			console.log("async code failed so validation failed");
 		});
 		combined.progress(function(){
 			console.log('progress');
-		});
+		});*/
 
-		return combined;
+		return dfd;
 	};
 }(window.jQuery);

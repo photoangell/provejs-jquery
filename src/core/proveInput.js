@@ -116,7 +116,6 @@
 			combined.done(function() {
 				var results = $.makeArray(arguments);
 				var result = pickResult(results);
-				console.log('proveInput.combined.done', result);
 
 				master.resolve(result.valid);
 

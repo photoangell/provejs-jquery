@@ -84,6 +84,13 @@
 				var submitSetup = (isValid && !nosubmit);
 				var submitStop = (isValid === false || preventSubmit || nosubmit);
 
+				console.groupCollapsed('submitInterceptHandler.validation.done()');
+				console.log('isValid', isValid);
+				console.log('nosubmit', nosubmit);
+				console.log('submitSetup', submitSetup);
+				console.log('submitStop', submitStop);
+				console.groupEnd();
+
 				if (submitSetup) {
 
 					// Add attribute to disable double form submissions.

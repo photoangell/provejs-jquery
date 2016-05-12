@@ -151,6 +151,13 @@
 				var submitSetup = (isValid && !nosubmit);
 				var submitStop = (isValid === false || preventSubmit || nosubmit);
 
+				console.groupCollapsed('submitInterceptHandler.validation.done()');
+				console.log('isValid', isValid);
+				console.log('nosubmit', nosubmit);
+				console.log('submitSetup', submitSetup);
+				console.log('submitStop', submitStop);
+				console.groupEnd();
+
 				if (submitSetup) {
 
 					// Add attribute to disable double form submissions.
@@ -387,6 +394,7 @@
 		//var master = $.Deferred();
 		var promises = [];
 		var combined;
+		var dfd = $.Deferred();
 
 		// Loop inputs and validate them. There may be multiple
 		// identical inputs (ie radios) for which we do not want to
@@ -409,21 +417,27 @@
 		combined.done(function() {
 			var results = $.makeArray(arguments);
 			var valid = evaluate(results);
-			console.log('proveform.combined.done', results, valid);
+
+			console.groupCollapsed('proveform.combined.done()');
+			console.log('results', results);
+			console.log('valid', valid);
+			console.groupEnd();
 
 			// Trigger event indicating validation result
 			form.trigger('validated.form.prove', {
 				valid: valid
 			});
+
+			dfd.resolve(valid);
 		});
-		combined.fail(function() {
+/*		combined.fail(function() {
 			console.log("async code failed so validation failed");
 		});
 		combined.progress(function(){
 			console.log('progress');
-		});
+		});*/
 
-		return combined;
+		return dfd;
 	};
 }(window.jQuery);
 
@@ -545,7 +559,6 @@
 			combined.done(function() {
 				var results = $.makeArray(arguments);
 				var result = pickResult(results);
-				console.log('proveInput.combined.done', result);
 
 				master.resolve(result.valid);
 
