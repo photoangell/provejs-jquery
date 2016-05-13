@@ -50,14 +50,14 @@ form.prove({
 ```
 
 - `debug` 
-	- Type: bool,
-	- Required: false,
-	- Default: false,
-	- Description: will print out debug info in the developer console.
+	- **Type:** bool,
+	- **Required:** false,
+	- **Default:** false,
+	- **Description:** will print out debug info in the developer console.
 - `fields` 
-	- Type: object,
-	- Required: true,
-	- Description: defines the field validations to be performed. See below for more details.
+	- **Type:** object,
+	- **Required:** true,
+	- **Description:** defines the field validations to be performed. See below for more details.
 
 ### Field Options
 ```javascript
