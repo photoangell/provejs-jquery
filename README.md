@@ -3,6 +3,8 @@
 > A jQuery plugin for client-side validation of html forms.
 > Still under active development.
 
+![Form Image](./form.png)
+
 ## Table Contents
 - [Introduction](#introduction)
 - [Examples](#examples)
@@ -49,12 +51,12 @@ form.prove({
 });
 ```
 
-- `debug` 
+- `debug`
 	- **Type:** bool,
 	- **Required:** false,
 	- **Default:** false,
 	- **Description:** will print out debug info in the developer console.
-- `fields` 
+- `fields`
 	- **Type:** object,
 	- **Required:** true,
 	- **Description:** defines the field validations to be performed. See below for more details.
@@ -94,22 +96,22 @@ form.prove({
 	- **Requied:** false,
 	- **Default:** true,
 	- **Descrption:** will enable the field for validation. A value of ':visible' will only validate the input if the input if visible. A [booleanator](#booleanator) is something (bool, selector, sudo-selector, function) that evaluates to either true or false. So for example, you specify enabled: ':visible' and the field config will be enabled when the input is visible. Or perhaps, enable validation when the input is not empty by setting enabled to ':filled'.
-- `selector` 
+- `selector`
 	- **Type:** string,
 	- **Required:** false,
 	- **Default:** '[name="field"]',
 	- **Description:** jQuery selector which you can shift the context of the validation.
-- `trigger` 
+- `trigger`
 	- **Type:** string,
 	- **Required:** false,
 	- **Default:** 'change keyup click blur',
 	- **Description:** The events on which you want to live validation to happen.
-- `stateful` 
+- `stateful`
 	- **Type:** bool,
 	- **Required:** false,
 	- **Default:** true,
 	- **Description:** jquery-prove is a stateful validator. You can disable stateful validation by setting stateful to false. Prove hashes the input value to determine if the input value has changed since last validation. Prove does this stateful validation without keeping a DOM reference to any inputs.
-- `group` 
+- `group`
 	- **Type:** bool,
 	- **Required:** false,
 	- **Default:** false for all but radio inputs,
@@ -146,12 +148,12 @@ form.prove({
 });
 ```
 Each validator has it's own set of options but below is a set of the common options to all prove validators.
-- `debug` 
+- `debug`
 	- **Type:** bool,
 	- **Required:** false,
 	- **Default:** false,
 	- **Description:** Will enalbe the validator to print debug information in the developer console.
-- `enabled` 
+- `enabled`
 	- **Type:** booleanator,
 	- **Required:** false,
 	- **Default:** true,
