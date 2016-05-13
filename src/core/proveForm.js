@@ -26,38 +26,34 @@
 		var states = prove.states;
 		var fields = prove.options.fields;
 		var filter = true;
-		//var valid = true;
-		//var master = $.Deferred();
 		var promises = [];
-		var combined;
 		var dfd = $.Deferred();
+		var combined;
 
 		// Loop inputs and validate them. There may be multiple
 		// identical inputs (ie radios) for which we do not want to
 		// validate twice. Therefore, $.fn.provables() will filter
 		// these multiples for us unless less field.multiple is true.
 		form.provables(fields, filter).each(function(){
-
 			var input = $(this);
 			var field = fields[this.field];
-			//var isProved = input.proveInput(field, states);
 			var promise = input.proveInput(field, states);
 			promises.push(promise);
-
-			//valid = toggleState(valid, isProved);
 		});
 
-		// evaluate combined promises
+		// wait for all field promises to resolve
 		combined = $.when.apply($, promises);
 
 		combined.done(function() {
 			var results = $.makeArray(arguments);
 			var valid = evaluate(results);
 
-			console.groupCollapsed('proveform.combined.done()');
-			console.log('results', results);
-			console.log('valid', valid);
-			console.groupEnd();
+			if (prove.debug) {
+				console.groupCollapsed('Proveform.done()');
+				console.log('results', results);
+				console.log('valid', valid);
+				console.groupEnd();
+			}
 
 			// Trigger event indicating validation result
 			form.trigger('validated.form.prove', {
@@ -66,12 +62,12 @@
 
 			dfd.resolve(valid);
 		});
-/*		combined.fail(function() {
-			console.log("async code failed so validation failed");
+		combined.fail(function(obj) {
+			dfd.reject(obj);
 		});
 		combined.progress(function(){
 			console.log('progress');
-		});*/
+		});
 
 		return dfd;
 	};

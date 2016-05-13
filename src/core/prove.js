@@ -71,6 +71,7 @@
 		submitInterceptHandler: function(event){
 
 			var form = this.$form;
+			var options = this.options;
 			var shouldValidate = form.booleanator(this.options.submit.validate);
 			var preventSubmit = form.booleanator(this.options.submit.prevent);
 			//var isValid = (shouldValidate)? form.proveForm() : undefined;
@@ -84,12 +85,14 @@
 				var submitSetup = (isValid && !nosubmit);
 				var submitStop = (isValid === false || preventSubmit || nosubmit);
 
-				console.groupCollapsed('submitInterceptHandler.validation.done()');
-				console.log('isValid', isValid);
-				console.log('nosubmit', nosubmit);
-				console.log('submitSetup', submitSetup);
-				console.log('submitStop', submitStop);
-				console.groupEnd();
+				if (options.debug){
+					console.groupCollapsed('Prove.submitInterceptHandler.done()');
+						console.log('isValid', isValid);
+						console.log('nosubmit', nosubmit);
+						console.log('submitSetup', submitSetup);
+						console.log('submitStop', submitStop);
+					console.groupEnd();
+				}
 
 				if (submitSetup) {
 
