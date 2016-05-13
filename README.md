@@ -308,7 +308,7 @@ This change would allow for decoration of:
 {
     field: 'email',
     validator: 'validator', //validator name or undefined
-    status: 'validated', //'setup', 'validating', 'validated', 'destroy'
+    status: 'validated', //'setup', 'validating', 'progress', 'validated', 'destroy'
     validation: 'success', //'success', 'failure', 'warning', 'reset'
     message: 'Your error or warning message.'
 }
@@ -326,6 +326,14 @@ Where `status`:
 {
 	field: 'email',
 	status: 'validating',
+}
+```
+- `progress` - triggered periodically by a deferred validator
+```javascript
+{
+	field: 'email',
+	validator: 'validatorName',
+	status: 'progress'
 }
 ```
 - `validated` - triggered after input validation
