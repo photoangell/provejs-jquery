@@ -289,6 +289,11 @@ grunt build
 
 ### Deferred [validators](./src/core/README.md#deferred-validation).
 
+I have deferred validation working, but need to integrate a deferred progress.
+```javascript
+dfd.notify(data);
+```
+
 ### Change Event Data
 
 Consider changing `validated.input.prove` to `status.input.prove`.
