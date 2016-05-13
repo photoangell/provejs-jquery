@@ -11,20 +11,21 @@
 - [Decorators](#prove-decorators)
 - [Events](#prove-events)
 - [Destroy](#destory)
-- [Other Libraries](#other-libraries)
 - [Roadmap](#roadmap)
 
 ## Introduction
 
-jquery-prove is a client-side form input validation with the following features:
-- Input validators are jQuery plugins.
-- Input decorators are jQuery plugins.
+jquery-prove is a client-side form validation plugin with the following features:
+
+- Input [validators](./src/validators) are jQuery plugins.
+- Input [decorators](./src/decorators) are jQuery plugins.
 - Validators share data with decorators via events.
 - Validators can return immediately or can return a deferred validation result.
 - Stateful validation results.
-- All events are delagated to the form so inputs can be dynamically inserted/removed at any time.
+- All events are delagated to the form so the form DOM can be dynamically modified at any time.
 - Explict control over configuration via [booleanators](#booleanator).
-- Modular design via a suite jQuery utility plugins.
+- Modular design via a suite jQuery [utility plugins](./src/utilities).
+- Open source.
 
 Please read [background notes](./BACKGROUND.md) on why yet another jQuery plugin.
 
@@ -75,8 +76,16 @@ form.prove({
 });
 ```
 
-- `debug` - optional (bool) will print out some debug info in the developer console. Debug defaults to false.
-- `enabled` - optional (booleanator) defaults to true. A [booleanator](#booleanator) is something (bool, selector, sudo-selector, function) that evaluates to either true or false. So for example, you specify enabled: ':visible' and the field config will be enabled when the input is visible. Or perhaps, enable validation when the input is not empty by setting enabled to ':filled'.
+- `debug`
+	- Type: bool
+	- Required: false,
+	- Default: false,
+	- Description: will print out some debug info in the developer console. Debug defaults to false.
+- `enabled`
+	- Type: booleanator,
+	- Requied: false,
+	- Default: true,
+	- Descrption: will enable the field for validation. A value of ':visible' will only validate the input if the input if visible. A [booleanator](#booleanator) is something (bool, selector, sudo-selector, function) that evaluates to either true or false. So for example, you specify enabled: ':visible' and the field config will be enabled when the input is visible. Or perhaps, enable validation when the input is not empty by setting enabled to ':filled'.
 - `selector` - optional (string) defaults to '[name="field"]'. There are rare cases in which you want to validate a non-input for which you can specify a selector.
 - `trigger` optional (string) defaults to 'change keyup click blur'. You change when live validation happens by changing the trigger value.
 - `stateful` - optional (bool) defaults to true. Prove is a stateful validator. You can disable stateful validation by setting stateful to false. Prove hashes the input value to determine if the input value has changed since last validation. Prove does this stateful validation with keeping a DOM reference to any inputs.
@@ -272,7 +281,7 @@ Perhaps support unobtrusive configuration via $.fn.proveConfig().
 var options = form.proveConfig();
 form.prove(options);
 
-// or if you dynamically insert an input
+// or if you dynamically insert an input, but for some reason did not already config the field
 input.proveConfig();
 ```
 
