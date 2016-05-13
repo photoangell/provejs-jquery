@@ -25,6 +25,7 @@ jquery-prove is a client-side form validation plugin with the following features
 - All events are delagated to the form so the form DOM can be dynamically modified at any time.
 - Explict control over configuration via [booleanators](#booleanator).
 - Modular design via a suite jQuery [utility plugins](./src/utilities).
+- Live and submit validation.
 - Open source.
 
 Please read [background notes](./BACKGROUND.md) on why yet another jQuery plugin.
@@ -41,8 +42,8 @@ Prove accepts only a single options config with only two properties: debug and f
 
 ```javascript
 form.prove({
-	debug: false, //optional (bool), defaults to false
-	fields: { // fields to validate
+	debug: false,
+	fields: {
 		// see fields configuration below
 	}
 });
@@ -93,10 +94,26 @@ form.prove({
 	- Requied: false,
 	- Default: true,
 	- Descrption: will enable the field for validation. A value of ':visible' will only validate the input if the input if visible. A [booleanator](#booleanator) is something (bool, selector, sudo-selector, function) that evaluates to either true or false. So for example, you specify enabled: ':visible' and the field config will be enabled when the input is visible. Or perhaps, enable validation when the input is not empty by setting enabled to ':filled'.
-- `selector` - optional (string) defaults to '[name="field"]'. There are rare cases in which you want to validate a non-input for which you can specify a selector.
-- `trigger` optional (string) defaults to 'change keyup click blur'. You change when live validation happens by changing the trigger value.
-- `stateful` - optional (bool) defaults to true. Prove is a stateful validator. You can disable stateful validation by setting stateful to false. Prove hashes the input value to determine if the input value has changed since last validation. Prove does this stateful validation with keeping a DOM reference to any inputs.
-- `group` - optional (bool) which defaults to false for all but radio inputs. This option defines if prove should validate the inputs as a group or validate the found inputs indivdually.
+- `selector` 
+	- Type: string,
+	- Required: false,
+	- Default: '[name="field"]',
+	- Description: jQuery selector which you can shift the context of the validation.
+- `trigger` 
+	- Type: string,
+	- Required: false,
+	- Default: 'change keyup click blur',
+	- Description: The events on which you want to live validation to happen.
+- `stateful` 
+	- Type: bool,
+	- Required: false,
+	- Default: true,
+	- Description: jquery-prove is a stateful validator. You can disable stateful validation by setting stateful to false. Prove hashes the input value to determine if the input value has changed since last validation. Prove does this stateful validation without keeping a DOM reference to any inputs.
+- `group` 
+	- Type: bool,
+	- Required: false,
+	- Default: false for all but radio inputs,
+	- Description: should jquery-prove validate the inputs as a group or validate the found inputs indivdually.
 
 ### Validator Options
 
