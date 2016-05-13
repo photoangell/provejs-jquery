@@ -33,8 +33,8 @@ Where `valid` is either:
 
 ## Message
 
-The message string passed input to the validators can be either a string:
-- representing the actual message to show the user or
-- a code which the decorator has a list of predefined messages to decorate the form with (e.g. i18n support).
+The message string passed input to the validators can be either:
+- a string representing the actual message to show the user or
+- an error code which the decorator has a list of predefined messages to decorate the form with (e.g. i18n support).
 
 Your custom validators can change the message value.
