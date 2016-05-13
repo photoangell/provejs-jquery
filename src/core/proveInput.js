@@ -104,11 +104,17 @@
 				// Trigger event indicating validation result
 				input.trigger('validated.input.prove', result);
 			});
+
+			//handle promise failure
 			combined.fail(function(obj) {
 				dfd.reject(obj);
+				//todo: input.trigger('status.input.prove', obj);
 			});
-			combined.progress(function(){
-				console.log('progress');
+
+			// handle promise progress
+			combined.progress(function(obj){
+				console.log('progress', obj);
+				//todo: input.trigger('status.input.prove', obj);
 			});
 
 			return dfd;

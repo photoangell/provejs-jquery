@@ -949,6 +949,12 @@
 			result.valid = true;
 			dfd.resolve(result);
 		} else {
+
+			//issue progress
+			dfd.notify({
+				foo: 'bar'
+			});
+
 			result.valid = options.valid;
 			setTimeout(function(){
 				dfd.resolve(result);
@@ -956,7 +962,7 @@
 		}
 
 		if (options.debug){
-			console.groupCollapsed('Validator.proveDeferredNever()', options.field);
+			console.groupCollapsed('Validator.proveDeferred()', options.field);
 				console.log('options', options);
 				console.log('input', input);
 				console.log('value', value);

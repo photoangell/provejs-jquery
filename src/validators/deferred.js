@@ -23,6 +23,12 @@
 			result.valid = true;
 			dfd.resolve(result);
 		} else {
+
+			//issue progress
+			dfd.notify({
+				foo: 'bar'
+			});
+
 			result.valid = options.valid;
 			setTimeout(function(){
 				dfd.resolve(result);
