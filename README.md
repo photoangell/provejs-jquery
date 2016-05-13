@@ -310,10 +310,36 @@ This change would allow for decoration of:
 ```
 Where `status`:
 - `setup` - triggered on field setup
+```javascript
+{
+	field: 'email',
+	status: 'setup'
+}
+```
 - `validating` - triggered at start of validation
+```javascript
+{
+	field: 'email',
+	status: 'validating',
+}
+```
 - `validated` - triggered after input validation
-- `destroy` - triggered at input teardown which part of the form.prove('destroy')
-
+```javascript
+{
+	field: 'email',
+	validator: 'validatorName',
+	status: 'validated',
+	validation: 'success', //'failure', 'warning', 'reset',
+	message: 'Validation message or error code'
+}
+```
+- `destroy` - triggered immediately before input teardown which part of the form.prove('destroy')
+```javascript
+{
+	field: 'email',
+	status: 'destroy',
+}
+```
 
 ### Unobtrusive Configuration
 
