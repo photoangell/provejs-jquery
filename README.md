@@ -113,7 +113,7 @@ form.prove({
 	- **Type:** bool,
 	- **Required:** false,
 	- **Default:** false for all but radio inputs,
-	- **Description:** should jquery-prove validate the inputs as a group or validate the found inputs indivdually.
+	- **Description:** should jquery-prove validate the found inputs as a group or validate the found inputs indivdually.
 
 ### Validator Options
 
