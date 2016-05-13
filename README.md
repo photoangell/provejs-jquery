@@ -22,7 +22,6 @@ jquery-prove is a client-side form validation plugin:
 Please read [background notes](./BACKGROUND.md) on why yet another jQuery plugin.
 
 ## Table Contents
-- [Introduction](#introduction)
 - [Examples](#examples)
 - [Options](#prove-options)
 - [Validators](#prove-validators)
