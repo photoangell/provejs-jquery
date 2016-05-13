@@ -12,12 +12,12 @@ jquery-prove is a client-side form validation plugin:
 - Input [decorators](./src/decorators) are jQuery plugins.
 - Validators share data with decorators via events.
 - Validators can return immediately or can return a deferred validation result.
-- Stateful validations.
-- Delagated events to the form so the form DOM can be dynamically modified at any time.
+- Delegated events to the form so the form DOM can be dynamically modified at anytime.
 - Explict control over configuration options via [booleanators](#booleanator).
 - Modular design via a suite of jQuery [utility plugins](./src/utilities).
 - Live and form submit validation.
-- Open source.
+- Stateful validations.
+- Open source MIT license.
 
 Please read [background notes](./BACKGROUND.md) on why yet another jQuery plugin.
 
