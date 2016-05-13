@@ -1,18 +1,8 @@
 ![Form Image](./logo.png)
 > A jQuery plugin for client-side validation of html forms.
-> Still under active development.
+> Under active development.
 
 ![Form Image](./form.png)
-
-## Table Contents
-- [Introduction](#introduction)
-- [Examples](#examples)
-- [Options](#prove-options)
-- [Validators](#prove-validators)
-- [Decorators](#prove-decorators)
-- [Events](#prove-events)
-- [Destroy](#destory)
-- [Roadmap](#roadmap)
 
 ## Introduction
 
@@ -30,6 +20,16 @@ jquery-prove is a client-side form validation plugin with the following features
 - Open source.
 
 Please read [background notes](./BACKGROUND.md) on why yet another jQuery plugin.
+
+## Table Contents
+- [Introduction](#introduction)
+- [Examples](#examples)
+- [Options](#prove-options)
+- [Validators](#prove-validators)
+- [Decorators](#prove-decorators)
+- [Events](#prove-events)
+- [Destroy](#destory)
+- [Roadmap](#roadmap)
 
 ## Examples
 
