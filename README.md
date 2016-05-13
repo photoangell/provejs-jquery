@@ -64,12 +64,12 @@ form.prove({
 form.prove({
 	fields: {
 		field1: {
-			debug: false, //optional (bool)
-			enabled: true, //optional (booleanator), defaults to true
-			selector: '.selector', //optional (string), defaults to '[name="field1"]'
-			trigger: 'click change', //optional (string) defaults to 'change keyup click blur', live validate on these events.
-			stateful: true, //optional (bool), defaults to true.
-			group: false, //optional (bool), defaults to false for all but radio inputs.
+			debug: false,
+			enabled: true,
+			selector: '[name="field1"]',
+			trigger: 'click change',
+			stateful: true,
+			group: false,
 			validators: {
 				// see validator options
 			}
@@ -85,35 +85,35 @@ form.prove({
 ```
 
 - `debug`
-	- Type: bool
-	- Required: false,
-	- Default: false,
-	- Description: will print out some debug info in the developer console. Debug defaults to false.
+	- **Type:** bool
+	- **Required:** false,
+	- **Default:** false,
+	- **Description:** will print out some debug info in the developer console. Debug defaults to false.
 - `enabled`
-	- Type: booleanator,
-	- Requied: false,
-	- Default: true,
-	- Descrption: will enable the field for validation. A value of ':visible' will only validate the input if the input if visible. A [booleanator](#booleanator) is something (bool, selector, sudo-selector, function) that evaluates to either true or false. So for example, you specify enabled: ':visible' and the field config will be enabled when the input is visible. Or perhaps, enable validation when the input is not empty by setting enabled to ':filled'.
+	- **Type:** booleanator,
+	- **Requied:** false,
+	- **Default:** true,
+	- **Descrption:** will enable the field for validation. A value of ':visible' will only validate the input if the input if visible. A [booleanator](#booleanator) is something (bool, selector, sudo-selector, function) that evaluates to either true or false. So for example, you specify enabled: ':visible' and the field config will be enabled when the input is visible. Or perhaps, enable validation when the input is not empty by setting enabled to ':filled'.
 - `selector` 
-	- Type: string,
-	- Required: false,
-	- Default: '[name="field"]',
-	- Description: jQuery selector which you can shift the context of the validation.
+	- **Type:** string,
+	- **Required:** false,
+	- **Default:** '[name="field"]',
+	- **Description:** jQuery selector which you can shift the context of the validation.
 - `trigger` 
-	- Type: string,
-	- Required: false,
-	- Default: 'change keyup click blur',
-	- Description: The events on which you want to live validation to happen.
+	- **Type:** string,
+	- **Required:** false,
+	- **Default:** 'change keyup click blur',
+	- **Description:** The events on which you want to live validation to happen.
 - `stateful` 
-	- Type: bool,
-	- Required: false,
-	- Default: true,
-	- Description: jquery-prove is a stateful validator. You can disable stateful validation by setting stateful to false. Prove hashes the input value to determine if the input value has changed since last validation. Prove does this stateful validation without keeping a DOM reference to any inputs.
+	- **Type:** bool,
+	- **Required:** false,
+	- **Default:** true,
+	- **Description:** jquery-prove is a stateful validator. You can disable stateful validation by setting stateful to false. Prove hashes the input value to determine if the input value has changed since last validation. Prove does this stateful validation without keeping a DOM reference to any inputs.
 - `group` 
-	- Type: bool,
-	- Required: false,
-	- Default: false for all but radio inputs,
-	- Description: should jquery-prove validate the inputs as a group or validate the found inputs indivdually.
+	- **Type:** bool,
+	- **Required:** false,
+	- **Default:** false for all but radio inputs,
+	- **Description:** should jquery-prove validate the inputs as a group or validate the found inputs indivdually.
 
 ### Validator Options
 
@@ -146,9 +146,20 @@ form.prove({
 });
 ```
 Each validator has it's own set of options but below is a set of the common options to all prove validators.
-- `debug` - optional (bool) defaults to false. Will enalbe the validator to print debug information in the developer console.
-- `enabled` - optional (booleanator) defaults to true. See [booleanator](#booleanator) for more information.
-- `message` - optional (string) defaults to undefined. This string is passed into the validator which allows your custom validators to modifiy it. Utlimately, this message value is passed to the decorators via the event data.
+- `debug` 
+	- **Type:** bool,
+	- **Required:** false,
+	- **Default:** false,
+	- **Description:** Will enalbe the validator to print debug information in the developer console.
+- `enabled` 
+	- **Type:** booleanator,
+	- **Required:** false,
+	- **Default:** true,
+	- **Description:** enable or disable validation depending on the value of the booleanator.
+- `message`
+	- **Type:** string,
+	- **Required:** true,
+	- **Description:** This string is passed into the validator which allows your custom validators to modifiy it. Utlimately, this string value is passed to the decorators via the event data.
 
 ## Prove Validators
 
