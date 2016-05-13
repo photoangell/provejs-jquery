@@ -64,12 +64,12 @@
 
 		// return early
 		if (!enabled) {
-			input.trigger('validated.input.prove', result);
+			input.trigger('status.input.prove', result);
 			states[uuid] = false;
 			dfd.resolve(undefined);
 			return dfd;
 		} else if (stateful && state && !dirty) {
-			input.trigger('validated.input.prove', state); //clone here?
+			input.trigger('status.input.prove', state); //clone here?
 			dfd.resolve(state.valid);
 			return dfd;
 		} else {
@@ -102,7 +102,7 @@
 				if (stateful) states[uuid] = result;
 
 				// Trigger event indicating validation result
-				input.trigger('validated.input.prove', result);
+				input.trigger('status.input.prove', result);
 			});
 
 			//handle promise failure

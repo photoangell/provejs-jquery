@@ -8,7 +8,7 @@
 		'setup.form.prove',
 
 		'validate.input.prove',
-		'validated.input.prove',
+		'status.input.prove',
 		'validated.form.prove',
 
 		'destroyed.field.prove',

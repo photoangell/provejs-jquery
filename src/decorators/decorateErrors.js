@@ -15,7 +15,7 @@
 				message: message
 			};
 			var input = form.find(selector);
-			input.trigger('validated.input.prove', data);
+			input.trigger('status.input.prove', data);
 		});
 	};
 

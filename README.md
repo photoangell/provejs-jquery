@@ -177,13 +177,13 @@ Prove is both a consumer and publisher of events.
 
 The following events are published (emitted) by Prove. The decorator plugin listens to these events in order to decorate the form. Your code may also listen to these events.
 
-#### Event: `validated.input.prove` ####
+#### Event: `status.input.prove` ####
 - **Description** A field has been validated.
 - **Publisher** Form input DOM element.
 - **Listener** Attach your listener to the form container.
 
 ```javascript
-form.on('validated.input.prove', function(event, data){
+form.on('status.input.prove', function(event, data){
 	var input = $(event.target);
 	var state = data.state; //validation state of input (true, false, null)
 	var validator = data.validator;
@@ -296,7 +296,7 @@ dfd.notify(data);
 
 ### Change Event Data
 
-Consider changing `validated.input.prove` to `status.input.prove`.
+Consider changing `status.input.prove` to `status.input.prove`.
 
 This change would allow for decoration of:
 - setup: initialization of prove, which is useful for aria decoration
