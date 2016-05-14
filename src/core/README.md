@@ -78,55 +78,23 @@ combined.progress(function(){
 return master;
 ```
 
-## Cheap And Cheerful Async Validation
-
-One option is to use submit handler to submit the form data to the remote server for validation and display async validation results using a decorator. In other words, it is not required to have async validators if we handle it ourselves in the submit handler.
-
-```javascript
-form.submit(function(event){
-	event.preventDefault(); //stop form submit
-	
-	var dfd = $.ajax({
-	    url: '/your/server',
-	    data: $form.serialize(),
-	    dataType: 'json'
-	});
-	dfd.done(done);
-	dfd.fail(fail);
-	dfd.always(always);
-	
-	function fail(res){
-		$.each(res.fields, function(name){
-			//trigger decorator, with custom message if want
-			form.trigger('validated.field.prove', {
-				field: name,
-				state: false,
-				message: 'some message from server'
-			});
-			
-			//do we mark the field field/input as being invalid in prove?
-			form.find(name).valid(false);
-		});	
-	}
-});
-```
 ## Specification
 - Submit button
 	- disabled on prove init
 	- enabled on form valid
 	- disabled on form invalid
 - Input validation starting
-	- On starting 
+	- On starting
 		- trigger input status (validating) event
 	- On valid
-		- update state 
+		- update state
 		- trigger input validated event
 	- On invalid
 		- update state
 		- trigger input validated event
-- Form 
+- Form
 	- On Initalize
-		- input.initalize() 
+		- input.initalize()
 	- On Validate
 		- using only states determine validation status
 - Dynamically adding input

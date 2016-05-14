@@ -166,7 +166,7 @@
 				that.unbindDomFieldEvents(field);
 				that.unbindFieldProveEvent(field);
 
-				that.$form.find(field.selector).trigger('status.field.prove', {
+				that.$form.find(field.selector).trigger('status.input.prove', {
 					field: name,
 					status: 'destroy'
 				});
