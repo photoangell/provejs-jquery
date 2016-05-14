@@ -14,6 +14,8 @@
 			status: 'validated',
 			message: options.message
 		};
+		var progress;
+
 
 		if (!enabled){
 			result.validation = 'reset';
@@ -24,14 +26,20 @@
 			dfd.resolve(result);
 		} else {
 
-			//testing issue progress
-			dfd.notify({
-				foo: 'bar'
-			});
+			// notify deferred of progress
+			progress = setInterval(function(){
+				dfd.notify({
+					field: options.field,
+					validator: options.validator,
+					status: 'progress',
+					foo: 'bar'
+				});
+			}, 1000);
 
 			result.validation = options.validation;
 			setTimeout(function(){
 				dfd.resolve(result);
+				clearInterval(progress);
 			}, options.delay);
 		}
 

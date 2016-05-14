@@ -498,6 +498,18 @@
 		return pick;
 	}
 
+	//return the
+	function pickProgress(progresses){
+		var progress;
+		$.each(progresses, function(index, item){
+			if (item) {
+				progress = item;
+				return false;
+			}
+		});
+		return progress;
+	}
+
 	function isPlugin (plugin){
 		var exist = ($.isFunction($.fn[plugin]));
 		if (!exist) console.error('Missing validator plugin "%s".', plugin);
@@ -604,9 +616,10 @@
 			});
 
 			// handle promise progress
-			combined.progress(function(obj){
-				console.log('progress', obj);
-				//todo: input.trigger('status.input.prove', obj);
+			combined.progress(function(){
+				var progresses = $.makeArray(arguments);
+				var progress = pickProgress(progresses);
+				input.trigger('status.input.prove', progress);
 			});
 
 			return dfd;
@@ -1053,6 +1066,8 @@
 			status: 'validated',
 			message: options.message
 		};
+		var progress;
+
 
 		if (!enabled){
 			result.validation = 'reset';
@@ -1063,14 +1078,20 @@
 			dfd.resolve(result);
 		} else {
 
-			//testing issue progress
-			dfd.notify({
-				foo: 'bar'
-			});
+			// notify deferred of progress
+			progress = setInterval(function(){
+				dfd.notify({
+					field: options.field,
+					validator: options.validator,
+					status: 'progress',
+					foo: 'bar'
+				});
+			}, 1000);
 
 			result.validation = options.validation;
 			setTimeout(function(){
 				dfd.resolve(result);
+				clearInterval(progress);
 			}, options.delay);
 		}
 
