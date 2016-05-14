@@ -31,7 +31,7 @@ Where `validation` is either:
 - **'danger'**
 	- Indicates the input is not-valid.
 	- Decorators will decorate for failure.
-- **'warning'
+- **'warning'**
 	- Indicates the input is valid, but with a warning.
 	- Decorators will decorate for warning.
 ## Message
