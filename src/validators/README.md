@@ -13,24 +13,27 @@ Validation returned result object which used as event data to communicate with t
 {
 	field: 'email', // field name
 	validator: 'nameOfValidator', // validator name
-	valid: true, // either true, false, undefined
+	status: 'validated',
+	validation: 'success', // 'success', 'danger', 'warning', 'reset'
 	message: 'Your error message or error code used by the validation decorator.'
 }
 ```
 
-Where `valid` is either:
-- **undefined**
+Where `validation` is either:
+- **'reset'**
 	- Indicates no validation happened. No validation should happen when:
 		- validator is disabled
 		- input has no value (except required validators).
 	- Decorators will teardown any decoration.
-- **true**
+- **'success'**
 	- Indicates the input is valid.
 	- Decorators will decorate for success.
-- **false**
+- **'danger'**
 	- Indicates the input is not-valid.
 	- Decorators will decorate for failure.
-
+- **'warning'
+	- Indicates the input is valid, but with a warning.
+	- Decorators will decorate for warning.
 ## Message
 
 The message string passed input to the validators can be either:
