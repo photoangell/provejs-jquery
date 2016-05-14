@@ -20,7 +20,7 @@ jquery-prove is a client-side form validation plugin:
 - Stateful validations.
 - Open source MIT license.
 
-Please read [background notes](./BACKGROUND.md) on why yet another jQuery plugin.
+Please read [background notes](./BACKGROUND.md) on why yet another jQuery validation plugin.
 
 ## Table Contents
 - [Examples](#examples)
