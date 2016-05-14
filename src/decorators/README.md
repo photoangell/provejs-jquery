@@ -29,23 +29,27 @@ A decorator is a jQuery plugin which:
 The event data passed to the decorators:
 ```javascript
 {
-	field: "toggle", 
-	validator: "proveRequired",
-	valid: false, // true, false, undefined
+	field: 'fieldName', 
+	validator: 'validatorName',
+	status: 'validated',
+	validation: 'success', // 'success', 'failure', 'warning', 'reset'
 	message: "Choose one."
 }
 ```
 
-Where data.valid is:
-- `undefined`
+Where data.validation is:
+- `reset`
 	- Indicates no validation happened.
 	- Decorators should teardown any decoration.
-- `true`
+- `success`
 	- Indicates the input is valid.
 	- Decorators should decorate for success.
-- `false`
+- `failure`
 	- Indicates the input is not-valid.
 	- Decorators should decorate for failure.
+- `warning`
+	- Indicates the input is valid,
+	- Decorators should decorate for warning.
 
 ### Utility Decorators
 
