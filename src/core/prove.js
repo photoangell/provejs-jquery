@@ -205,14 +205,16 @@
 			var domEvents = this.fieldDomEvents(field);
 			var handler = $.proxy(this.domFieldEventsHandler, this);
 			var data = clone(field);
+			var wait = field.throttle || 0;
+			var throttled = window._.throttle(handler, wait);
+
+			console.log('wait', wait);
 
 			// honor request to disable live validation
 			if (field.trigger === false) return;
 
-			//$.debounce(250, function(){});
-
 			// http://api.jquery.com/on/
-			el.on(domEvents, field.selector, data, handler);
+			el.on(domEvents, field.selector, data, throttled);
 		},
 		unbindDomFieldEvents: function(field){
 

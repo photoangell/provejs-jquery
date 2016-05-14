@@ -5,6 +5,7 @@
 		fields: {
 			email: {
 				//trigger: 'keyup',
+				throttle: 250,
 				validators: {
 					proveRequired: {
 						//debug: true,
@@ -12,7 +13,7 @@
 						message: 'Your email is required unless you opt out.',
 					},
 					provePattern: {
-						//debug: true,
+						debug: true,
 						regex: '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,63}',
 						message: 'Invalid email address.' //optional, passed to decorator
 					}

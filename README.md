@@ -105,6 +105,11 @@ form.prove({
 	- **Required:** false,
 	- **Default:** 'change keyup click blur',
 	- **Description:** The events on which you want to live validation to happen. A value of false will disable live validation.
+- `throttle`
+	- **Type:** int,
+	- **Required:** false,
+	- **Default:** 0,
+	- **Description:** The number of milliseconds to throttle (aka debounce) live validation.
 - `stateful`
 	- **Type:** bool,
 	- **Required:** false,
