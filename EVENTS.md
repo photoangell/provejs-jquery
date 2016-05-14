@@ -41,20 +41,6 @@ form.on('status.form.prove', function(event, data){
 
 Prove listens to the following events on the form container and inputs (delegated to the form container).
 
-#### Event: `validate.form.prove` ####
-
-- **Description** When Prove hears this event it will validate all fields.
-- **Target** Form container.
-- **Publisher** Your code.
-
-```javascript
-form.trigger('validate.form.prove');
-```
-However, you should can simply call:
-
-```javascript
-var isValid = form.validate();
-```
 
 #### Event: `validate.input.prove` ####
 

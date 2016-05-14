@@ -137,11 +137,11 @@
 		},
 		setupForm: function(){
 			this.html5NoValidate(true);
-			this.bindDomFormEvents();
+			//this.bindDomFormEvents();
 		},
 		teardownForm: function(){
 			this.html5NoValidate(false);
-			this.unbindDomFormEvents();
+			//this.unbindDomFormEvents();
 		},
 		setupFields: function(options){
 
@@ -228,13 +228,13 @@
 		/**
 		* DOM Form Events Listener
 		*/
-		bindDomFormEvents: function(){
-			var handler = $.proxy(this.proveEventHandler1, this);
-			this.$form.on('validate.form.prove', handler);
-		},
-		unbindDomFormEvents: function(){
-			this.$form.off('validate.form.prove');
-		},
+		//bindDomFormEvents: function(){
+		//	var handler = $.proxy(this.proveEventHandler1, this);
+		//	this.$form.on('validate.form.prove', handler);
+		//},
+		//unbindDomFormEvents: function(){
+		//	this.$form.off('validate.form.prove');
+		//},
 		proveEventHandler1: function(event){
 			event.preventDefault();
 			this.$form.proveForm();

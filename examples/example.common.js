@@ -6,7 +6,6 @@
 	var all = [
 		'validate.input.prove',
 		'status.input.prove',
-		'validate.form.prove',
 		'status.form.prove'
 	].join(' ');
 
@@ -62,6 +61,8 @@
 
 	function validDecorator(validation){
 		if (!validation) return '';
+		if (validation === true) validation = 'success';
+		if (validation === false) validation = 'danger';
 		if (validation === 'reset') validation = 'default';
 		if (validation === 'danger') validation = 'danger';
 		return '<span class="label label-' + validation + '">' + validation + '</span>';

@@ -180,7 +180,6 @@ The following events are triggered on the inputs:
 
 The following events are triggered on the form:
 
-- [validate.form.prove](./EVENTS.md#)
 - [status.form.prove](./EVENTS.md#)
 
 Please see [events](./EVENTS.md) for more details.
