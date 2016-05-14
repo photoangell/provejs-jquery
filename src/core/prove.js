@@ -35,8 +35,8 @@
 		defaults: {
 			//control how prove should handle submit button clicks
 			submit: {
-				button: 'button:submit', //submit button selector, todo: rename to `selector`?
-				validate: 'button:submit:not(.skip-validation)',//booleanator, validate on submit, but not if element has class `skip-validation`
+				selector: 'button:submit',
+				validate: true, //booleanator, validate on submit, but not if element has class `skip-validation`
 				prevent: false, //booleanator
 				twice: false //todo: allow some forms to submit twice
 			}
@@ -66,7 +66,7 @@
 		},
 		//todo: $.fn.proveIntercept()
 		setupSubmitIntercept: function(){
-			var selector = this.options.submit.button;
+			var selector = this.options.submit.selector;
 			var handler = $.proxy(this.submitInterceptHandler, this);
 			//var throttled = window._.throttle(handler, 10000, {trailing: false});
 
@@ -82,19 +82,28 @@
 			var shouldValidate = form.booleanator(options.submit.validate);
 			var preventSubmit = form.booleanator(options.submit.prevent);
 			var validation = (shouldValidate)? form.proveForm() : $.when();
-			var nosubmit = !!form.attr('nosubmit');
+			var alreadySubmitted = !!form.attr('nosubmit');
+			var debug = options.submit.debug;
+
+			if (debug){
+				console.groupCollapsed('Prove.submitInterceptHandler()');
+					console.log('shouldValidate', shouldValidate);
+					console.log('preventSubmit', preventSubmit);
+					console.log('alreadySubmitted', alreadySubmitted);
+				console.groupEnd();
+			}
 
 			validation.done(function(isValid){
 
 				// The combined deferred returned from $.fn.proveForm() has resolved.
 				// The resolved value `isValid` will be either true, false, undefined.
-				var addAttr = (isValid && !nosubmit);
-				var stop = (isValid === false || preventSubmit || nosubmit);
+				var addAttr = (isValid && !alreadySubmitted);
+				var stop = (isValid === false || preventSubmit || alreadySubmitted);
 
-				if (options.debug){
+				if (debug){
 					console.groupCollapsed('Prove.submitInterceptHandler.done()');
 						console.log('isValid', isValid);
-						console.log('nosubmit', nosubmit);
+						console.log('alreadySubmitted', alreadySubmitted);
 						console.log('addAttr', addAttr);
 						console.log('stop', stop);
 					console.groupEnd();
