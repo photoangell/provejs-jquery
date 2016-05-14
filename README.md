@@ -172,6 +172,39 @@ Each validator has it's own set of options but below is a set of the common opti
 
 ### Submit Options
 
+jQuery-Prove uses a submit intercept handler which ensures successful form validation before allowing the form to submit. The submit intercept handler is bound by default to `form.on('click', ':submit', handler)` so really the intercept handler is really a click handler. The submit intercept handler accept the following options:
+```javascript
+form.prove({
+	fields: {},
+	submit: {
+		selector: 'button:submit',
+		validate: true ,
+		prevent: false,
+		twice: false
+	}
+})
+```
+Where:
+- `selector`
+	- **Type:** - string,
+	- **Required:** - false,
+	- **Default:** - 'button:submit',
+	- **Description:** - jquery selector used to bind the submit intercept handler.
+- `validate` 
+	- **Type**: - booleanator,
+	- **Required:** - false,
+	- **Default:** - true,
+	- **Description:** - determines if validation should happen when the intercept handler is invoked.
+- ` prevent`
+	- **Type**: - booleanator,
+	- **Required**: false,
+	- **Default**: false,
+	- **Description**: Prevents the form form submitting.
+- `twice`
+	- **Type**: - bool,
+	- **Required**: false,
+	- **Default**: false,
+	- **Description**: Prevents the form form being submitted more than once.
 todo: document options
 
 
