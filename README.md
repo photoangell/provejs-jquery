@@ -306,56 +306,7 @@ This change would allow for decoration of:
 - validating: start of validation, which is useful for async spinners
 - validated: validation completed, which is useful for garland and tinsel
 
-`status.input.prove`
-```javascript
-{
-    field: 'email',
-    validator: 'validator', //validator name or undefined
-    status: 'validated', //'setup', 'validating', 'progress', 'validated', 'destroy'
-    validation: 'success', //'success', 'danger', 'warning', 'reset' //consider 'default' instead of 'reset'?
-    message: 'Your error or warning message.'
-}
-```
-Where `status`:
-- `setup` - triggered on field setup
-```javascript
-{
-	field: 'email',
-	status: 'setup'
-}
-```
-- `validating` - triggered at start of validation
-```javascript
-{
-	field: 'email',
-	status: 'validating',
-}
-```
-- `progress` - triggered periodically by a deferred validator
-```javascript
-{
-	field: 'email',
-	validator: 'validatorName',
-	status: 'progress'
-}
-```
-- `validated` - triggered after input validation
-```javascript
-{
-	field: 'email',
-	validator: 'validatorName',
-	status: 'validated',
-	validation: 'success', //'danger', 'warning', 'reset',
-	message: 'Validation message or error code'
-}
-```
-- `destroy` - triggered immediately before input teardown which part of the form.prove('destroy')
-```javascript
-{
-	field: 'email',
-	status: 'destroy',
-}
-```
+
 
 ### Unobtrusive Configuration
 
