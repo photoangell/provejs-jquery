@@ -173,14 +173,9 @@ Form decoration is handled by jQuery [decorator plugins](./src/decorators).
 
 Prove is both a consumer and publisher of events. Events are triggered on either the input or the form. However, all prove event listeners are delagated to the form element. For example the decorators are event listeners that listen to events on the form element.
 
-The following events are triggered on the **inputs**:
-
-- [validate.input.prove](./EVENTS.md#)
-- [status.input.prove](./EVENTS.md#)
-
-The following events are triggered on the **form**:
-
-- [status.form.prove](./EVENTS.md#)
+The following events are triggered:
+- [status.form.prove](./EVENTS.md#) - triggered on the **form**
+- [status.input.prove](./EVENTS.md#) - triggered on the **input**
 
 Please see [events](./EVENTS.md) for more details.
 
