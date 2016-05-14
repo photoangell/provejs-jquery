@@ -311,7 +311,7 @@ Consider adding a debounce setting to the field or validators.
 
 ```javascript
 $.debounce(250, function(){});
-``
+```
 
 ### Unobtrusive Configuration
 
