@@ -7,34 +7,57 @@ Prove is both a consumer and publisher of events.
 The following events are published (emitted) by Prove. The decorator plugin listens to these events in order to decorate the form. Your code may also listen to these events.
 
 #### Event: `status.input.prove` ####
-- **Description** A field has been validated.
+- **Description** The status of the input has changed.
 - **Publisher** Form input DOM element.
-- **Listener** Attach your listener to the form container.
 
 ```javascript
-form.on('status.input.prove', function(event, data){
-	var input = $(event.target);
-	var state = data.state; //validation state of input (true, false, null)
-	var validator = data.validator;
-
-	//do something
-});
+{
+    field: 'email',
+    validator: 'validator', //validator name or undefined
+    status: 'validated', //'setup', 'validating', 'progress', 'validated', 'destroy'
+    validation: 'success', //'success', 'danger', 'warning', 'reset' //consider 'default' instead of 'reset'?
+    message: 'Your error or warning message.'
+}
 ```
-
-#### Event: `status.form.prove` ####
-
-- **Description** All fields in the form have been validated.
-- **Publisher** Form DOM element.
-- **Listener** Attach your listener to the form container.
-
+Where `status`:
+- `setup` - triggered on field setup
 ```javascript
-form.on('status.form.prove', function(event, data){
-	var form = $(event.target);
-	var state = data.state; //validation state of form (true, false, null)
-	var validators = data.validators;
-
-	//do something, like submit form via ajax
-});
+{
+	field: 'email',
+	status: 'setup'
+}
+```
+- `validating` - triggered at start of validation
+```javascript
+{
+	field: 'email',
+	status: 'validating',
+}
+```
+- `progress` - triggered periodically by a deferred validator
+```javascript
+{
+	field: 'email',
+	validator: 'validatorName',
+	status: 'progress'
+}
+```
+- `validated` - triggered after input validation
+```javascript
+{
+	field: 'email',
+	validator: 'validatorName',
+	status: 'validated',
+	validation: 'success', //'danger', 'warning', 'reset',
+	message: 'Validation message or error code'
+}
+```
+- `destroy` - triggered immediately before input teardown which part of the form.prove('destroy')
+```javascript
+{
+	field: 'email',
+	status: 'destroy',
+}
 ```
 
 ### Listened To Events
