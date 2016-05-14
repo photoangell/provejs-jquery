@@ -311,22 +311,6 @@ Where `status`:
 }
 ```
 
-### Debounce Validation
-Consider adding a debounce setting to the field or validators.
-
-```javascript
-$.debounce(250, function(){});
-```
-Another options is create a Pseudo selector which debounces for use:
-
-```javascript
-//in field confir
-trigger: 'keyup:throttle(400)',
-```
-http://mootools.net/more/docs/1.6.0/Class/Events.Pseudos
-https://davidwalsh.name/function-debounce#comment-32558
-
-
 ### Unobtrusive Configuration
 
 Perhaps support unobtrusive configuration via $.fn.proveConfig().

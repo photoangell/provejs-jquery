@@ -1,4 +1,4 @@
-!function (_) {
+!function () {
 	"use strict";
 
 	/*Copyright (c) 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative
@@ -78,4 +78,4 @@
 
 		return throttled;
 	};
-}(window._);
+}();

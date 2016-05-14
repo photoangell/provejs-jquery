@@ -198,7 +198,7 @@
 				: '[name="' + name + '"]';
 		},
 		//return string of space seperated events used to detect change to the DOM element
-		fieldDomEvents: function(field){
+		liveEvents: function(field){
 			var events = field.trigger || 'change keyup click blur';
 			return events;
 		},
@@ -222,7 +222,7 @@
 				field.name = name;
 				field.selector = that.domSelector(field, name);
 
-				that.bindDomFieldEvents(field);
+				that.bindLiveValidationEvents(field);
 				that.bindFieldProveEvent(field);
 			});
 		},
@@ -235,7 +235,7 @@
 			//console.log('teardownFields()');
 
 			$.each(fields, function(name, field){
-				that.unbindDomFieldEvents(field);
+				that.unbindLiveValidationEvents(field);
 				that.unbindFieldProveEvent(field);
 
 				that.$form.find(field.selector).trigger('status.input.prove', {
@@ -266,11 +266,11 @@
 		/**
 		* DOM Input Events Listener
 		*/
-		bindDomFieldEvents: function(field){
+		bindLiveValidationEvents: function(field){
 
 			var el = this.$form;
-			var domEvents = this.fieldDomEvents(field);
-			var handler = $.proxy(this.domFieldEventsHandler, this);
+			var domEvents = this.liveEvents(field);
+			var handler = $.proxy(this.liveEventHandler, this);
 			var data = clone(field);
 			var wait = field.throttle || 0;
 			var throttled = window._.throttle(handler, wait);
@@ -283,15 +283,15 @@
 			// http://api.jquery.com/on/
 			el.on(domEvents, field.selector, data, throttled);
 		},
-		unbindDomFieldEvents: function(field){
+		unbindLiveValidationEvents: function(field){
 
 			var el = this.$form;
-			var domEvents = this.fieldDomEvents(field);
+			var liveEvents = this.liveEvents(field);
 
 			// http://api.jquery.com/off/
-			el.off(domEvents, field.selector);
+			el.off(liveEvents, field.selector);
 		},
-		domFieldEventsHandler: function(event){
+		liveEventHandler: function(event){
 			var input = $(event.target);
 			var field = event.data;
 			input.proveInput(field, this.states);
@@ -603,7 +603,7 @@
 	};
 }(window.jQuery);
 
-!function (_) {
+!function () {
 	"use strict";
 
 	/*Copyright (c) 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative
@@ -683,7 +683,7 @@
 
 		return throttled;
 	};
-}(window._);
+}();
 
 !function ($) {
 	"use strict";
