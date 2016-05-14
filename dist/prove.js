@@ -104,8 +104,7 @@
 			submit: {
 				selector: 'button:submit',
 				validate: true, //booleanator, validate on submit, but not if element has class `skip-validation`
-				prevent: false, //booleanator
-				twice: false //todo: allow some forms to submit twice
+				enabled: true //booleanator
 			}
 		},
 		states: {},
@@ -147,7 +146,7 @@
 			var options = this.options;
 			//console.log('options', options);
 			var shouldValidate = form.booleanator(options.submit.validate);
-			var preventSubmit = form.booleanator(options.submit.prevent);
+			var enabledSubmit = form.booleanator(options.submit.enabled);
 			var validation = (shouldValidate)? form.proveForm() : $.when();
 			var alreadySubmitted = !!form.attr('nosubmit');
 			var debug = options.submit.debug;
@@ -155,7 +154,7 @@
 			if (debug){
 				console.groupCollapsed('Prove.submitInterceptHandler()');
 					console.log('shouldValidate', shouldValidate);
-					console.log('preventSubmit', preventSubmit);
+					console.log('enabledSubmit', enabledSubmit);
 					console.log('alreadySubmitted', alreadySubmitted);
 				console.groupEnd();
 			}
@@ -165,7 +164,7 @@
 				// The combined deferred returned from $.fn.proveForm() has resolved.
 				// The resolved value `isValid` will be either true, false, undefined.
 				var addAttr = (isValid && !alreadySubmitted);
-				var stop = (isValid === false || preventSubmit || alreadySubmitted);
+				var stop = (isValid === false || !enabledSubmit || alreadySubmitted);
 
 				if (debug){
 					console.groupCollapsed('Prove.submitInterceptHandler.done()');
