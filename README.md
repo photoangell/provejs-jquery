@@ -169,7 +169,7 @@ Each validator has it's own set of options but below is a set of the common opti
 
 ## Prove Validators
 
-Prove validators are handled by jQuery [validator plugins](./src/validators).
+Input validation is handled by jQuery [validator plugins](./src/validators).
 
 ## Prove Decorators
 
