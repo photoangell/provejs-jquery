@@ -209,6 +209,8 @@
 			// honor request to disable live validation
 			if (field.trigger === false) return;
 
+			//$.debounce(250, function(){});
+
 			// http://api.jquery.com/on/
 			el.on(domEvents, field.selector, data, handler);
 		},
