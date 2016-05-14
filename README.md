@@ -309,7 +309,7 @@ This change would allow for decoration of:
     field: 'email',
     validator: 'validator', //validator name or undefined
     status: 'validated', //'setup', 'validating', 'progress', 'validated', 'destroy'
-    validation: 'success', //'success', 'danger', 'warning', 'reset'
+    validation: 'success', //'success', 'danger', 'warning', 'reset' //consider 'default' instead of 'reset'?
     message: 'Your error or warning message.'
 }
 ```
