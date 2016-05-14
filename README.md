@@ -39,13 +39,16 @@ Please see [examples folder](./examples).
 
 ###  Prove Options
 
-Prove accepts only a single options config with only two properties: debug and fields.
+Prove accepts only a single options config.
 
 ```javascript
 form.prove({
 	debug: false,
 	fields: {
-		// see fields configuration below
+		// see fields options below
+	},
+	submit: {
+		// see submit options below
 	}
 });
 ```
@@ -166,6 +169,11 @@ Each validator has it's own set of options but below is a set of the common opti
 	- **Type:** string,
 	- **Required:** true,
 	- **Description:** This string is passed into the validator which allows your custom validators to modifiy it. Utlimately, this string value is passed to the decorators via the event data.
+
+### Submit Options
+
+todo: document options
+
 
 ## Prove Validators
 
