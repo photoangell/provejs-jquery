@@ -4,14 +4,11 @@
 	var status = $('#form-status');
 	var events = $('#events');
 	var all = [
-		'setup.field.prove',
-		'setup.form.prove',
-
 		'validate.input.prove',
 		'status.input.prove',
-		'validated.form.prove',
 
-		'destroyed.field.prove',
+		'setup.form.prove',
+		'validated.form.prove',
 		'destroyed.form.prove',
 		'submitted.form.prove'
 	].join(' ');
