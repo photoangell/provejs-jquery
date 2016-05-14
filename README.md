@@ -170,6 +170,17 @@ Prove validators are handled by jQuery [validator plugins](./src/validators).
 
 Form decoration is handled by jQuery [decorator plugins](./src/decorators).
 
+## Prove Methods
+
+The form will automatically be validated when the user clicks the submit button. However, you can programatically validate the form from your code via:
+```javascript
+form.validate();
+```
+Your code can also validate an input.
+```javascript
+input.validate();
+```
+
 ## Prove Events
 
 Prove is a publisher of events. Events are triggered on either the input or the form to share data with the decorators.
