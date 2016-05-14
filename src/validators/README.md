@@ -33,6 +33,7 @@ Where `validation` is either:
 - **'warning'**
 	- Indicates the input is valid, but with a warning.
 	- Decorators will decorate for warning.
+
 ## Message
 
 The message string passed input to the validators can be either:
@@ -40,3 +41,7 @@ The message string passed input to the validators can be either:
 - an error code which the decorator has a list of predefined messages to decorate the form with (e.g. i18n support).
 
 Your custom validators can change the message value.
+
+## Deferred Validators
+
+Creating deferred validators is easy. Please see [$.fn.proveDeferred()](./proveDeferred.js) for an example. 
