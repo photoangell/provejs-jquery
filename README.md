@@ -292,21 +292,20 @@ grunt build
 
 ### Deferred [validators](./src/core/README.md#deferred-validation).
 
-I have deferred validation working, but need to integrate a deferred progress.
-```javascript
-dfd.notify(data);
-```
+Document and test when the deferred validator should call:
+- dfd.notify()
+- dfd.progress()
+- dfd.reject()
 
-### Change Event Data
+and what value should be returned.
 
-Consider changing `status.input.prove` to `status.input.prove`.
+How should these plugins handle these callbacks:
+- $.fn.proveInput()
+- $.fn.proveForm()
 
-This change would allow for decoration of:
-- setup: initialization of prove, which is useful for aria decoration
-- validating: start of validation, which is useful for async spinners
-- validated: validation completed, which is useful for garland and tinsel
+### Deferred Email Validation with MailGun email validator
 
-
+It would be nice to have a real deferred example.
 
 ### Unobtrusive Configuration
 
@@ -321,14 +320,7 @@ input.proveConfig();
 
 ### Unit Tests
 
-### Reset Input and Forms
-
-Reset input or form
-```javascript
-input.resetField()
-input.trigger('reset.input.prove')
-form.trigger.('reset.form.prove')
-```
+Need unit tests.
 
 ### FAQ
 
