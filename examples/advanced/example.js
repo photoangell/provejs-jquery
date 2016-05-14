@@ -19,7 +19,7 @@
 				stateful: false,
 				validators: {
 					proveRequired: {
-						debug: true,
+						//debug: true,
 						message: 'Choose one.',
 					}
 				}
@@ -29,7 +29,7 @@
 				trigger: 'change', //<!-- maskmoney plugin triggers change
 				validators: {
 					proveRequired: {
-						debug: true,
+						//debug: true,
 						message: 'Amount required.',
 					}
 				}
@@ -40,11 +40,11 @@
 				trigger: 'change', //<-- tagsinput plugin triggers change
 				validators:{
 					proveRequired: {
-						debug: true,
+						//debug: true,
 						message: 'Description is required.',
 					},
 					provePattern: {
-						debug: true,
+						//debug: true,
 						regex: regex,
 						message: 'Invalid description.'
 					}
@@ -57,16 +57,16 @@
 				//group: false,
 				validators:{
 					proveRequired: {
-						debug: true,
+						//debug: true,
 						message: 'Description is required.',
 					},
 					provePattern: {
-						debug: true,
+						//debug: true,
 						regex: regex,
 						message: 'Invalid description.'
 					},
 					proveDeferred: {
-						debug: true,
+						//debug: true,
 						delay: 3000,
 						validation: 'success',
 						message: 'Async validation failed.'

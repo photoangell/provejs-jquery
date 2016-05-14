@@ -136,16 +136,19 @@
 		setupSubmitIntercept: function(){
 			var selector = this.options.submit.button;
 			var handler = $.proxy(this.submitInterceptHandler, this);
+			//var throttled = window._.throttle(handler, 10000, {trailing: false});
+
 			// we intercept the submit by bind `click` rather than ':submit'
+			//this.$form.on('click', selector, throttled);
 			this.$form.on('click', selector, handler);
 		},
 		submitInterceptHandler: function(event){
 
 			var form = this.$form;
 			var options = this.options;
-			var shouldValidate = form.booleanator(this.options.submit.validate);
-			var preventSubmit = form.booleanator(this.options.submit.prevent);
-			//var isValid = (shouldValidate)? form.proveForm() : undefined;
+			//console.log('options', options);
+			var shouldValidate = form.booleanator(options.submit.validate);
+			var preventSubmit = form.booleanator(options.submit.prevent);
 			var validation = (shouldValidate)? form.proveForm() : $.when();
 			var nosubmit = !!form.attr('nosubmit');
 
@@ -153,19 +156,19 @@
 
 				// The combined deferred returned from $.fn.proveForm() has resolved.
 				// The resolved value `isValid` will be either true, false, undefined.
-				var submitSetup = (isValid && !nosubmit);
-				var submitStop = (isValid === false || preventSubmit || nosubmit);
+				var addAttr = (isValid && !nosubmit);
+				var stop = (isValid === false || preventSubmit || nosubmit);
 
 				if (options.debug){
 					console.groupCollapsed('Prove.submitInterceptHandler.done()');
 						console.log('isValid', isValid);
 						console.log('nosubmit', nosubmit);
-						console.log('submitSetup', submitSetup);
-						console.log('submitStop', submitStop);
+						console.log('addAttr', addAttr);
+						console.log('stop', stop);
 					console.groupEnd();
 				}
 
-				if (submitSetup) {
+				if (addAttr) {
 
 					// Add attribute to disable double form submissions.
 					form.attr('nosubmit', true);
@@ -178,7 +181,7 @@
 				}
 
 				// submit the form
-				if (!submitStop) form.submit();
+				if (!stop) form.submit();
 			});
 
 			validation.fail(function(){
