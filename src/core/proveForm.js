@@ -63,7 +63,8 @@
 			}
 
 			// Trigger event indicating validation result
-			form.trigger('validated.form.prove', {
+			form.trigger('status.form.prove', {
+				status: 'validated',
 				validation: validation
 			});
 

@@ -6,14 +6,13 @@
 	var all = [
 		'validate.input.prove',
 		'status.input.prove',
-
-		'setup.form.prove',
-		'validated.form.prove',
-		'destroyed.form.prove',
-		'submitted.form.prove'
+		'validate.form.prove',
+		'status.form.prove'
 	].join(' ');
 
-	form.on('validated.form.prove', function(event, data){
+	form.on('status.form.prove', function(event, data){
+
+		if (data.status !== 'validated') return;
 
 		status.removeClass('alert-success');
 		status.removeClass('alert-danger');

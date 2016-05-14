@@ -21,14 +21,14 @@ form.on('status.input.prove', function(event, data){
 });
 ```
 
-#### Event: `validated.form.prove` ####
+#### Event: `status.form.prove` ####
 
 - **Description** All fields in the form have been validated.
 - **Publisher** Form DOM element.
 - **Listener** Attach your listener to the form container.
 
 ```javascript
-form.on('validated.form.prove', function(event, data){
+form.on('status.form.prove', function(event, data){
 	var form = $(event.target);
 	var state = data.state; //validation state of form (true, false, null)
 	var validators = data.validators;

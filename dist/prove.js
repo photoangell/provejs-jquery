@@ -91,7 +91,9 @@
 		this.setupForm();
 		this.setupSubmitIntercept();
 
-		this.$form.trigger('setup.form.prove');
+		this.$form.trigger('status.form.prove', {
+			status: 'setup'
+		});
 	}
 
 	//$.Prove.prototype.defaults = {
@@ -113,7 +115,9 @@
 			this.teardownFields();
 			this.teardownForm();
 			this.$form.data('prove', false);
-			this.$form.trigger('destroyed.form.prove');
+			this.$form.trigger('status.form.prove', {
+				status: 'destroy'
+			});
 		},
 		checkOptions: function(){
 
@@ -167,7 +171,8 @@
 					form.attr('nosubmit', true);
 
 					// trigger event - for decorator
-					form.trigger('submitted.form.prove', {
+					form.trigger('status.form.prove', {
+						status: 'submit',
 						validated: shouldValidate
 					});
 				}
@@ -437,7 +442,8 @@
 			}
 
 			// Trigger event indicating validation result
-			form.trigger('validated.form.prove', {
+			form.trigger('status.form.prove', {
+				status: 'validated',
 				validation: validation
 			});
 
