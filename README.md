@@ -314,7 +314,7 @@ input.proveConfig();
 Reset input or form
 ```javascript
 input.resetField()
-input.trigger('reset.field.prove')
+input.trigger('reset.input.prove')
 form.trigger.('reset.form.prove')
 ```
 
