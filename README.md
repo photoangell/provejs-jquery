@@ -188,6 +188,11 @@ form.prove({
 })
 ```
 Where:
+- `debug`
+	- **Type:** bool,
+	- **Required:** false,
+	- **Default:** false,
+	- **Description:** Will enalbe the submit intercept handler to print debug information in the developer console.
 - `selector`
 	- **Type:** - string,
 	- **Required:** - false,
