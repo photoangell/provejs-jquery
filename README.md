@@ -169,7 +169,7 @@ Each validator has it's own set of options but below is a set of the common opti
 
 ## Prove Validators
 
-Prove validators are handled by jQuery [validator plugins](./src/validators).
+Input validation is handled by jQuery [validator plugins](./src/validators).
 
 ## Prove Decorators
 
@@ -177,13 +177,17 @@ Form decoration is handled by jQuery [decorator plugins](./src/decorators).
 
 ## Prove Methods
 
-The form will automatically be validated when the user clicks the submit button. However, you can programatically validate the form from your code via:
+The form will automatically be validated when the user clicks the submit button. However, you can programatically validate the form:
 ```javascript
 form.validate();
 ```
 Your code can also validate an input.
 ```javascript
 input.validate();
+```
+If you want to by pass validation and immediately submit the form:
+```javascript
+form.submit();
 ```
 
 ## Prove Events
