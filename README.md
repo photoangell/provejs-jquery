@@ -1,6 +1,5 @@
 ![Form Image](./logo.png)
 > A jQuery plugin for client-side validation of html forms.
-> Under active development.
 
 ![Form Image](./form.png)
 
