@@ -183,8 +183,7 @@ form.prove({
 	submit: {
 		selector: 'button:submit',
 		validate: true ,
-		prevent: false,
-		twice: false
+		enabled: true,
 	}
 })
 ```
@@ -199,18 +198,11 @@ Where:
 	- **Required:** - false,
 	- **Default:** - true,
 	- **Description:** - determines if validation should happen when the intercept handler is invoked.
-- ` prevent`
+- ` enabled`
 	- **Type**: - booleanator,
 	- **Required**: false,
-	- **Default**: false,
-	- **Description**: Prevents the form form submitting.
-- `twice`
-	- **Type**: - bool,
-	- **Required**: false,
-	- **Default**: false,
-	- **Description**: Prevents the form form being submitted more than once.
-todo: document options
-
+	- **Default**: true,
+	- **Description**: Enables the form to submit after it validates true.
 
 ## Prove Validators
 
