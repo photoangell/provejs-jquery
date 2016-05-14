@@ -26,6 +26,7 @@ Please read [background notes](./BACKGROUND.md) on why yet another jQuery plugin
 - [Options](#prove-options)
 - [Validators](#prove-validators)
 - [Decorators](#prove-decorators)
+- [Methods](#methods)
 - [Events](#prove-events)
 - [Destroy](#destory)
 - [Roadmap](#roadmap)
@@ -171,7 +172,7 @@ Form decoration is handled by jQuery [decorator plugins](./src/decorators).
 
 ## Prove Events
 
-Prove is both a consumer and publisher of events. Events are triggered on either the input or the form. However, all prove event listeners are delagated to the form element.
+Prove is a publisher of events. Events are triggered on either the input or the form. However, all prove event listeners are delagated to the form element.
 
 The following events are triggered to share data with the decorators:
 - [status.form.prove](./EVENTS.md#) - triggered on the **form**
