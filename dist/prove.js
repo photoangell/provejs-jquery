@@ -132,6 +132,9 @@
 		},
 		//todo: $.fn.proveIntercept()
 		setupSubmitIntercept: function(){
+
+			if (!this.options.submit) return;
+
 			var selector = this.options.submit.selector;
 			var handler = $.proxy(this.submitInterceptHandler, this);
 			//var throttled = window._.throttle(handler, 10000, {trailing: false});
