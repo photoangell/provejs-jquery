@@ -291,6 +291,8 @@ grunt build
 
 ## Roadmap
 
+### Document booleanator.
+
 ### Deferred [validators](./src/core/README.md#deferred-validation).
 
 Document and test when the deferred validator should call:
