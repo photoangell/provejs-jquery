@@ -25,14 +25,14 @@ form.decorateErrors(errors);
 A decorator is a jQuery plugin which:
 - Listens to prove events,
 - Decorates the form inputs using event data.
- 
+
 The event data passed to the decorators:
 ```javascript
 {
-	field: 'fieldName', 
+	field: 'fieldName',
 	validator: 'validatorName',
 	status: 'validated',
-	validation: 'success', // 'success', 'failure', 'warning', 'reset'
+	validation: 'success', // 'success', 'danger', 'warning', 'reset'
 	message: "Choose one."
 }
 ```

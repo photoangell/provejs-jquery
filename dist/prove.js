@@ -464,7 +464,8 @@
 
 			dfd.resolve(validation);
 		});
-		combined.fail(function(obj) {
+		combined.fail(function() {
+			console.log('fail form', arguments);
 			dfd.reject(obj);
 		});
 		combined.progress(function(){
@@ -498,16 +499,16 @@
 		return pick;
 	}
 
-	//return the
-	function pickProgress(progresses){
-		var progress;
-		$.each(progresses, function(index, item){
+	//return the first non-undefined result
+	function singleResult(results){
+		var result;
+		$.each(results, function(index, item){
 			if (item) {
-				progress = item;
+				result = item;
 				return false;
 			}
 		});
-		return progress;
+		return result;
 	}
 
 	function isPlugin (plugin){
@@ -582,8 +583,8 @@
 				var promise = input[validator](config);
 				promises.push(promise);
 
-				// break loop at first (non-promise) result.validation failure
-				return (promise.validation === 'failure')? false : true;
+				// break loop at first (non-promise) result.validation ailure
+				return (promise.validation === 'danger')? false : true;
 			});
 
 			// wait for the validator promises to resolve
@@ -610,16 +611,23 @@
 			});
 
 			//handle promise failure
-			combined.fail(function(obj) {
-				dfd.reject(obj);
-				//todo: input.trigger('status.input.prove', obj);
+			combined.fail(function() {
+				var results = $.makeArray(arguments);
+				var result = singleResult(results);
+				result.status = 'errored';
+				console.log('fail input', result);
+				input.trigger('status.input.prove', result);
+				dfd.reject(); //todo: return something here?
 			});
 
 			// handle promise progress
 			combined.progress(function(){
-				var progresses = $.makeArray(arguments);
-				var progress = pickProgress(progresses);
-				input.trigger('status.input.prove', progress);
+				var results = $.makeArray(arguments);
+				var result = singleResult(results);
+				result.status = 'progress';
+				console.log('progress input', result)
+				input.trigger('status.input.prove', result);
+				dfd.notify();  //todo: return something here?
 			});
 
 			return dfd;
@@ -1078,7 +1086,7 @@
 			dfd.resolve(result);
 		} else {
 
-			// notify deferred of progress
+			// fake some progress updates
 			progress = setInterval(function(){
 				dfd.notify({
 					field: options.field,
@@ -1088,9 +1096,19 @@
 				});
 			}, 1000);
 
-			result.validation = options.validation;
+			// fake async validation on some remote server
 			setTimeout(function(){
-				dfd.resolve(result);
+
+				// fake async network error
+				if (options.error) {
+					result.validation = 'danger';
+					result.message = 'Fake network error occurred.';
+					dfd.reject(result); // or dfd.resolve(result);
+				} else {
+					result.validation = options.validation;
+					dfd.resolve(result);
+				}
+
 				clearInterval(progress);
 			}, options.delay);
 		}

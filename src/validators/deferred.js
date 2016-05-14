@@ -26,7 +26,7 @@
 			dfd.resolve(result);
 		} else {
 
-			// notify deferred of progress
+			// fake some progress updates
 			progress = setInterval(function(){
 				dfd.notify({
 					field: options.field,
@@ -36,9 +36,19 @@
 				});
 			}, 1000);
 
-			result.validation = options.validation;
+			// fake async validation on some remote server
 			setTimeout(function(){
-				dfd.resolve(result);
+
+				// fake async network error
+				if (options.error) {
+					result.validation = 'danger';
+					result.message = 'Fake network error occurred.';
+					dfd.reject(result); // or dfd.resolve(result);
+				} else {
+					result.validation = options.validation;
+					dfd.resolve(result);
+				}
+
 				clearInterval(progress);
 			}, options.delay);
 		}

@@ -21,16 +21,16 @@
 		return pick;
 	}
 
-	//return the
-	function pickProgress(progresses){
-		var progress;
-		$.each(progresses, function(index, item){
+	//return the first non-undefined result
+	function singleResult(results){
+		var result;
+		$.each(results, function(index, item){
 			if (item) {
-				progress = item;
+				result = item;
 				return false;
 			}
 		});
-		return progress;
+		return result;
 	}
 
 	function isPlugin (plugin){
@@ -105,8 +105,8 @@
 				var promise = input[validator](config);
 				promises.push(promise);
 
-				// break loop at first (non-promise) result.validation failure
-				return (promise.validation === 'failure')? false : true;
+				// break loop at first (non-promise) result.validation ailure
+				return (promise.validation === 'danger')? false : true;
 			});
 
 			// wait for the validator promises to resolve
@@ -133,16 +133,23 @@
 			});
 
 			//handle promise failure
-			combined.fail(function(obj) {
-				dfd.reject(obj);
-				//todo: input.trigger('status.input.prove', obj);
+			combined.fail(function() {
+				var results = $.makeArray(arguments);
+				var result = singleResult(results);
+				result.status = 'errored';
+				console.log('fail input', result);
+				input.trigger('status.input.prove', result);
+				dfd.reject(); //todo: return something here?
 			});
 
 			// handle promise progress
 			combined.progress(function(){
-				var progresses = $.makeArray(arguments);
-				var progress = pickProgress(progresses);
-				input.trigger('status.input.prove', progress);
+				var results = $.makeArray(arguments);
+				var result = singleResult(results);
+				result.status = 'progress';
+				console.log('progress input', result)
+				input.trigger('status.input.prove', result);
+				dfd.notify();  //todo: return something here?
 			});
 
 			return dfd;

@@ -70,7 +70,8 @@
 
 			dfd.resolve(validation);
 		});
-		combined.fail(function(obj) {
+		combined.fail(function() {
+			console.log('fail form', arguments);
 			dfd.reject(obj);
 		});
 		combined.progress(function(){

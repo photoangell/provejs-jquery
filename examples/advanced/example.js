@@ -54,7 +54,9 @@
 			// validate multiple matched inputs individually.
 			'dynamic1[]': {
 				enabled:'#itemize:checked', //booleanator
+				trigger: 'keyup',
 				//group: false,
+				throttle: 1000,
 				validators:{
 					proveRequired: {
 						//debug: true,
@@ -69,6 +71,7 @@
 						//debug: true,
 						delay: 3000,
 						validation: 'success',
+						error: false,
 						message: 'Async validation failed.'
 					}
 				}
