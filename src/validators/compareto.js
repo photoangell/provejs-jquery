@@ -10,29 +10,29 @@
 		var value2 = other.val();
 		var hasValue = input.hasValue();
 		var isSetup = input.hasClass('validator-equalto-setup');
-		var isEnabled = $('body').booleanator(options.enabled);
-		var valid;
+		var enabled = $('body').booleanator(options.enabled);
+		var validation;
 
-		if (!isEnabled) {
-			valid = undefined;
+		if (!enabled) {
+			validation = 'reset';
 		} else if (!hasValue){
-			valid = true;
+			validation = 'success';
 		} else if (value1 === options.ignore) {
-			valid = true;
+			validation = 'success';
 		} else if (value2 === options.ignore) {
-			valid = true;
+			validation = 'success';
 		} else if (options.comparison === '=') {
-			valid = (value1 === value2);
+			validation = (value1 === value2)? 'success' : 'danger';
 		} else if (options.comparison === '!=') {
-			valid = (value1 !== value2);
+			validation = (value1 !== value2)? 'success' : 'danger';
 		} else if (options.comparison === '>=') {
-			valid = (value1 >= value2);
+			validation = (value1 >= value2)? 'success' : 'danger';
 		} else if (options.comparison === '>') {
-			valid = (value1 > value2);
+			validation = (value1 > value2)? 'success' : 'danger';
 		} else if (options.comparison === '<=') {
-			valid = (value1 <= value2);
+			validation = (value1 <= value2)? 'success' : 'danger';
 		} else if (options.comparison === '<') {
-			valid = (value1 < value2);
+			validation = (value1 < value2)? 'success' : 'danger';
 		} else {
 			//
 		}
@@ -50,8 +50,8 @@
 		return {
 			field: options.field,
 			validator: options.validator,
-			valid: valid,
-			//value1: value1,
+			status: 'validated',
+			validation: validation,
 			message: options.message
 		};
 	};

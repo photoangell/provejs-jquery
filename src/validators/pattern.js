@@ -6,37 +6,38 @@
 		var input = $(this);
 		var value = input.val();
 		var hasValue = input.hasValue();
-		var isEnabled = $('body').booleanator(options.enabled);
+		var enabled = $('body').booleanator(options.enabled);
 		var regex = (options.regex instanceof RegExp)
 			? options.regex
 			: new RegExp( "^(?:" + options.regex + ")$" );
-		var isValid;
+		var validation;
 
-		if (!isEnabled){
+		if (!enabled){
 			// Validators should return undefined when there is no value.
 			// Decoraters will teardown any decoration when they receive an `undefined` validation result.
-			isValid = undefined;
+			validation = 'reset';
 		} else if (!hasValue) {
 			// All validators (except proveRequired) should return undefined when there is no value.
 			// Decoraters will teardown any decoration when they receive an `undefined` validation result.
-			isValid = undefined;
+			validation = 'reset';
 		} else if (regex instanceof RegExp) {
-			isValid = regex.test(value);
+			validation = regex.test(value)? 'success' : 'danger';
 		} else {
-			isValid = false;
+			validation = 'danger';
 		}
 
 		if (options.debug){
 			console.groupCollapsed('Validator.provePattern()', options.field);
 				console.log('options', options);
-				console.log('isValid', isValid);
+				console.log('validation', validation);
 			console.groupEnd();
 		}
 
 		return {
 			field: options.field,
 			validator: options.validator,
-			valid: isValid,
+			status: 'validated',
+			validation: validation,
 			message: options.message
 		};
 	};

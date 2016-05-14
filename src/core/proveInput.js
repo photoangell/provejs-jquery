@@ -10,13 +10,13 @@
 	}
 
 	// pick validation result to return:
-	// - the first result where result.valid === false
+	// - the first result where result.validation === 'danger'
 	// - or the last result in array
 	function pickResult(results){
 		var pick = clone(last(results));
 		$.each(results, function(index, result){
 			warnIncorrectResult(result);
-			if (result.valid === false) pick = clone(result);
+			if (result.validation === 'danger') pick = clone(result);
 		});
 		return pick;
 	}
@@ -28,9 +28,10 @@
 	}
 
 	function warnIncorrectResult(result){
-		if (!('valid' in result)) console.warn('Missing `valid` property in validator ($.fn.' + result.validator + ') result.');
 		if (!('field' in result)) console.warn('Missing `field` property in validator ($.fn.' + result.validator + ') result.');
 		if (!('validator' in result)) console.warn('Missing `validator` property in validator ($.fn.' + result.validator + ') result.');
+		if (!('status' in result)) console.warn('Missing `status` property in validator ($.fn.' + result.validator + ') result.');
+		if (!('validation' in result)) console.warn('Missing `validation` property in validator ($.fn.' + result.validator + ') result.');
 		if (!('message' in result)) console.warn('Missing `message` property in validator ($.fn.' + result.validator + ') result.');
 	}
 
@@ -47,7 +48,8 @@
 		var result = {
 			field: field.name,
 			validator: undefined,
-			valid: undefined,
+			status: 'validated',
+			validation: 'reset',
 			message: undefined
 		};
 		var dfd = $.Deferred();
@@ -62,15 +64,21 @@
 			console.groupEnd();
 		}
 
+		//trigger event to mark the begining of validation
+		input.trigger('status.input.prove', {
+			field: field.name,
+			status: 'validating'
+		});
+
 		// return early
 		if (!enabled) {
 			input.trigger('status.input.prove', result);
 			states[uuid] = false;
-			dfd.resolve(undefined);
+			dfd.resolve('reset');
 			return dfd;
 		} else if (stateful && state && !dirty) {
 			input.trigger('status.input.prove', state); //clone here?
-			dfd.resolve(state.valid);
+			dfd.resolve(state.validation);
 			return dfd;
 		} else {
 
@@ -85,8 +93,8 @@
 				var promise = input[validator](config);
 				promises.push(promise);
 
-				// break loop at first (non-promise) result.valid === false
-				return promise.valid;
+				// break loop at first (non-promise) result.validation failure
+				return (promise.validation === 'failure')? false : true;
 			});
 
 			// wait for the validator promises to resolve
@@ -96,7 +104,14 @@
 				var results = $.makeArray(arguments);
 				var result = pickResult(results);
 
-				dfd.resolve(result.valid);
+				if (field.debug) {
+					console.groupCollapsed('ProveInput.done()');
+					console.log('results', results);
+					console.log('result', result);
+					console.groupEnd();
+				}
+
+				dfd.resolve(result.validation);
 
 				//save state
 				if (stateful) states[uuid] = result;

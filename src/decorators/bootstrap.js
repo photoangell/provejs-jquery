@@ -2,10 +2,19 @@
 	"use strict";
 
 	function inverse(valid){
+		switch (valid) {
+			case 'success': return 'danger';
+			case 'warning': return 'danger';
+			case 'danger': return 'success';
+			case 'reset': return 'reset';
+		}
 		return (valid === undefined)? valid : !valid;
 	}
 
 	$.fn.bootstrap = function(options){
+
+
+		if (options.status === 'validating') return;
 
 		options = options || {};
 		var input = $(this);
@@ -13,20 +22,20 @@
 		var parent2 = parent1.parent();
 		var parent3 = parent2.parent();
 
-		// add success class on options.valid = true.
-		// add failure class on options.valid = false.
-		// remove success and failure classes on options.valid = undefined
+		// add success class on options.validation = 'success'.
+		// add failure class on options.validation = 'danger'.
+		// remove success and failure classes on options.validation = 'reset'
 		var tinsel = {
-			valid: options.valid,
+			validation: options.validation,
 			classSuccess: 'has-success',
 			classFailure: 'has-error'
 		};
 
-		// show message on options.valid = false.
-		// remove message on options.valid = true.
-		// remove message on options.valid = undefined.
+		// show message on options.validation = 'danger'.
+		// remove message on options.valid = 'success'.
+		// remove message on options.valid = 'reset'.
 		var garland = {
-			valid: inverse(options.valid),
+			validation: inverse(options.validation),
 			wrapper: '<span class="help-block"></span>',
 			message: options.message
 		};

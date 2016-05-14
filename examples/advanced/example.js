@@ -68,7 +68,7 @@
 					proveDeferred: {
 						debug: true,
 						delay: 3000,
-						valid: true,
+						validation: 'success',
 						message: 'Async validation failed.'
 					}
 				}

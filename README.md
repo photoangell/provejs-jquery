@@ -309,7 +309,7 @@ This change would allow for decoration of:
     field: 'email',
     validator: 'validator', //validator name or undefined
     status: 'validated', //'setup', 'validating', 'progress', 'validated', 'destroy'
-    validation: 'success', //'success', 'failure', 'warning', 'reset'
+    validation: 'success', //'success', 'danger', 'warning', 'reset'
     message: 'Your error or warning message.'
 }
 ```
@@ -342,7 +342,7 @@ Where `status`:
 	field: 'email',
 	validator: 'validatorName',
 	status: 'validated',
-	validation: 'success', //'failure', 'warning', 'reset',
+	validation: 'success', //'danger', 'warning', 'reset',
 	message: 'Validation message or error code'
 }
 ```

@@ -233,22 +233,29 @@
 				that.unbindDomFieldEvents(field);
 				that.unbindFieldProveEvent(field);
 
-				that.$form.find(field.selector).trigger('destroyed.field.prove');
+				that.$form.find(field.selector).trigger('status.field.prove', {
+					field: name,
+					status: 'destroy'
+				});
 			});
 		},
 		html5NoValidate: function(state){
 			this.$form.attr("novalidate", state);
 		},
-		setupInputs: function(){ // todo: perhas setupState()?
+		setupInputs: function(){
 
 			var form = this.$form;
-			//var states = this.states;
 
 			form.provables(this.options.fields).each(function(){
+
 				var input = $(this);
+				var field = this.field;
 
 				input.uuid();
-				input.trigger('setup.field.prove');
+				input.trigger('status.input.prove', {
+					field: field,
+					status: 'setup'
+				});
 			});
 		},
 		/**
@@ -370,6 +377,12 @@
 
 	//isProved can be true, false, undefined.
 	function toggleState(isValid, isProved){
+
+		// temp hack
+		if (isValid === 'success') isValid = true;
+		if (isValid === 'danger') isValid = false;
+		if (isValid === 'reset') isValid = undefined;
+
 		if (isProved === false) {
 			isValid = false;
 		} else {
@@ -391,7 +404,8 @@
 		var form = $(this);
 		var prove = form.data('prove');
 		var states = prove.states;
-		var fields = prove.options.fields;
+		var options = prove.options;
+		var fields = options.fields;
 		var filter = true;
 		var promises = [];
 		var dfd = $.Deferred();
@@ -413,21 +427,21 @@
 
 		combined.done(function() {
 			var results = $.makeArray(arguments);
-			var valid = evaluate(results);
+			var validation = evaluate(results);
 
-			if (prove.debug) {
+			if (options.debug) {
 				console.groupCollapsed('Proveform.done()');
 				console.log('results', results);
-				console.log('valid', valid);
+				console.log('validation', validation);
 				console.groupEnd();
 			}
 
 			// Trigger event indicating validation result
 			form.trigger('validated.form.prove', {
-				valid: valid
+				validation: validation
 			});
 
-			dfd.resolve(valid);
+			dfd.resolve(validation);
 		});
 		combined.fail(function(obj) {
 			dfd.reject(obj);
@@ -452,13 +466,13 @@
 	}
 
 	// pick validation result to return:
-	// - the first result where result.valid === false
+	// - the first result where result.validation === 'danger'
 	// - or the last result in array
 	function pickResult(results){
 		var pick = clone(last(results));
 		$.each(results, function(index, result){
 			warnIncorrectResult(result);
-			if (result.valid === false) pick = clone(result);
+			if (result.validation === 'danger') pick = clone(result);
 		});
 		return pick;
 	}
@@ -470,9 +484,10 @@
 	}
 
 	function warnIncorrectResult(result){
-		if (!('valid' in result)) console.warn('Missing `valid` property in validator ($.fn.' + result.validator + ') result.');
 		if (!('field' in result)) console.warn('Missing `field` property in validator ($.fn.' + result.validator + ') result.');
 		if (!('validator' in result)) console.warn('Missing `validator` property in validator ($.fn.' + result.validator + ') result.');
+		if (!('status' in result)) console.warn('Missing `status` property in validator ($.fn.' + result.validator + ') result.');
+		if (!('validation' in result)) console.warn('Missing `validation` property in validator ($.fn.' + result.validator + ') result.');
 		if (!('message' in result)) console.warn('Missing `message` property in validator ($.fn.' + result.validator + ') result.');
 	}
 
@@ -489,7 +504,8 @@
 		var result = {
 			field: field.name,
 			validator: undefined,
-			valid: undefined,
+			status: 'validated',
+			validation: 'reset',
 			message: undefined
 		};
 		var dfd = $.Deferred();
@@ -504,15 +520,21 @@
 			console.groupEnd();
 		}
 
+		//trigger event to mark the begining of validation
+		input.trigger('status.input.prove', {
+			field: field.name,
+			status: 'validating'
+		});
+
 		// return early
 		if (!enabled) {
 			input.trigger('status.input.prove', result);
 			states[uuid] = false;
-			dfd.resolve(undefined);
+			dfd.resolve('reset');
 			return dfd;
 		} else if (stateful && state && !dirty) {
 			input.trigger('status.input.prove', state); //clone here?
-			dfd.resolve(state.valid);
+			dfd.resolve(state.validation);
 			return dfd;
 		} else {
 
@@ -527,8 +549,8 @@
 				var promise = input[validator](config);
 				promises.push(promise);
 
-				// break loop at first (non-promise) result.valid === false
-				return promise.valid;
+				// break loop at first (non-promise) result.validation failure
+				return (promise.validation === 'failure')? false : true;
 			});
 
 			// wait for the validator promises to resolve
@@ -538,7 +560,14 @@
 				var results = $.makeArray(arguments);
 				var result = pickResult(results);
 
-				dfd.resolve(result.valid);
+				if (field.debug) {
+					console.groupCollapsed('ProveInput.done()');
+					console.log('results', results);
+					console.log('result', result);
+					console.groupEnd();
+				}
+
+				dfd.resolve(result.validation);
 
 				//save state
 				if (stateful) states[uuid] = result;
@@ -883,29 +912,29 @@
 		var value2 = other.val();
 		var hasValue = input.hasValue();
 		var isSetup = input.hasClass('validator-equalto-setup');
-		var isEnabled = $('body').booleanator(options.enabled);
-		var valid;
+		var enabled = $('body').booleanator(options.enabled);
+		var validation;
 
-		if (!isEnabled) {
-			valid = undefined;
+		if (!enabled) {
+			validation = 'reset';
 		} else if (!hasValue){
-			valid = true;
+			validation = 'success';
 		} else if (value1 === options.ignore) {
-			valid = true;
+			validation = 'success';
 		} else if (value2 === options.ignore) {
-			valid = true;
+			validation = 'success';
 		} else if (options.comparison === '=') {
-			valid = (value1 === value2);
+			validation = (value1 === value2)? 'success' : 'danger';
 		} else if (options.comparison === '!=') {
-			valid = (value1 !== value2);
+			validation = (value1 !== value2)? 'success' : 'danger';
 		} else if (options.comparison === '>=') {
-			valid = (value1 >= value2);
+			validation = (value1 >= value2)? 'success' : 'danger';
 		} else if (options.comparison === '>') {
-			valid = (value1 > value2);
+			validation = (value1 > value2)? 'success' : 'danger';
 		} else if (options.comparison === '<=') {
-			valid = (value1 <= value2);
+			validation = (value1 <= value2)? 'success' : 'danger';
 		} else if (options.comparison === '<') {
-			valid = (value1 < value2);
+			validation = (value1 < value2)? 'success' : 'danger';
 		} else {
 			//
 		}
@@ -923,8 +952,8 @@
 		return {
 			field: options.field,
 			validator: options.validator,
-			valid: valid,
-			//value1: value1,
+			status: 'validated',
+			validation: validation,
 			message: options.message
 		};
 	};
@@ -938,30 +967,30 @@
 		var input = $(this);
 		var value = input.vals();
 		var hasValue = input.hasValue();
-		//var valid = input.hasValue();
-		var isEnabled = $('body').booleanator(options.enabled);
+		var enabled = $('body').booleanator(options.enabled);
 		var dfd = $.Deferred();
 		var result = {
 			field: options.field,
 			validator: options.validator,
+			status: 'validated',
 			message: options.message
 		};
 
-		if (!isEnabled){
-			result.valid = undefined;
+		if (!enabled){
+			result.validation = 'reset';
 			dfd.resolve(result);
 		} else if (!hasValue) {
 			// All validators are optional except for `required` validator.
-			result.valid = true;
+			result.validation = 'success';
 			dfd.resolve(result);
 		} else {
 
-			//issue progress
+			//testing issue progress
 			dfd.notify({
 				foo: 'bar'
 			});
 
-			result.valid = options.valid;
+			result.validation = options.validation;
 			setTimeout(function(){
 				dfd.resolve(result);
 			}, options.delay);
@@ -972,8 +1001,8 @@
 				console.log('options', options);
 				console.log('input', input);
 				console.log('value', value);
-				console.log('isEnabled', isEnabled);
-				console.log('valid', result.valid);
+				console.log('enabled', enabled);
+				console.log('validation', result.validation);
 			console.groupEnd();
 		}
 
@@ -991,8 +1020,9 @@
 		var form = input.closest('form');
 		var value = input.val();
 		var isSetup = input.hasClass('validator-equalto-setup');
-		var isEnabled = $('body').booleanator(options.enabled);
-		var isValid = (isEnabled)? (value === other.val()) : undefined;
+		var enabled = $('body').booleanator(options.enabled);
+		var has = (value === other.val())? 'success' : 'danger';
+		var validation = (enabled)?  has : 'reset';
 
 		//setup event to validate this input when other input value changes
 		if (!isSetup){
@@ -1007,8 +1037,8 @@
 		return {
 			field: options.field,
 			validator: options.validator,
-			valid: isValid,
-			//value: value,
+			status: 'validated',
+			validation: validation,
 			message: options.message
 		};
 	};
@@ -1022,20 +1052,20 @@
 		var input = $(this);
 		var value = input.vals();
 		var hasValue = input.hasValue();
-		var isValid = input.hasValue();
-		var isEnabled = $('body').booleanator(options.enabled);
+		var validation = input.hasValue();
+		var enabled = $('body').booleanator(options.enabled);
 		var okMin = (typeof options.min !== 'undefined')? (value.length >= options.min) : true;
 		var okMax = (typeof options.max !== 'undefined')? (value.length <= options.max) : true;
 
-		if (!isEnabled){
-			isEnabled = undefined;
+		if (!enabled){
+			enabled = 'reset';
 		} else if (!hasValue) {
 			// All validators are optional except of `required` validator.
-			isValid = true;
+			validation = 'success';
 		} else if (okMin && okMax) {
-			isValid = true;
+			validation = 'success';
 		} else {
-			isValid = false;
+			validation = 'danger';
 		}
 
 		if (options.debug){
@@ -1043,15 +1073,16 @@
 				console.log('options', options);
 				console.log('input', input);
 				console.log('value', value);
-				console.log('isEnabled', isEnabled);
-				console.log('isValid', isValid);
+				console.log('enabled', enabled);
+				console.log('validation', validation);
 			console.groupEnd();
 		}
 
 		return {
 			field: options.field,
 			validator: options.validator,
-			valid: isValid,
+			status: 'validated',
+			validation: validation,
 			message: options.message
 		};
 	};
@@ -1064,23 +1095,25 @@
 
 		var input = $(this);
 		var value = input.vals();
-		var isEnabled = $('body').booleanator(options.enabled);
-		var isValid = (isEnabled)? value <= options.max : undefined;
+		var enabled = $('body').booleanator(options.enabled);
+		var has = (value <= options.max)? 'success' : 'danger';
+		var validation = (enabled)? has : 'reset';
 
 		if (options.debug){
 			console.groupCollapsed('Validator.proveMin()', options.field);
 				console.log('options', options);
 				console.log('input', input);
 				console.log('value', value);
-				console.log('isEnabled', isEnabled);
-				console.log('isValid', isValid);
+				console.log('enabled', enabled);
+				console.log('validation', validation);
 			console.groupEnd();
 		}
 
 		return {
 			field: options.field,
 			validator: options.validator,
-			valid: isValid,
+			status: 'validated',
+			validation: validation,
 			message: options.message
 		};
 	};
@@ -1093,23 +1126,25 @@
 
 		var input = $(this);
 		var value = input.vals();
-		var isEnabled = $('body').booleanator(options.enabled);
-		var isValid = (isEnabled)? value >= options.min : undefined;
+		var enabled = $('body').booleanator(options.enabled);
+		var has = value >= options.min? 'success' : 'danger';
+		var validation = (enabled)? has : 'reset';
 
 		if (options.debug){
 			console.groupCollapsed('Validator.proveMin()', options.field);
 				console.log('options', options);
 				console.log('input', input);
 				console.log('value', value);
-				console.log('isEnabled', isEnabled);
-				console.log('isValid', isValid);
+				console.log('enabled', enabled);
+				console.log('validation', validation);
 			console.groupEnd();
 		}
 
 		return {
 			field: options.field,
 			validator: options.validator,
-			valid: isValid,
+			status: 'validated',
+			validation: validation,
 			message: options.message
 		};
 	};
@@ -1124,7 +1159,8 @@
 		return {
 			field: options.field,
 			validator: options.validator,
-			valid: false,
+			status: 'validated',
+			validation: 'danger',
 			message: 'Prove validator "' + options.validator+ '" not found.'
 		};
 	};
@@ -1138,37 +1174,38 @@
 		var input = $(this);
 		var value = input.val();
 		var hasValue = input.hasValue();
-		var isEnabled = $('body').booleanator(options.enabled);
+		var enabled = $('body').booleanator(options.enabled);
 		var regex = (options.regex instanceof RegExp)
 			? options.regex
 			: new RegExp( "^(?:" + options.regex + ")$" );
-		var isValid;
+		var validation;
 
-		if (!isEnabled){
+		if (!enabled){
 			// Validators should return undefined when there is no value.
 			// Decoraters will teardown any decoration when they receive an `undefined` validation result.
-			isValid = undefined;
+			validation = 'reset';
 		} else if (!hasValue) {
 			// All validators (except proveRequired) should return undefined when there is no value.
 			// Decoraters will teardown any decoration when they receive an `undefined` validation result.
-			isValid = undefined;
+			validation = 'reset';
 		} else if (regex instanceof RegExp) {
-			isValid = regex.test(value);
+			validation = regex.test(value)? 'success' : 'danger';
 		} else {
-			isValid = false;
+			validation = 'danger';
 		}
 
 		if (options.debug){
 			console.groupCollapsed('Validator.provePattern()', options.field);
 				console.log('options', options);
-				console.log('isValid', isValid);
+				console.log('validation', validation);
 			console.groupEnd();
 		}
 
 		return {
 			field: options.field,
 			validator: options.validator,
-			valid: isValid,
+			status: 'validated',
+			validation: validation,
 			message: options.message
 		};
 	};
@@ -1183,23 +1220,25 @@
 		var regex = /^(.)*(\.[0-9]{1,2})?$/;
 		var input = $(this);
 		var value = input.vals();
-		var isEnabled = $('body').booleanator(options.enabled);
-		var isValid = (isEnabled)? regex.test(value) : undefined;
+		var enabled = $('body').booleanator(options.enabled);
+		var has = regex.test(value)? 'success' : 'danger';
+		var validation = (enabled)? has : 'reset';
 
 		if (options.debug){
 			console.groupCollapsed('Validator.provePrecision()', options.field);
 				console.log('options', options);
 				console.log('input', input);
 				console.log('value', value);
-				console.log('isEnabled', isEnabled);
-				console.log('isValid', isValid);
+				console.log('enabled', enabled);
+				console.log('validation', validation);
 			console.groupEnd();
 		}
 
 		return {
 			field: options.field,
 			validator: options.validator,
-			valid: isValid,
+			status: 'validated',
+			validation: validation,
 			message: options.message
 		};
 	};
@@ -1212,23 +1251,25 @@
 
 		var input = $(this);
 		var value = input.vals();
-		var isEnabled = $('body').booleanator(options.enabled);
-		var isValid = (isEnabled)? input.hasValue() : undefined;
+		var enabled = $('body').booleanator(options.enabled);
+		var has = input.hasValue()? 'success' : 'danger';
+		var validation = (enabled)? has : 'reset';
 
 		if (options.debug){
 			console.groupCollapsed('Validator.proveRequired()', options.field);
 				console.log('options', options);
 				console.log('input', input);
 				console.log('value', value);
-				console.log('isEnabled', isEnabled);
-				console.log('isValid', isValid);
+				console.log('enabled', enabled);
+				console.log('validation', validation);
 			console.groupEnd();
 		}
 
 		return {
 			field: options.field,
 			validator: options.validator,
-			valid: isValid,
+			status: 'validated',
+			validation: validation,
 			message: options.message
 		};
 	};
@@ -1242,23 +1283,23 @@
 		var input = $(this);
 		var value = input.val();
 		var hasValue = input.hasValue();
-		var isEnabled = $('body').booleanator(options.enabled);
+		var enabled = $('body').booleanator(options.enabled);
 		var others = $(options.uniqueTo).not(input);
-		var valid = true;
+		var validation = 'success';
 
-		if (!isEnabled){
+		if (!enabled){
 			// Validators should return undefined when there is no value.
 			// Decoraters will teardown any decoration when they receive an `undefined` validation result.
-			valid = undefined;
+			validation = 'reset';
 		} else if (!hasValue) {
 			// All validators (except proveRequired) should return undefined when there is no value.
 			// Decoraters will teardown any decoration when they receive an `undefined` validation result.
-			valid = undefined;
+			validation = 'reset';
 		} else {
 			// compare against other input values
 			others.each(function(){
 				var other = $(this);
-				if (other.hasValue() && other.val() === value) valid = false;
+				if (other.hasValue() && other.val() === value) validation = 'danger';
 			});
 		}
 
@@ -1266,14 +1307,15 @@
 			console.groupCollapsed('Validator.proveUnique()', options.field);
 				console.log('options', options);
 				console.log('value', value);
-				console.log('valid', valid);
+				console.log('validation', validation);
 			console.groupEnd();
 		}
 
 		return {
 			field: options.field,
 			validator: options.validator,
-			valid: valid,
+			status: 'validated',
+			validation: validation,
 			message: options.message
 		};
 	};

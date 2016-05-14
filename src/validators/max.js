@@ -5,23 +5,25 @@
 
 		var input = $(this);
 		var value = input.vals();
-		var isEnabled = $('body').booleanator(options.enabled);
-		var isValid = (isEnabled)? value <= options.max : undefined;
+		var enabled = $('body').booleanator(options.enabled);
+		var has = (value <= options.max)? 'success' : 'danger';
+		var validation = (enabled)? has : 'reset';
 
 		if (options.debug){
 			console.groupCollapsed('Validator.proveMin()', options.field);
 				console.log('options', options);
 				console.log('input', input);
 				console.log('value', value);
-				console.log('isEnabled', isEnabled);
-				console.log('isValid', isValid);
+				console.log('enabled', enabled);
+				console.log('validation', validation);
 			console.groupEnd();
 		}
 
 		return {
 			field: options.field,
 			validator: options.validator,
-			valid: isValid,
+			status: 'validated',
+			validation: validation,
 			message: options.message
 		};
 	};

@@ -166,22 +166,29 @@
 				that.unbindDomFieldEvents(field);
 				that.unbindFieldProveEvent(field);
 
-				that.$form.find(field.selector).trigger('destroyed.field.prove');
+				that.$form.find(field.selector).trigger('status.field.prove', {
+					field: name,
+					status: 'destroy'
+				});
 			});
 		},
 		html5NoValidate: function(state){
 			this.$form.attr("novalidate", state);
 		},
-		setupInputs: function(){ // todo: perhas setupState()?
+		setupInputs: function(){
 
 			var form = this.$form;
-			//var states = this.states;
 
 			form.provables(this.options.fields).each(function(){
+
 				var input = $(this);
+				var field = this.field;
 
 				input.uuid();
-				input.trigger('setup.field.prove');
+				input.trigger('status.input.prove', {
+					field: field,
+					status: 'setup'
+				});
 			});
 		},
 		/**

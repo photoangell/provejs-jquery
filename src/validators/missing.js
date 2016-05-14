@@ -7,7 +7,8 @@
 		return {
 			field: options.field,
 			validator: options.validator,
-			valid: false,
+			status: 'validated',
+			validation: 'danger',
 			message: 'Prove validator "' + options.validator+ '" not found.'
 		};
 	};

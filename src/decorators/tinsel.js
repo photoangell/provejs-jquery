@@ -9,16 +9,16 @@
 		if (options.debug){
 			console.groupCollapsed('Decorators.tinsel()');
 				console.log('input', input);
-				console.log('valid', options.valid);
+				console.log('validation', options.validation);
 				console.log('placement', options.placement);
 				console.log('classSuccess', options.classSuccess);
 				console.log('classFailure', options.classFailure);
 			console.groupEnd();
 		}
 
-		function setup(container, valid){
+		function setup(container, validation){
 			//var container = input.huntout(options.placement);
-			var klass = (valid)? options.classSuccess : options.classFailure;
+			var klass = (validation === 'success')? options.classSuccess : options.classFailure;
 			container.addClass(klass);
 		}
 
@@ -28,8 +28,8 @@
 		}
 
 		teardown(input);
-		if (options.valid === true || options.valid === false) {
-			setup(input, options.valid);
+		if (options.validation === 'success' || options.validation === 'danger') {
+			setup(input, options.validation);
 		}
 	};
 }(window.jQuery);

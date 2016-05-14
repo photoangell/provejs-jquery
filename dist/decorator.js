@@ -2,10 +2,19 @@
 	"use strict";
 
 	function inverse(valid){
+		switch (valid) {
+			case 'success': return 'danger';
+			case 'warning': return 'danger';
+			case 'danger': return 'success';
+			case 'reset': return 'reset';
+		}
 		return (valid === undefined)? valid : !valid;
 	}
 
 	$.fn.bootstrap = function(options){
+
+
+		if (options.status === 'validating') return;
 
 		options = options || {};
 		var input = $(this);
@@ -13,20 +22,20 @@
 		var parent2 = parent1.parent();
 		var parent3 = parent2.parent();
 
-		// add success class on options.valid = true.
-		// add failure class on options.valid = false.
-		// remove success and failure classes on options.valid = undefined
+		// add success class on options.validation = 'success'.
+		// add failure class on options.validation = 'danger'.
+		// remove success and failure classes on options.validation = 'reset'
 		var tinsel = {
-			valid: options.valid,
+			validation: options.validation,
 			classSuccess: 'has-success',
 			classFailure: 'has-error'
 		};
 
-		// show message on options.valid = false.
-		// remove message on options.valid = true.
-		// remove message on options.valid = undefined.
+		// show message on options.validation = 'danger'.
+		// remove message on options.valid = 'success'.
+		// remove message on options.valid = 'reset'.
 		var garland = {
-			valid: inverse(options.valid),
+			validation: inverse(options.validation),
 			wrapper: '<span class="help-block"></span>',
 			message: options.message
 		};
@@ -113,7 +122,7 @@
 		if (options.debug){
 			console.groupCollapsed('Decorators.garland()');
 				console.log('input', input);
-				console.log('valid', options.valid);
+				console.log('validation', options.validation);
 				console.log('wrapper', options.wrapper);
 				console.log('placement', options.placement);
 				console.log('message', options.message);
@@ -131,7 +140,7 @@
 			container.find('.garland-wrapper').remove();
 		}
 
-		if (options.valid === true) {
+		if (options.validation === 'success') {
 			teardown(input);
 			setup(input, options);
 		} else {
@@ -151,16 +160,16 @@
 		if (options.debug){
 			console.groupCollapsed('Decorators.tinsel()');
 				console.log('input', input);
-				console.log('valid', options.valid);
+				console.log('validation', options.validation);
 				console.log('placement', options.placement);
 				console.log('classSuccess', options.classSuccess);
 				console.log('classFailure', options.classFailure);
 			console.groupEnd();
 		}
 
-		function setup(container, valid){
+		function setup(container, validation){
 			//var container = input.huntout(options.placement);
-			var klass = (valid)? options.classSuccess : options.classFailure;
+			var klass = (validation === 'success')? options.classSuccess : options.classFailure;
 			container.addClass(klass);
 		}
 
@@ -170,8 +179,8 @@
 		}
 
 		teardown(input);
-		if (options.valid === true || options.valid === false) {
-			setup(input, options.valid);
+		if (options.validation === 'success' || options.validation === 'danger') {
+			setup(input, options.validation);
 		}
 	};
 }(window.jQuery);

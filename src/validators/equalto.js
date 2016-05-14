@@ -8,8 +8,9 @@
 		var form = input.closest('form');
 		var value = input.val();
 		var isSetup = input.hasClass('validator-equalto-setup');
-		var isEnabled = $('body').booleanator(options.enabled);
-		var isValid = (isEnabled)? (value === other.val()) : undefined;
+		var enabled = $('body').booleanator(options.enabled);
+		var has = (value === other.val())? 'success' : 'danger';
+		var validation = (enabled)?  has : 'reset';
 
 		//setup event to validate this input when other input value changes
 		if (!isSetup){
@@ -24,8 +25,8 @@
 		return {
 			field: options.field,
 			validator: options.validator,
-			valid: isValid,
-			//value: value,
+			status: 'validated',
+			validation: validation,
 			message: options.message
 		};
 	};

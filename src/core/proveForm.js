@@ -3,6 +3,12 @@
 
 	//isProved can be true, false, undefined.
 	function toggleState(isValid, isProved){
+
+		// temp hack
+		if (isValid === 'success') isValid = true;
+		if (isValid === 'danger') isValid = false;
+		if (isValid === 'reset') isValid = undefined;
+
 		if (isProved === false) {
 			isValid = false;
 		} else {
@@ -24,7 +30,8 @@
 		var form = $(this);
 		var prove = form.data('prove');
 		var states = prove.states;
-		var fields = prove.options.fields;
+		var options = prove.options;
+		var fields = options.fields;
 		var filter = true;
 		var promises = [];
 		var dfd = $.Deferred();
@@ -46,21 +53,21 @@
 
 		combined.done(function() {
 			var results = $.makeArray(arguments);
-			var valid = evaluate(results);
+			var validation = evaluate(results);
 
-			if (prove.debug) {
+			if (options.debug) {
 				console.groupCollapsed('Proveform.done()');
 				console.log('results', results);
-				console.log('valid', valid);
+				console.log('validation', validation);
 				console.groupEnd();
 			}
 
 			// Trigger event indicating validation result
 			form.trigger('validated.form.prove', {
-				valid: valid
+				validation: validation
 			});
 
-			dfd.resolve(valid);
+			dfd.resolve(validation);
 		});
 		combined.fail(function(obj) {
 			dfd.reject(obj);
