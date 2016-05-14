@@ -309,7 +309,8 @@ This change would allow for decoration of:
     field: 'email',
     validator: 'validator', //validator name or undefined
     status: 'validated', //'setup', 'validating', 'progress', 'validated', 'destroy'
-    validation: 'success', //'success', 'failure', 'warning', 'reset'
+    validation: 'success', //'success', 'failure', 'warning', 'reset' //option 1
+    validation: 'success', //'success', 'danger', 'warning', 'default' (these map to bootstrap classes) //option 2
     message: 'Your error or warning message.'
 }
 ```
