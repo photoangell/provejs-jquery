@@ -72,7 +72,7 @@
 		});
 		combined.fail(function() {
 			console.log('fail form', arguments);
-			dfd.reject(obj);
+			dfd.reject();
 		});
 		combined.progress(function(){
 			console.log('progress');

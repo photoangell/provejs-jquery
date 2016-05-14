@@ -71,13 +71,15 @@
 !function ($) {
 	"use strict";
 
+	function extend(obj1, obj2){
+		return $.extend(true, {}, obj1, obj2);
+	};
+
 	// Prove constructor
 	function Prove(form, options) {
 
 		this.$form = $(form);
-
-		// multiple instances requires extending from {}
-		this.options = $.extend({}, this.defaults, options);
+		this.options = extend(this.defaults, options);
 
 		if (options.debug){
 			console.groupCollapsed('Prove()');
@@ -100,7 +102,6 @@
 	Prove.prototype = {
 
 		defaults: {
-			//control how prove should handle submit button clicks
 			submit: {
 				selector: 'button:submit',
 				validate: true, //booleanator, validate on submit, but not if element has class `skip-validation`
@@ -137,10 +138,10 @@
 
 			var selector = this.options.submit.selector;
 			var handler = $.proxy(this.submitInterceptHandler, this);
-			//var throttled = window._.throttle(handler, 10000, {trailing: false});
+
+			console.log('setupSubmitIntercept()', this.options.submit);
 
 			// we intercept the submit by bind `click` rather than ':submit'
-			//this.$form.on('click', selector, throttled);
 			this.$form.on('click', selector, handler);
 		},
 		submitInterceptHandler: function(event){

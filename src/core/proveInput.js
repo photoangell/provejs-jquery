@@ -147,7 +147,7 @@
 				var results = $.makeArray(arguments);
 				var result = singleResult(results);
 				result.status = 'progress';
-				console.log('progress input', result)
+				console.log('progress input', result);
 				input.trigger('status.input.prove', result);
 				dfd.notify();  //todo: return something here?
 			});
