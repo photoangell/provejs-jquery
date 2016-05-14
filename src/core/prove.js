@@ -35,9 +35,8 @@
 		defaults: {
 			//control how prove should handle submit button clicks
 			submit: {
-				button: 'button:submit', //submit button selector
+				button: 'button:submit', //submit button selector, todo: rename to `selector`?
 				validate: 'button:submit:not(.skip-validation)',//booleanator, validate on submit, but not if element has class `skip-validation`
-				// validate: '#skip-validation:checked',
 				prevent: false, //booleanator
 				twice: false //todo: allow some forms to submit twice
 			}
