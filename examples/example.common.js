@@ -4,9 +4,10 @@
 	var status = $('#form-status');
 	var events = $('#events');
 	var all = [
-		'validate.input.prove',
-		'status.input.prove',
-		'status.form.prove'
+
+		'status.form.prove',
+		'status.input.prove'
+		//'validate.input.prove' // internal event
 	].join(' ');
 
 	form.on('status.form.prove', function(event, data){
