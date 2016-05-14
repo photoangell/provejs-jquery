@@ -101,10 +101,10 @@ form.prove({
 	- **Default:** '[name="field"]',
 	- **Description:** jQuery selector which you can shift the context of the validation.
 - `trigger`
-	- **Type:** string,
+	- **Type:** string or false,
 	- **Required:** false,
 	- **Default:** 'change keyup click blur',
-	- **Description:** The events on which you want to live validation to happen.
+	- **Description:** The events on which you want to live validation to happen. A value of false will disable live validation.
 - `stateful`
 	- **Type:** bool,
 	- **Required:** false,
