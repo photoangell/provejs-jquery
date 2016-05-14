@@ -4,8 +4,11 @@ module.exports = function(grunt) {
 
 	grunt.config('uglify', {
 		options: {
-			banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
-        '<%= grunt.template.today("yyyy-mm-dd") %> */'
+			banner: '/*!'
+			+ '\n<%= pkg.name %> - v<%= pkg.version %> - '
+			+ '<%= grunt.template.today("yyyy-mm-dd") %>'
+			+ '\nhttps://github.com/jquery-prove'
+			+ '\n*/'
 		},
 		prove: {
 			options: {
