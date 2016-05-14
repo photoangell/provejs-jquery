@@ -62,7 +62,11 @@ form.prove({
 	- **Type:** object,
 	- **Required:** true,
 	- **Description:** defines the field validations to be performed. See below for more details.
-
+- `submit`
+	- **Type:** object,
+	- **Required:** false,
+	- **Description:** defines the submit intercept handler options. See below for more details.
+	
 ### Field Options
 ```javascript
 form.prove({
