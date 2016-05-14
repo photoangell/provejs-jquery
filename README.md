@@ -26,7 +26,7 @@ Please read [background notes](./BACKGROUND.md) on why yet another jQuery plugin
 - [Options](#prove-options)
 - [Validators](#prove-validators)
 - [Decorators](#prove-decorators)
-- [Methods](#methods)
+- [Methods](#prove-methods)
 - [Events](#prove-events)
 - [Destroy](#destory)
 - [Roadmap](#roadmap)
