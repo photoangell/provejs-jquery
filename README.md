@@ -188,6 +188,11 @@ form.prove({
 })
 ```
 Where:
+- `debug`
+	- **Type:** bool,
+	- **Required:** false,
+	- **Default:** false,
+	- **Description:** Will enalbe the submit intercept handler to print debug information in the developer console.
 - `selector`
 	- **Type:** - string,
 	- **Required:** - false,
@@ -197,7 +202,7 @@ Where:
 	- **Type**: - booleanator,
 	- **Required:** - false,
 	- **Default:** - true,
-	- **Description:** - determines if validation should happen when the intercept handler is invoked.
+	- **Description:** - determines if validation should happen when the intercept handler is invoked. If you want the form to submit without validation then set this to a value of false, 'button:submit:not('.skip-validation')' and add class 'skip-validation' (see [booleanator](#booleanator)) or your code could just call `form.submit()'.
 - ` enabled`
 	- **Type**: - booleanator,
 	- **Required**: false,
