@@ -8,11 +8,10 @@ Each validator should return either:
 - result object defined below,
 - jquery deferred which promises to return the result object below.
 
-Validation returned result object which used as event data to communicate with the decorators:
 ```javascript
 {
 	field: 'email', // field name
-	validator: 'nameOfValidator', // validator name
+	validator: 'validatorName', // validator name
 	status: 'validated',
 	validation: 'success', // 'success', 'danger', 'warning', 'reset'
 	message: 'Your error message or error code used by the validation decorator.'
