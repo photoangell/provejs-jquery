@@ -210,6 +210,16 @@ Where:
 	- **Default**: true,
 	- **Description**: Enables the form to submit after it validates true.
 
+Should you want to stop the normally form submission you will need to bind a handler to the form submit event:
+
+```javascript
+form.submit(function(event){
+	event.preventDefault(); // stop form submit
+
+	//do something else, like ajax submission of form
+});
+```
+
 ## Prove Validators
 
 Input validation is handled by jQuery [validator plugins](./src/validators).
@@ -240,20 +250,6 @@ Prove is a publisher of events. Events are triggered on either the input or the 
 - [status.input.prove](./EVENTS.md#) - triggered on the **input**
 
 Please see [events](./EVENTS.md) for more details.
-
-## Form Submission
-
-todo: document submit intercept options here.
-
-Should you want to stop the normally form submittion you will need to bind a handler to the form submit event:
-
-```javascript
-form.submit(function(event){
-	event.preventDefault(); // stop form submit
-
-	//do something else, like ajax submission of form
-});
-```
 
 ## Destroy
 
