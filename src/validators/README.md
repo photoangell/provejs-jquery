@@ -49,7 +49,7 @@ Asynchronous validators can return the following objects:
 	- Code: dfd.notify(progress)
 - error
 	- Required: false,
-	- Description: if ajax error or validation error return reject object.
+	- Description: if ajax error return error object.
 	- Code: dfd.reject(error)
 
 ## Message
