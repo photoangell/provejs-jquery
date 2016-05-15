@@ -1,6 +1,6 @@
 # Prove Validators
 
-An input validator is a jquery plugin which validates the input value. There are two types of validators:
+An input validator is a jquery plugin which validates an input's value. There are two types of validators:
 - Synchronous - immediately returns a result object,
 - Asynchronous - returns a deferred/promise that will return a result object in the future.
 
@@ -38,19 +38,19 @@ Where `validation` is either:
 
 ## Asynchronous Validators
 
-Asynchronous validators can return return the following:
-- validated result object
+Asynchronous validators can return return the following objects:
+- result
 	- Required: true,
 	- Description: returned when the asynchrous validator is finished validating.
 	- Code: dfd.resolve(result)
-- progress object
+- progress
 	- Required: false,
 	- Description: periodically notify of progress.
 	- Code: dfd.notify(progress)
-- reject object
+- error
 	- Required: false,
 	- Description: if ajax error or validation error return reject object.
-	- Code: dfd.reject(reject)
+	- Code: dfd.reject(error)
 
 ## Message
 
