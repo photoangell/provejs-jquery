@@ -6,9 +6,9 @@ An input validator is a jquery plugin which validates the input value. There are
 
 The validator result object is defined below and is used as the event data which the decorators listen. Therefore, the result object is passed to the decorators to decorate the form inputs.
 
-## Synchronous Validator Result Object
+## Synchronous Validators
 
-A synchronous validator should return the result object below:
+A synchronous validators should return the result object below:
 
 ```javascript
 {
@@ -36,7 +36,21 @@ Where `validation` is either:
 	- Indicates the input is valid, but with a warning.
 	- Decorators will decorate for warning.
 
+## Asynchronous Validators
 
+Asynchronous validators can return return the following:
+- validated result object
+	- Required: true,
+	- Description: returned when the asynchrous validator is finished validating.
+	- Code: dfd.resolve(result)
+- progress object
+	- Required: false,
+	- Description: periodically notify of progress.
+	- Code: dfd.notify(progress)
+- reject object
+	- Required: false,
+	- Description: if ajax error or validation error return reject object.
+	- Code: dfd.reject(reject)
 
 ## Message
 
