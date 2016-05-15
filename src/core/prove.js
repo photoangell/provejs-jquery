@@ -148,6 +148,7 @@
 			return events;
 		},
 		setupForm: function(){
+			this.$form.lint();
 			this.html5NoValidate(true);
 			//this.bindDomFormEvents();
 		},
