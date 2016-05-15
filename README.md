@@ -267,6 +267,25 @@ or
 form.remove();
 ```
 
+## Booleanator
+
+Many of the Prove options are booleanators. A booleanator is a dynamic configuration option which is evaluated by Prove immediately before it is used. It can be defined as either:
+
+- **Bool:** 
+	- Evaluation: uses the bool value. 
+	- Values: true or false,
+- **jQuery DOM Selector:** 
+	- Evaluation: if the DOM selection returns any elements then it evaluates to true otherwise false. 
+	- Context: the context of the DOM selection is the window.document.
+	- Examples: 'fieldset#section:visible', 'input[type="hidden"]:empty'
+- **jQuery DOM Pseudo-Selector:**
+	- Evaluation: if the DOM selection returns any elements then it evaluates to true otherwise false. 
+	- Context - the context of the DOM selection is the input.
+	- Examples: ':visible', ':empty'
+- **Javascript Function:**
+	- Evaluation: function should return either true or false and accepts no inputs.
+	- Example: function(){ return window.myVar; }
+
 ## Contributing
 
 ### Setup
