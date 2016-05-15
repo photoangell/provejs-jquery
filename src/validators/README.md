@@ -38,7 +38,7 @@ Where `validation` is either:
 
 ## Asynchronous Validators
 
-Asynchronous validators can return return the following objects:
+Asynchronous validators can return the following objects:
 - result
 	- Required: true,
 	- Description: returned when the asynchrous validator is finished validating.
