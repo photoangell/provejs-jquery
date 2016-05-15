@@ -232,11 +232,14 @@ Form decoration is handled by jQuery [decorator plugins](./src/decorators).
 
 The form will automatically be validated when the user clicks the submit button. However, you can programatically validate the form:
 ```javascript
-form.validate();
+var dfd = form.validate();
+dfd.done(function(isValid){
+	console.log('validation', isValid);
+});
 ```
 Your code can also validate an input.
 ```javascript
-input.validate();
+input.validate(); //returns chainable input reference
 ```
 If you want to by pass validation and immediately submit the form:
 ```javascript
