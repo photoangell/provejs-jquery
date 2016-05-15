@@ -277,7 +277,7 @@ Many of the Prove options are booleanators. A booleanator is a dynamic configura
 - **jQuery DOM Selector:** 
 	- Evaluation: if the DOM selection returns any elements then it evaluates to true otherwise false. 
 	- Context: the context of the DOM selection is the window.document.
-	- Examples: 'fieldset#section:visible', 'input[type="hidden"]:empty'
+	- Examples: 'fieldset#section:visible', 'input[type="hidden"]:empty', '#other-checkbox:checked'
 - **jQuery DOM Pseudo-Selector:**
 	- Evaluation: if the DOM selection returns any elements then it evaluates to true otherwise false. 
 	- Context - the context of the DOM selection is the input.
