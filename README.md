@@ -309,24 +309,24 @@ grunt build
 
 ## Roadmap
 
-### Document booleanator.
-
 ### Deferred [validators](./src/core/README.md#deferred-validation).
 
 Document and test when the deferred validator should call:
+- dfd.resolve()
 - dfd.notify()
-- dfd.progress()
 - dfd.reject()
 
-and what value should be returned.
+and what value should be returned in each case?
 
-How should these plugins handle these callbacks:
+How should these plugins handle these notify ogress and reject:
 - $.fn.proveInput()
 - $.fn.proveForm()
 
 ### Deferred Email Validation with MailGun email validator
-
 It would be nice to have a real deferred example.
+
+### Warning Decoration
+The bootstrap decorators should be decoratoring for warnings.
 
 ### Unobtrusive Configuration
 
