@@ -177,13 +177,13 @@ Each validator has it's own set of options but below is a set of the common opti
 
 ### Submit Options
 
-jQuery-Prove uses a submit intercept handler which ensures successful form validation before allowing the form to submit. The submit intercept handler is bound by default to `form.on('click', ':submit', handler)` so really the intercept handler is really a click handler. The submit intercept handler accept the following options:
+jQuery-Prove uses a submit intercept handler which ensures successful form validation before allowing the form to submit. The submit intercept handler is bound by default to `form.on('click', ':submit', handler)` so really the intercept handler is really a click handler. The submit intercept handler accepts the following options:
 ```javascript
 form.prove({
 	fields: {},
 	submit: {
 		selector: 'button:submit',
-		validate: true ,
+		validate: true,
 		enabled: true,
 	}
 })
