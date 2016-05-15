@@ -326,9 +326,6 @@ It would be nice to have a real deferred example.
 ### Warning Decoration
 The bootstrap decorators should be decoratoring for warnings.
 
-### Update Background Notes
-Improve the background notes.
-
 ### Unobtrusive Configuration
 
 Perhaps support unobtrusive configuration via $.fn.proveConfig().
