@@ -4,30 +4,31 @@
 	var form = $('form');
 	var cfg = {
 		fields: {
-			number: {
-				validators: {
-					proveRequired: {
-						message: 'Choose one.',
-					}
-				}
-			},
-			discount: {
+			email: {
 				trigger: 'keyup',
-				throttle: 1000,
+				throttle: 250,
+				//stateful: false,
 				validators: {
 					proveRequired: {
-						message: 'Discount code is required.',
+						debug: true,
+						message: "The email address is required and can't be empty",
+					},
+					provePattern: {
+						debug: true,
+						regex: '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,63}',
+						message: 'The input is not a valid email address'
 					},
 					proveDeferred: {
-						delay: 3000,
+						debug: true,
+						delay: 500,
 						validation: function(value){
-							if (value === 'free') {
+							if (value === 'you@example.com') {
 								return 'success';
 							} else {
 								return 'danger';
 							}
 						},
-						message: 'Async invalid discount code.'
+						message: 'The email is not valid'
 					}
 				}
 			}

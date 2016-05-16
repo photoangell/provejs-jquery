@@ -13,14 +13,22 @@
 
 	$.fn.bootstrap = function(options){
 
-
-		if (options.status === 'validating') return;
-
 		options = options || {};
 		var input = $(this);
-		var parent1 = input.parent();
-		var parent2 = parent1.parent();
-		var parent3 = parent2.parent();
+		var parent1, parent2, parent3;
+
+		console.log('options', options);
+
+		if (options.status === 'progress') return;
+
+		// manage feedback
+		if (options.status === 'validating') {
+			input.feedback({state: true});
+		} else if (options.status === 'validated'){
+			input.feedback({state: false});
+		}
+
+		if (options.status === 'validating') return;
 
 		// add success class on options.validation = 'success'.
 		// add failure class on options.validation = 'danger'.
@@ -28,7 +36,8 @@
 		var tinsel = {
 			validation: options.validation,
 			classSuccess: 'has-success',
-			classFailure: 'has-error'
+			classFailure: 'has-error',
+			classWarning: 'has-warning'
 		};
 
 		// show message on options.validation = 'danger'.
@@ -39,6 +48,10 @@
 			wrapper: '<span class="help-block"></span>',
 			message: options.message
 		};
+
+		parent1 = input.parent();
+		parent2 = parent1.parent();
+		parent3 = parent2.parent();
 
 		//placement
 		if (parent1.is('.form-group')){
@@ -111,29 +124,34 @@
 
 }(window.jQuery);
 
-(function() {
+(function($) {
 
 	$.fn.feedback = function (options) {
 
 		options = options || {};
 
 		var input = $(this);
-		var klass = options.klass || 'has-default';
-		var group = input.closest('.form-group');
-		var feedback = input.parent().find('.form-control-feedback');
+		var klass = options.classFeedback || 'has-default';
+		var group, feedback;
+
+		if (!input.is('input')) return;
+
+		group = input.closest('.form-group');
+		feedback = input.parent().find('.form-control-feedback');
 
 		//toggle
-		if (feedback.length) {
+		if (options.state === false) {
 			feedback.remove();
 			group.removeClass(klass);
 			group.removeClass('has-feedback');
-		} else {
+		} else if (options.state === true){
 			group.addClass(klass);
 			group.addClass('has-feedback');
 			input.parent().append('<span class="form-control-feedback fa fa-spinner fa-spin"></span>');
 		}
 	};
-})();
+})(window.jQuery);
+
 !function ($) {
 	"use strict";
 
@@ -181,29 +199,30 @@
 		var input = $(this);
 
 		if (options.debug){
-			console.groupCollapsed('Decorators.tinsel()');
+			console.groupCollapsed('Decorators.tinsel()', options.validation);
 				console.log('input', input);
 				console.log('validation', options.validation);
-				console.log('placement', options.placement);
 				console.log('classSuccess', options.classSuccess);
 				console.log('classFailure', options.classFailure);
+				console.log('classWarning', options.classWarning);
 			console.groupEnd();
 		}
 
-		function setup(container, validation){
-			//var container = input.huntout(options.placement);
-			var klass = (validation === 'success')? options.classSuccess : options.classFailure;
-			container.addClass(klass);
+		function decorate(container, validation){
+
+			container.removeClass(options.classSuccess);
+			container.removeClass(options.classFailure);
+			container.removeClass(options.classWarning);
+
+			if (validation === 'success') {
+				container.addClass(options.classSuccess);
+			} else if (validation === 'danger') {
+				container.addClass(options.classFailure);
+			} else if (validation === 'warning'){
+				container.addClass(options.classWarning);
+			}
 		}
 
-		function teardown(container){
-			//var container = input.huntout(options.placement);
-			container.removeClass(options.classFailure).removeClass(options.classSuccess);
-		}
-
-		teardown(input);
-		if (options.validation === 'success' || options.validation === 'danger') {
-			setup(input, options.validation);
-		}
+		decorate(input, options.validation);
 	};
 }(window.jQuery);

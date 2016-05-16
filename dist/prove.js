@@ -1116,8 +1116,8 @@
 			dfd.resolve(result);
 		} else {
 
-			// fake some progress updates
-/*			progress = setInterval(function(){
+/*			// fake some progress updates
+			progress = setInterval(function(){
 				dfd.notify({
 					field: options.field,
 					validator: options.validator,

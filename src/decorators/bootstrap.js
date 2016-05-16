@@ -13,14 +13,20 @@
 
 	$.fn.bootstrap = function(options){
 
-
-		if (options.status === 'validating') return;
-
 		options = options || {};
 		var input = $(this);
-		var parent1 = input.parent();
-		var parent2 = parent1.parent();
-		var parent3 = parent2.parent();
+		var parent1, parent2, parent3;
+
+		if (options.status === 'progress') return;
+
+		// manage feedback
+		if (options.status === 'validating') {
+			input.feedback({state: true});
+		} else if (options.status === 'validated'){
+			input.feedback({state: false});
+		}
+
+		if (options.status === 'validating') return;
 
 		// add success class on options.validation = 'success'.
 		// add failure class on options.validation = 'danger'.
@@ -40,6 +46,10 @@
 			wrapper: '<span class="help-block"></span>',
 			message: options.message
 		};
+
+		parent1 = input.parent();
+		parent2 = parent1.parent();
+		parent3 = parent2.parent();
 
 		//placement
 		if (parent1.is('.form-group')){
