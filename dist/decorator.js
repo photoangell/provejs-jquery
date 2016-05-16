@@ -17,8 +17,6 @@
 		var input = $(this);
 		var parent1, parent2, parent3;
 
-		console.log('options', options);
-
 		if (options.status === 'progress') return;
 
 		// manage feedback
