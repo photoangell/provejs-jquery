@@ -13,23 +13,24 @@
 				console.log('placement', options.placement);
 				console.log('classSuccess', options.classSuccess);
 				console.log('classFailure', options.classFailure);
+				console.log('classWarning', options.classWarning);
 			console.groupEnd();
 		}
 
-		function setup(container, validation){
-			//var container = input.huntout(options.placement);
-			var klass = (validation === 'success')? options.classSuccess : options.classFailure;
-			container.addClass(klass);
+		function decorate(container, validation){
+			if (validation === 'success') {
+				container.addClass(options.classSuccess);
+			} else if (validation === 'danger') {
+				container.addClass(options.classFailure);
+			} else if (validation === 'warning'){
+				container.addClass(options.classWarning);
+			} else if (validation === 'reset'){
+				container.removeClass(options.classSuccess);
+				container.removeClass(options.classFailure);
+				container.removeClass(options.classWarning);
+			}
 		}
 
-		function teardown(container){
-			//var container = input.huntout(options.placement);
-			container.removeClass(options.classFailure).removeClass(options.classSuccess);
-		}
-
-		teardown(input);
-		if (options.validation === 'success' || options.validation === 'danger') {
-			setup(input, options.validation);
-		}
+		decorate(input, options.validation);
 	};
 }(window.jQuery);

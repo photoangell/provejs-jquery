@@ -219,7 +219,7 @@
 			var handler = $.proxy(this.liveEventHandler, this);
 			var data = clone(field);
 			var wait = field.throttle || 0;
-			var throttled = window._.throttle(handler, wait);
+			var throttled = window._.throttle(handler, wait, {leading: false});
 
 			// honor request to disable live validation
 			if (field.trigger === false) return;

@@ -28,7 +28,8 @@
 		var tinsel = {
 			validation: options.validation,
 			classSuccess: 'has-success',
-			classFailure: 'has-error'
+			classFailure: 'has-error',
+			classWarning: 'has-warning'
 		};
 
 		// show message on options.validation = 'danger'.

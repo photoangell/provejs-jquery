@@ -286,7 +286,7 @@
 			var handler = $.proxy(this.liveEventHandler, this);
 			var data = clone(field);
 			var wait = field.throttle || 0;
-			var throttled = window._.throttle(handler, wait);
+			var throttled = window._.throttle(handler, wait, {leading: false});
 
 			// honor request to disable live validation
 			if (field.trigger === false) return;
@@ -1117,14 +1117,14 @@
 		} else {
 
 			// fake some progress updates
-			progress = setInterval(function(){
+/*			progress = setInterval(function(){
 				dfd.notify({
 					field: options.field,
 					validator: options.validator,
 					status: 'progress',
 					foo: 'bar'
 				});
-			}, 1000);
+			}, 1000);*/
 
 			// fake async validation on some remote server
 			setTimeout(function(){
@@ -1135,7 +1135,7 @@
 					result.message = 'Fake network error occurred.';
 					dfd.reject(result); // or dfd.resolve(result);
 				} else {
-					result.validation = options.validation;
+					result.validation = options.validation(value);
 					dfd.resolve(result);
 				}
 
