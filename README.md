@@ -1,7 +1,7 @@
-![Form Image](./logo.png)
+![Form Image](./media/logo.png)
 > A jQuery plugin for client-side validation of html forms.
 
-![Form Image](./form.png)
+![Form Image](./media/form.png)
 
 ## Introduction
 
@@ -65,7 +65,7 @@ form.prove({
 	- **Type:** object,
 	- **Required:** false,
 	- **Description:** defines the submit intercept handler options. See below for more details.
-	
+
 ### Field Options
 ```javascript
 form.prove({
@@ -197,7 +197,7 @@ Where:
 	- **Required:** - false,
 	- **Default:** - 'button:submit',
 	- **Description:** - jquery selector used to bind the submit intercept handler.
-- `validate` 
+- `validate`
 	- **Type**: - booleanator,
 	- **Required:** - false,
 	- **Default:** - true,
@@ -269,15 +269,15 @@ form.remove();
 
 Many of the Prove options are booleanators. A booleanator is a dynamic configuration option which is evaluated by Prove immediately before it is used. It can be defined as either:
 
-- **Bool:** 
-	- Evaluation: uses the bool value. 
+- **Bool:**
+	- Evaluation: uses the bool value.
 	- Values: true or false,
-- **jQuery DOM Selector:** 
-	- Evaluation: if the DOM selection returns any elements then it evaluates to true otherwise false. 
+- **jQuery DOM Selector:**
+	- Evaluation: if the DOM selection returns any elements then it evaluates to true otherwise false.
 	- Context: the context of the DOM selection is the window.document.
 	- Examples: 'fieldset#section:visible', 'input[type="hidden"]:empty', '#other-checkbox:checked'
 - **jQuery DOM Pseudo-Selector:**
-	- Evaluation: if the DOM selection returns any elements then it evaluates to true otherwise false. 
+	- Evaluation: if the DOM selection returns any elements then it evaluates to true otherwise false.
 	- Context - the context of the DOM selection is the input.
 	- Examples: ':visible', ':empty'
 - **Javascript Function:**
