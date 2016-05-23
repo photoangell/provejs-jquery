@@ -9,6 +9,8 @@
 		var group, feedback;
 
 		if (!input.is('input')) return;
+		if (input.is(':radio')) return;
+		if (input.is(':checkbox')) return;
 
 		group = input.closest('.form-group');
 		feedback = input.parent().find('.form-control-feedback');
