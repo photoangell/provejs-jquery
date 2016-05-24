@@ -72,8 +72,10 @@
 				parent2.tinsel(tinsel);
 			}
 		} else {
-			parent3.garland(garland);
-			parent3.tinsel(tinsel);
+			//parent3.garland(garland);
+			//parent3.tinsel(tinsel);
+			input.closest('.form-group').garland(garland);
+			input.closest('.form-group').tinsel(tinsel);
 		}
 	};
 }(window.jQuery);

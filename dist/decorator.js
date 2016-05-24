@@ -72,8 +72,10 @@
 				parent2.tinsel(tinsel);
 			}
 		} else {
-			parent3.garland(garland);
-			parent3.tinsel(tinsel);
+			//parent3.garland(garland);
+			//parent3.tinsel(tinsel);
+			input.closest('.form-group').garland(garland);
+			input.closest('.form-group').tinsel(tinsel);
 		}
 	};
 }(window.jQuery);
@@ -145,9 +147,11 @@
 			group.removeClass(klass);
 			group.removeClass('has-feedback');
 		} else if (options.state === true){
-			group.addClass(klass);
-			group.addClass('has-feedback');
-			input.parent().append('<span class="form-control-feedback fa fa-spinner fa-spin"></span>');
+			if (!group.hasClass('has-feedback')) {
+				group.addClass(klass);
+				group.addClass('has-feedback');
+				input.parent().append('<span class="form-control-feedback fa fa-spinner fa-spin"></span>');
+			}
 		}
 	};
 })(window.jQuery);

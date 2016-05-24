@@ -45,7 +45,7 @@
 					result.message = 'Fake network error occurred.';
 					dfd.reject(result); // or dfd.resolve(result);
 				} else {
-					result.validation = options.validation(value);
+					result.validation = ($.isFunction(options.validation))? options.validation(value) : options.validation;
 					dfd.resolve(result);
 				}
 

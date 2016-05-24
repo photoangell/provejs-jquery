@@ -21,9 +21,11 @@
 			group.removeClass(klass);
 			group.removeClass('has-feedback');
 		} else if (options.state === true){
-			group.addClass(klass);
-			group.addClass('has-feedback');
-			input.parent().append('<span class="form-control-feedback fa fa-spinner fa-spin"></span>');
+			if (!group.hasClass('has-feedback')) {
+				group.addClass(klass);
+				group.addClass('has-feedback');
+				input.parent().append('<span class="form-control-feedback fa fa-spinner fa-spin"></span>');
+			}
 		}
 	};
 })(window.jQuery);
