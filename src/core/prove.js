@@ -215,7 +215,7 @@
 		bindLiveValidationEvents: function(field){
 
 			var el = this.$form;
-			var domEvents = this.liveEvents(field);
+			var liveEvents = this.liveEvents(field);
 			var handler = $.proxy(this.liveEventHandler, this);
 			var data = clone(field);
 			var wait = field.throttle || 0;
@@ -224,8 +224,7 @@
 			// honor request to disable live validation
 			if (field.trigger === false) return;
 
-			// http://api.jquery.com/on/
-			el.on(domEvents, field.selector, data, throttled);
+			el.on(liveEvents, field.selector, data, throttled);
 		},
 		unbindLiveValidationEvents: function(field){
 
@@ -238,7 +237,8 @@
 		liveEventHandler: function(event){
 			var input = $(event.target);
 			var field = event.data;
-			input.proveInput(field, this.states);
+			var initiator = event.type;
+			input.proveInput(field, this.states, initiator);
 		},
 		/**
 		* DOM Form Events Listener
@@ -288,7 +288,8 @@
 			event.preventDefault();
 			var input = $(event.target);
 			var field = event.data;
-			input.proveInput(field, this.states);
+			var initiator = event.type;
+			input.proveInput(field, this.states, initiator);
 		}
 	};
 

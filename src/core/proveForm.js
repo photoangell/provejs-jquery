@@ -40,11 +40,12 @@
 		// Loop inputs and validate them. There may be multiple
 		// identical inputs (ie radios) for which we do not want to
 		// validate twice. Therefore, $.fn.provables() will filter
-		// these multiples for us unless less field.multiple is true.
+		// these multiples for us unless less field.group is true.
 		form.provables(fields, filter).each(function(){
 			var input = $(this);
 			var field = fields[this.field];
-			var promise = input.proveInput(field, states);
+			var initiator = 'prove';
+			var promise = input.proveInput(field, states, initiator);
 			promises.push(promise);
 		});
 

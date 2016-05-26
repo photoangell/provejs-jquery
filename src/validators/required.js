@@ -10,7 +10,7 @@
 		var validation = (enabled)? has : 'reset';
 
 		if (options.debug){
-			console.groupCollapsed('Validator.proveRequired()', options.field);
+			console.groupCollapsed('Validator.proveRequired()', options.field, options.initiator);
 				console.log('options', options);
 				console.log('input', input);
 				console.log('value', value);

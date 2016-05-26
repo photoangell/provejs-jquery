@@ -48,7 +48,7 @@
 	}
 
 	// validate a single input
-	$.fn.proveInput = function(field, states) {
+	$.fn.proveInput = function(field, states, initiator) {
 
 		var validators = field.validators || {};
 		var input = $(this);
@@ -69,7 +69,7 @@
 		var combined;
 
 		if (field.debug){
-			console.groupCollapsed('proveInput()', field.name);
+			console.groupCollapsed('proveInput()', field.name, initiator);
 			console.log('enabled', enabled);
 			console.log('state', state);
 			console.log('dirty', dirty);
@@ -99,6 +99,7 @@
 
 				config.field = field.name;
 				config.validator = validator;
+				config.initiator = initiator;
 
 				// invoke validator plugin
 				if (!isPlugin(validator)) return false;

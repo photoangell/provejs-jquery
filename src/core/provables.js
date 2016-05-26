@@ -1,7 +1,10 @@
 !function ($) {
 	"use strict";
 
-	// Called at setup and while validating entire form.
+	// Called at input setup and while validating entire form.
+	// The `filter` param is a bool.
+	// During input setup filter will be undefined.
+	// During form validation it will be true.
 	$.fn.provables = function(fields, filter) {
 
 		var inputs = $();
@@ -23,7 +26,7 @@
 	};
 
 	// Any field for which you might have multiple inputs of the same name (checkbox, radio, name="fields[]")
-	// for which you want to be validated individually, you can set the field.multiple = true.
+	// for which you want to be validated individually, you can set the field.group = true.
 	$.fn.filterables = function(field){
 
 		var found = $(this);
@@ -48,7 +51,7 @@
 				// Field config indicates we should validate these inputs as a collection.
 				// Therefore, only validate the firsts element.
 				return (index === 0);
-			} else if (isRadio && hasAtLeastOneChecked){
+			} else if (isRadio){
 				if (hasAtLeastOneChecked){
 					// Since radio has at least one checked just validate the checked input.
 					return $(element).is(':checked');

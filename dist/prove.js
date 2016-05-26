@@ -1,7 +1,10 @@
 !function ($) {
 	"use strict";
 
-	// Called at setup and while validating entire form.
+	// Called at input setup and while validating entire form.
+	// The `filter` param is a bool.
+	// During input setup filter will be undefined.
+	// During form validation it will be true.
 	$.fn.provables = function(fields, filter) {
 
 		var inputs = $();
@@ -23,7 +26,7 @@
 	};
 
 	// Any field for which you might have multiple inputs of the same name (checkbox, radio, name="fields[]")
-	// for which you want to be validated individually, you can set the field.multiple = true.
+	// for which you want to be validated individually, you can set the field.group = true.
 	$.fn.filterables = function(field){
 
 		var found = $(this);
@@ -48,7 +51,7 @@
 				// Field config indicates we should validate these inputs as a collection.
 				// Therefore, only validate the firsts element.
 				return (index === 0);
-			} else if (isRadio && hasAtLeastOneChecked){
+			} else if (isRadio){
 				if (hasAtLeastOneChecked){
 					// Since radio has at least one checked just validate the checked input.
 					return $(element).is(':checked');
@@ -282,7 +285,7 @@
 		bindLiveValidationEvents: function(field){
 
 			var el = this.$form;
-			var domEvents = this.liveEvents(field);
+			var liveEvents = this.liveEvents(field);
 			var handler = $.proxy(this.liveEventHandler, this);
 			var data = clone(field);
 			var wait = field.throttle || 0;
@@ -291,8 +294,7 @@
 			// honor request to disable live validation
 			if (field.trigger === false) return;
 
-			// http://api.jquery.com/on/
-			el.on(domEvents, field.selector, data, throttled);
+			el.on(liveEvents, field.selector, data, throttled);
 		},
 		unbindLiveValidationEvents: function(field){
 
@@ -305,7 +307,8 @@
 		liveEventHandler: function(event){
 			var input = $(event.target);
 			var field = event.data;
-			input.proveInput(field, this.states);
+			var initiator = event.type;
+			input.proveInput(field, this.states, initiator);
 		},
 		/**
 		* DOM Form Events Listener
@@ -355,7 +358,8 @@
 			event.preventDefault();
 			var input = $(event.target);
 			var field = event.data;
-			input.proveInput(field, this.states);
+			var initiator = event.type;
+			input.proveInput(field, this.states, initiator);
 		}
 	};
 
@@ -434,11 +438,12 @@
 		// Loop inputs and validate them. There may be multiple
 		// identical inputs (ie radios) for which we do not want to
 		// validate twice. Therefore, $.fn.provables() will filter
-		// these multiples for us unless less field.multiple is true.
+		// these multiples for us unless less field.group is true.
 		form.provables(fields, filter).each(function(){
 			var input = $(this);
 			var field = fields[this.field];
-			var promise = input.proveInput(field, states);
+			var initiator = 'prove';
+			var promise = input.proveInput(field, states, initiator);
 			promises.push(promise);
 		});
 
@@ -526,7 +531,7 @@
 	}
 
 	// validate a single input
-	$.fn.proveInput = function(field, states) {
+	$.fn.proveInput = function(field, states, initiator) {
 
 		var validators = field.validators || {};
 		var input = $(this);
@@ -547,7 +552,7 @@
 		var combined;
 
 		if (field.debug){
-			console.groupCollapsed('proveInput()', field.name);
+			console.groupCollapsed('proveInput()', field.name, initiator);
 			console.log('enabled', enabled);
 			console.log('state', state);
 			console.log('dirty', dirty);
@@ -577,6 +582,7 @@
 
 				config.field = field.name;
 				config.validator = validator;
+				config.initiator = initiator;
 
 				// invoke validator plugin
 				if (!isPlugin(validator)) return false;
@@ -1403,7 +1409,7 @@
 		var validation = (enabled)? has : 'reset';
 
 		if (options.debug){
-			console.groupCollapsed('Validator.proveRequired()', options.field);
+			console.groupCollapsed('Validator.proveRequired()', options.field, options.initiator);
 				console.log('options', options);
 				console.log('input', input);
 				console.log('value', value);
