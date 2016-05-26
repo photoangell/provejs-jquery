@@ -15,7 +15,7 @@
 
 		options = options || {};
 		var input = $(this);
-		var parent1, parent2, parent3;
+		var parent1, parent2, parent3, group;
 
 		if (options.status === 'progress') return;
 
@@ -72,10 +72,14 @@
 				parent2.tinsel(tinsel);
 			}
 		} else {
-			//parent3.garland(garland);
-			//parent3.tinsel(tinsel);
-			input.closest('.form-group').garland(garland);
-			input.closest('.form-group').tinsel(tinsel);
+			group = input.closest('.form-group');
+			if (group.length) {
+				input.closest('.form-group').garland(garland);
+				input.closest('.form-group').tinsel(tinsel);
+			} else {
+				parent3.garland(garland);
+				parent3.tinsel(tinsel);
+			}
 		}
 	};
 }(window.jQuery);

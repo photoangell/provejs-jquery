@@ -4,7 +4,6 @@
 		fields: {
 			field: {
 				trigger: 'change',
-				//group: true,
 				validators: {
 					proveRequired: {
 						debug: true,

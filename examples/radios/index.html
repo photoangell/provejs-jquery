@@ -34,9 +34,9 @@
 							<div class="alert alert-info">Plese note:
 								<ul>
 									<li>For radio inputs set the <code>trigger: 'change'</code> to reduce the number of times live validation happens.</li>
-									<li>You need to wrap the radio html code in a <code>&lt;div class="form-group"&gt;</code> otherwise the decoration will not work.</li>
+									<li>Stateful validation does not work on fields with multiple inputs. Therefore, radio inputs will always be validated on form submit.</li>
 							</div>
-							<div class="form-group">
+							<!-- <div class="form-group"> -->
 								<p class="m-t-20">Please select an option.</p>
 								<div class="radio">
 									<label class="control-label">
@@ -50,7 +50,7 @@
 										Zero
 									</label>
 								</div>
-							</div>
+							<!-- </div> -->
 						</fieldset>
 
 
