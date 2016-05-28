@@ -291,8 +291,7 @@ fields: {
 	email: {
 		validators: {
 			proveRequired: {
-				debug: true,
-				enabled: '[name="phone"]:blank',
+				enabled: '[name="phone"]:blank', //<=== booleanator
 				message: 'Please enter the contact email or phone number below.'
 			},
 			provePattern: {
@@ -304,8 +303,7 @@ fields: {
 	phone: {
 		validators: {
 			proveRequired: {
-				debug: true,
-				enabled: '[name="email"]:blank',
+				enabled: '[name="email"]:blank', //<=== booleanator
 				message: 'Please enter the contact phone or email address above.'
 			},
 			provePattern: {
