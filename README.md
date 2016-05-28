@@ -284,6 +284,42 @@ Many of the Prove options are booleanators. A booleanator is a dynamic configura
 	- Evaluation: function should return either true or false and accepts no inputs.
 	- Example: function(){ return window.myVar; }
 
+To illustrate the power of a booleanator consider the following example where the user is required to enter EITHER a phone number or email address:
+```javascript
+form.prove({
+fields: {
+	email: {
+		validators: {
+			proveRequired: {
+				debug: true,
+				enabled: '[name="phone"]:blank',
+				message: 'Please enter the contact email or phone number below.'
+			},
+			provePattern: {
+				regex: patterns.commons.email,
+				message: 'Please enter a valid email address.'
+			}
+		}
+	},
+	phone: {
+		validators: {
+			proveRequired: {
+				debug: true,
+				enabled: '[name="email"]:blank',
+				message: 'Please enter the contact phone or email address above.'
+			},
+			provePattern: {
+				regex: patterns.commons.phone,
+				message: 'Please enter a valid phone number.'
+			}
+		}
+	}
+}
+});
+form.decorate('bootstrap');
+```
+
+
 ## Contributing
 
 ### Setup
