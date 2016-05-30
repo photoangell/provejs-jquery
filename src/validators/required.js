@@ -6,7 +6,7 @@
 		var input = $(this);
 		var value = input.vals();
 		var enabled = $('body').booleanator(options.enabled);
-		var has = input.hasValue()? 'success' : 'danger';
+		var has = input.hasValue(options.prefix)? 'success' : 'danger';
 		var validation = (enabled)? has : 'reset';
 
 		if (options.debug){
