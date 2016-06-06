@@ -21,8 +21,8 @@
 		}
 
 		this.checkOptions();
-		this.setupFields();
 		this.setupInputs();
+		this.setupFields();
 		this.setupForm();
 		this.setupSubmitIntercept();
 
@@ -201,6 +201,9 @@
 
 				var input = $(this);
 				var field = this.field;
+
+				// todo: dynamically change live event types here based on input type.
+				// Create $.fn.proveLiveEvents which returns the live events based on the input type.
 
 				input.uuid();
 				input.trigger('status.input.prove', {
