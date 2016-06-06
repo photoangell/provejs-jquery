@@ -11,25 +11,26 @@
 			.find('[type="text"]');
 
 		// loop each input
-		var valid = true;
+		var validation = 'success';
 		inputs.each(function(){
 			var input = $(this);
 			var hasValue = input.hasValue();
-			if (!hasValue) valid = false;
+			if (!hasValue) validation = 'danger';
 			return hasValue;
 		});
 
 		if (options.debug){
 			console.groupCollapsed('Validators.otherDescriptionRequired()', options.field);
 			console.log('options', options);
-			console.log('valid', valid);
+			console.log('validation', validation);
 			console.groupEnd();
 		}
 
 		return {
-			validator: options.validator,
 			field: options.field,
-			valid: valid,
+			validator: options.validator,
+			status: 'validated',
+			validation: validation,
 			message: options.message
 		};
 	};
@@ -45,26 +46,27 @@
 			.find('[type="text"]');
 
 		// loop each input
-		var valid = true;
+		var validation = 'success';
 		inputs.each(function(){
 			var input = $(this);
 			var val = input.val();
-			var isValid = (/^[a-zA-z0-9]+$/).test(val);
-			if (!isValid) valid = false;
+			var isValid = (options.regex).test(val);
+			if (!isValid) validation = 'danger';
 			return isValid;
 		});
 
 		if (options.debug){
 			console.groupCollapsed('Validators.otherDescriptionPattern()', options.field);
 			console.log('options', options);
-			console.log('valid', valid);
+			console.log('validation', validation);
 			console.groupEnd();
 		}
 
 		return {
-			validator: options.validator,
 			field: options.field,
-			valid: valid,
+			validator: options.validator,
+			status: 'validated',
+			validation: validation,
 			message: options.message
 		};
 	};
@@ -99,6 +101,7 @@
 					},
 					otherDescriptionPattern: {
 						//debug: true,
+						regex: /^[-a-zA-Z0-9,.)( ]*$/,
 						message: 'Invalid character.'
 					}
 				}

@@ -71,6 +71,9 @@
 			} else {
 				parent2.tinsel(tinsel);
 			}
+		} else if (parent3.is('[class^="col-"]')){
+			parent3.garland(garland);
+			input.closest('.form-group').tinsel(tinsel);
 		} else {
 			group = input.closest('.form-group');
 			if (group.length) {
