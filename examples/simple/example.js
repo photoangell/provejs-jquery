@@ -4,6 +4,7 @@
 	var cfg = {
 		fields: {
 			email: {
+				debug: true,
 				//trigger: 'keyup',
 				throttle: 250,
 				validators: {
@@ -27,6 +28,7 @@
 				}
 			},
 			'fruit[]': {
+				debug: true,
 				trigger: 'click',
 				group: true,
 				validators: {
