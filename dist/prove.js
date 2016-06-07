@@ -91,8 +91,8 @@
 		}
 
 		this.checkOptions();
-		this.setupInputs();
 		this.setupFields();
+		this.setupInputs();
 		this.setupForm();
 		this.setupSubmitIntercept();
 
@@ -212,11 +212,6 @@
 				? field.selector
 				: '[name="' + name + '"]';
 		},
-		//return string of space seperated events used to detect change to the DOM element
-		liveEvents: function(field){
-			var events = field.trigger || 'change keyup click blur';
-			return events;
-		},
 		setupForm: function(){
 			this.$form.lint();
 			this.html5NoValidate(true);
@@ -234,9 +229,20 @@
 
 			$.each(fields, function(name, field){
 
+				var selector = that.domSelector(field, name);
+				var input = that.$form.find(selector);
+				var trigger = input.proveEvents();
+
+/*				console.groupCollapsed('setupInputs()');
+				console.log('field', field);
+				console.log('trigger', trigger);
+				console.groupEnd();*/
+
+
 				// augment field
 				field.name = name;
 				field.selector = that.domSelector(field, name);
+				field.trigger = field.trigger || trigger;
 
 				that.bindLiveValidationEvents(field);
 				that.bindFieldProveEvent(field);
@@ -272,9 +278,6 @@
 				var input = $(this);
 				var field = this.field;
 
-				// todo: dynamically change live event types here based on input type.
-				// Create $.fn.proveLiveEvents which returns the live events based on the input type.
-
 				input.uuid();
 				input.trigger('status.input.prove', {
 					field: field,
@@ -288,7 +291,6 @@
 		bindLiveValidationEvents: function(field){
 
 			var el = this.$form;
-			var liveEvents = this.liveEvents(field);
 			var handler = $.proxy(this.liveEventHandler, this);
 			var data = clone(field);
 			var wait = field.throttle || 0;
@@ -297,15 +299,14 @@
 			// honor request to disable live validation
 			if (field.trigger === false) return;
 
-			el.on(liveEvents, field.selector, data, throttled);
+			el.on(field.trigger, field.selector, data, throttled);
 		},
 		unbindLiveValidationEvents: function(field){
 
 			var el = this.$form;
-			var liveEvents = this.liveEvents(field);
 
 			// http://api.jquery.com/off/
-			el.off(liveEvents, field.selector);
+			el.off(field.trigger, field.selector);
 		},
 		liveEventHandler: function(event){
 			var input = $(event.target);
@@ -396,6 +397,22 @@
 	function clone(obj){
 		return $.extend({}, obj);
 	}
+
+}(window.jQuery);
+
+!function ($) {
+	"use strict";
+
+	//return string of space seperated events used to detect change to the DOM element
+	$.fn.proveEvents = function() {
+
+		//var input = $();
+		//console.log('input', input);
+
+		// todo: dynamcally return different events string based on form input types
+
+		return 'change keyup click blur';
+	};
 
 }(window.jQuery);
 
