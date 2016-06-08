@@ -91,8 +91,8 @@
 		}
 
 		this.checkOptions();
-		this.setupInputs();
 		this.setupFields();
+		this.setupInputs();
 		this.setupForm();
 		this.setupSubmitIntercept();
 
@@ -212,11 +212,6 @@
 				? field.selector
 				: '[name="' + name + '"]';
 		},
-		//return string of space seperated events used to detect change to the DOM element
-		liveEvents: function(field){
-			var events = field.trigger || 'change keyup click blur';
-			return events;
-		},
 		setupForm: function(){
 			this.$form.lint();
 			this.html5NoValidate(true);
@@ -234,9 +229,20 @@
 
 			$.each(fields, function(name, field){
 
+				var selector = that.domSelector(field, name);
+				var input = that.$form.find(selector);
+				var trigger = input.proveEvents();
+
+/*				console.groupCollapsed('setupInputs()');
+				console.log('field', field);
+				console.log('trigger', trigger);
+				console.groupEnd();*/
+
+
 				// augment field
 				field.name = name;
 				field.selector = that.domSelector(field, name);
+				field.trigger = field.trigger || trigger;
 
 				that.bindLiveValidationEvents(field);
 				that.bindFieldProveEvent(field);
@@ -272,9 +278,6 @@
 				var input = $(this);
 				var field = this.field;
 
-				// todo: dynamically change live event types here based on input type.
-				// Create $.fn.proveLiveEvents which returns the live events based on the input type.
-
 				input.uuid();
 				input.trigger('status.input.prove', {
 					field: field,
@@ -288,7 +291,6 @@
 		bindLiveValidationEvents: function(field){
 
 			var el = this.$form;
-			var liveEvents = this.liveEvents(field);
 			var handler = $.proxy(this.liveEventHandler, this);
 			var data = clone(field);
 			var wait = field.throttle || 0;
@@ -297,15 +299,14 @@
 			// honor request to disable live validation
 			if (field.trigger === false) return;
 
-			el.on(liveEvents, field.selector, data, throttled);
+			el.on(field.trigger, field.selector, data, throttled);
 		},
 		unbindLiveValidationEvents: function(field){
 
 			var el = this.$form;
-			var liveEvents = this.liveEvents(field);
 
 			// http://api.jquery.com/off/
-			el.off(liveEvents, field.selector);
+			el.off(field.trigger, field.selector);
 		},
 		liveEventHandler: function(event){
 			var input = $(event.target);
@@ -396,6 +397,60 @@
 	function clone(obj){
 		return $.extend({}, obj);
 	}
+
+}(window.jQuery);
+
+!function ($) {
+	'use strict';
+
+	//return string of space seperated events used to detect change to the DOM element
+	$.fn.proveEvents = function() {
+
+		var input = $(this);
+		var type = input.attr('type');
+
+		if (type === 'text') {
+			return 'change keyup blur';
+		} else if (type === 'checkbox') {
+			return 'change click blur';
+		} else if (type === 'file') {
+			return 'change blur';
+		} else if (type === 'email') {
+			return 'change keyup blur';
+		} else if (type === 'password') {
+			return 'change keyup blur';
+		} else if (type === 'hidden') {
+			return 'change';
+		} else if (type === 'radio') {
+			return 'change click blur';
+		} else if (type === 'number') {
+			return 'change keyup blur';
+		} else if (type === 'range') {
+			return 'change keyup click blur';
+		} else if (type === 'button') {
+			return 'change click blur';
+		} else if (type === 'tel') {
+			return 'change keyup blur';
+		} else if (type === 'url') {
+			return 'change keyup blur';
+		} else if (type === 'date') {
+			return 'change keyup blur';
+		} else if (type === 'datetime-local') {
+			return 'change keyup blur';
+		} else if (type === 'month') {
+			return 'change keyup blur';
+		} else if (type === 'time') {
+			return 'change keyup blur';
+		} else if (type === 'week') {
+			return 'change keyup blur';
+		} else if (input.is('select')) {
+			return 'change blur';
+		} else if (input.is('textarea')) {
+			return 'change keyup blur';
+		} else {
+			return 'change keyup click blur';
+		}
+	};
 
 }(window.jQuery);
 
