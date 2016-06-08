@@ -119,9 +119,10 @@
 		$.each(errors, function(name, message){
 			var selector = '[name="' + name + '"]';
 			var data = {
-				validator: 'server',
 				field: name,
-				valid: false,
+				validator: 'server',
+				status: 'validated', //validated on server
+				validation: 'danger',
 				message: message
 			};
 			var input = form.find(selector);
