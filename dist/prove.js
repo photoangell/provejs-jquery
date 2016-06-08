@@ -1339,9 +1339,9 @@
 }(window.jQuery);
 
 !function ($) {
-	"use strict";
+	'use strict';
 
-	$.fn.proveMin = function(options){
+	$.fn.proveMax = function(options){
 
 		var input = $(this);
 		var value = input.vals();
@@ -1350,7 +1350,7 @@
 		var validation = (enabled)? has : 'reset';
 
 		if (options.debug){
-			console.groupCollapsed('Validator.proveMin()', options.field);
+			console.groupCollapsed('Validator.proveMax()', options.field);
 				console.log('options', options);
 				console.log('input', input);
 				console.log('value', value);
