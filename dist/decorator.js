@@ -15,7 +15,7 @@
 
 		options = options || {};
 		var input = $(this);
-		var parent1, parent2, parent3, group;
+		var parent1, parent2, parent3, parentContainer, errorContainer, group;
 
 		if (options.status === 'progress') return;
 
@@ -53,37 +53,43 @@
 
 		//placement
 		if (parent1.is('.form-group')){
-			parent1.garland(garland);
-			parent1.tinsel(tinsel);
+			errorContainer = parent1;
+			parentContainer = parent1;
 		} else if (parent1.is('[class^="col-"]')){
-			parent1.garland(garland);
-			parent2.tinsel(tinsel);
+			errorContainer = parent1;
+			parentContainer = parent2;
 		} else if (parent1.is('td')) {
-			parent1.garland(garland);
-			parent1.tinsel(tinsel);
+			errorContainer = parent1;
+			parentContainer = parent1;
 		} else if (parent1.is('.checkbox') || parent1.is('.radio')){
-			parent2.garland(garland);
-			parent2.tinsel(tinsel);
+			errorContainer = parent2;
+			parentContainer = parent2;
 		} else if (parent1.is('.input-group')){
-			parent2.garland(garland);
+			errorContainer = parent2;
 			if (parent2.is('[class^="col-"]')) {
-				parent3.tinsel(tinsel);
+				parentContainer = parent3;
 			} else {
-				parent2.tinsel(tinsel);
+				parentContainer = parent2;
 			}
 		} else if (parent3.is('[class^="col-"]')){
-			parent3.garland(garland);
-			input.closest('.form-group').tinsel(tinsel);
+			errorContainer = parent3;
+			parentContainer = input.closest('.form-group');
 		} else {
 			group = input.closest('.form-group');
 			if (group.length) {
-				input.closest('.form-group').garland(garland);
-				input.closest('.form-group').tinsel(tinsel);
+				errorContainer = input.closest('.form-group');
+				parentContainer = input.closest('.form-group');
 			} else {
-				parent3.garland(garland);
-				parent3.tinsel(tinsel);
+				errorContainer = parent3;
+				parentContainer = parent3;
 			}
 		}
+
+		if (options.parentContainer) parentContainer = $(options.parentContainer);
+		if (options.errorContainer) errorContainer = $(options.errorContainer);
+
+		errorContainer.garland(garland);
+		parentContainer.tinsel(tinsel);
 	};
 }(window.jQuery);
 
