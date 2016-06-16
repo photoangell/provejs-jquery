@@ -27,6 +27,8 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
+			parentContainer: options.parentContainer,
+			errorContainer: options.errorContainer,
 			message: options.message
 		};
 	};
