@@ -585,6 +585,8 @@
 		if (!('validator' in result)) console.warn('Missing `validator` property in validator ($.fn.' + result.validator + ') result.');
 		if (!('status' in result)) console.warn('Missing `status` property in validator ($.fn.' + result.validator + ') result.');
 		if (!('validation' in result)) console.warn('Missing `validation` property in validator ($.fn.' + result.validator + ') result.');
+		if (!('parentContainer' in result)) console.warn('Missing `parentContainer` property in validator ($.fn.' + result.validator + ') result.');
+		if (!('errorContainer' in result)) console.warn('Missing `errorContainer` property in validator ($.fn.' + result.validator + ') result.');
 		if (!('message' in result)) console.warn('Missing `message` property in validator ($.fn.' + result.validator + ') result.');
 	}
 
@@ -603,6 +605,8 @@
 			validator: undefined,
 			status: 'validated',
 			validation: 'reset',
+			parentContainer: field.parentContainer,
+			errorContainer: field.errorContainer,
 			message: undefined
 		};
 		var dfd = $.Deferred();
@@ -641,6 +645,8 @@
 				config.field = field.name;
 				config.validator = validator;
 				config.initiator = initiator;
+				config.errorContainer = field.errorContainer;
+				config.parentContainer = field.parentContainer;
 
 				// invoke validator plugin
 				if (!isPlugin(validator)) return false;
@@ -1127,6 +1133,8 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
+			parentContainer: options.parentContainer,
+			errorContainer: options.errorContainer,
 			message: options.message
 		};
 	};
@@ -1186,6 +1194,8 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
+			parentContainer: options.parentContainer,
+			errorContainer: options.errorContainer,
 			message: options.message
 		};
 	};
@@ -1205,6 +1215,8 @@
 			field: options.field,
 			validator: options.validator,
 			status: 'validated',
+			parentContainer: options.parentContainer,
+			errorContainer: options.errorContainer,
 			message: options.message
 		};
 		var progress;
@@ -1289,6 +1301,8 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
+			parentContainer: options.parentContainer,
+			errorContainer: options.errorContainer,
 			message: options.message
 		};
 	};
@@ -1333,6 +1347,8 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
+			parentContainer: options.parentContainer,
+			errorContainer: options.errorContainer,
 			message: options.message
 		};
 	};
@@ -1364,6 +1380,8 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
+			parentContainer: options.parentContainer,
+			errorContainer: options.errorContainer,
 			message: options.message
 		};
 	};
@@ -1395,6 +1413,8 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
+			parentContainer: options.parentContainer,
+			errorContainer: options.errorContainer,
 			message: options.message
 		};
 	};
@@ -1411,6 +1431,8 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: 'danger',
+			parentContainer: options.parentContainer,
+			errorContainer: options.errorContainer,
 			message: 'Prove validator "' + options.validator+ '" not found.'
 		};
 	};
@@ -1456,6 +1478,8 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
+			parentContainer: options.parentContainer,
+			errorContainer: options.errorContainer,
 			message: options.message
 		};
 	};
@@ -1489,6 +1513,8 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
+			parentContainer: options.parentContainer,
+			errorContainer: options.errorContainer,
 			message: options.message
 		};
 	};
@@ -1520,6 +1546,8 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
+			parentContainer: options.parentContainer,
+			errorContainer: options.errorContainer,
 			message: options.message
 		};
 	};
@@ -1566,6 +1594,8 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
+			parentContainer: options.parentContainer,
+			errorContainer: options.errorContainer,
 			message: options.message
 		};
 	};

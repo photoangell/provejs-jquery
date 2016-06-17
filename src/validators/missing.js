@@ -9,6 +9,8 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: 'danger',
+			parentContainer: options.parentContainer,
+			errorContainer: options.errorContainer,
 			message: 'Prove validator "' + options.validator+ '" not found.'
 		};
 	};
