@@ -12,8 +12,6 @@
 			field: options.field,
 			validator: options.validator,
 			status: 'validated',
-			parentContainer: options.parentContainer,
-			errorContainer: options.errorContainer,
 			message: options.message
 		};
 		var progress;
