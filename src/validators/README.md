@@ -109,7 +109,6 @@ Below is an overview of these provided plugins.
 		- **Type:** string,
 		- **Required:** true,
 		- **Description:** Text to display when validation has failed.
-	- `equalTo`
 	- `compareTo`
 	- `ignore`
 
