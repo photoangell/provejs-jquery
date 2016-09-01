@@ -62,4 +62,4 @@ Your custom validators can change the message value.
 
 ## Deferred Validators
 
-Creating deferred validators is easy. Please see [$.fn.proveDeferred()](./deferred.js) for an example. 
+Creating deferred validators is easy. Please see [$.fn.proveDeferredCallBack()](./deferred.js) for an example. 

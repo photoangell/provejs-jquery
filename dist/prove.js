@@ -1190,10 +1190,10 @@
 	};
 }(window.jQuery);
 
-!function ($) {
-	"use strict";
+!function($) {
+	'use strict';
 
-	$.fn.proveDeferred = function(options){
+	$.fn.proveDeferredCallback = function(options){
 
 		var input = $(this);
 		var value = input.vals();
@@ -1246,7 +1246,7 @@
 		}
 
 		if (options.debug){
-			console.groupCollapsed('Validator.proveDeferred()', options.field);
+			console.groupCollapsed('Validator.proveDeferredCallback()', options.field);
 				console.log('options', options);
 				console.log('input', input);
 				console.log('value', value);
