@@ -82,6 +82,11 @@ Below is an overview of these provided plugins.
 
 ### proveCallback
 - options:
+	- `debug`
+		- **Type:** bool
+		- **Required:** false,
+		- **Default:** false,
+		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
 		- **Type:** [booleanator](../../README.md#booleanator),
 		- **Requied:** false,
@@ -101,12 +106,22 @@ Below is an overview of these provided plugins.
 ### proveDeferredCallback
 Basic example of a deferred validator.
 - options:
+	- `debug`
+		- **Type:** bool
+		- **Required:** false,
+		- **Default:** false,
+		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
 	- `message`
 	- `validation`
 
 ### proveDeferredRemote
 - options:
+	- `debug`
+		- **Type:** bool
+		- **Required:** false,
+		- **Default:** false,
+		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
 	- `message`
 	- `url`
@@ -119,6 +134,11 @@ Basic example of a deferred validator.
 
 ### proveLength
 - options:
+	- `debug`
+		- **Type:** bool
+		- **Required:** false,
+		- **Default:** false,
+		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
 	- `message`
 	- `min`
@@ -126,35 +146,65 @@ Basic example of a deferred validator.
 
 ### proveMax
 - options:
+	- `debug`
+		- **Type:** bool
+		- **Required:** false,
+		- **Default:** false,
+		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
 	- `message`
 	- `max`
 
 ### proveMin
 - options:
+	- `debug`
+		- **Type:** bool
+		- **Required:** false,
+		- **Default:** false,
+		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
 	- `message`
 	- `min`
 
 ### provePattern
 - options:
+	- `debug`
+		- **Type:** bool
+		- **Required:** false,
+		- **Default:** false,
+		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
 	- `message`
 	- `regex`
 
 ### provePrecision
 - options:
+	- `debug`
+		- **Type:** bool
+		- **Required:** false,
+		- **Default:** false,
+		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
 	- `message`
 
 ### proveRequired
 - options:
+	- `debug`
+		- **Type:** bool
+		- **Required:** false,
+		- **Default:** false,
+		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
 	- `message`
 	- `prefix`
 
 ### proveUnique
 - options:
+	- `debug`
+		- **Type:** bool
+		- **Required:** false,
+		- **Default:** false,
+		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
 	- `message`
 	- `uniqueTo`
