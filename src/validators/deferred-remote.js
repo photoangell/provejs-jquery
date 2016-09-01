@@ -34,7 +34,7 @@
 				})
 				.fail(function(xhr) {
 					result.validation = 'danger';
-					if (!options.message) options.message = xhr.responseText;
+					if (!options.message) result.message = xhr.responseText;
 					dfd.resolve(result);
 				});
 		}
