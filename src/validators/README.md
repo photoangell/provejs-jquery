@@ -93,6 +93,9 @@ Below is an overview of these provided plugins.
 		- **Default:** true,
 		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
+		- **Type:** string,
+		- **Required:** true,
+		- **Description:** Text to display when validation has failed.
 	- `callback`
 
 ### proveCompareTo
@@ -103,6 +106,9 @@ Below is an overview of these provided plugins.
 		- **Default:** true,
 		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
+		- **Type:** string,
+		- **Required:** true,
+		- **Description:** Text to display when validation has failed.
 	- `equalTo`
 	- `compareTo`
 	- `ignore`
@@ -121,6 +127,9 @@ Basic example of a deferred validator.
 		- **Default:** true,
 		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
+		- **Type:** string,
+		- **Required:** true,
+		- **Description:** Text to display when validation has failed.
 	- `validation`
 
 ### proveDeferredRemote
@@ -136,6 +145,9 @@ Basic example of a deferred validator.
 		- **Default:** true,
 		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
+		- **Type:** string,
+		- **Required:** false,
+		- **Description:** Text to display when validation has failed.
 	- `url`
 
 ### proveEqualTo
@@ -146,6 +158,9 @@ Basic example of a deferred validator.
 		- **Default:** true,
 		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
+		- **Type:** string,
+		- **Required:** true,
+		- **Description:** Text to display when validation has failed.
 	- `equalTo`
 
 ### proveLength
@@ -161,6 +176,9 @@ Basic example of a deferred validator.
 		- **Default:** true,
 		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
+		- **Type:** string,
+		- **Required:** true,
+		- **Description:** Text to display when validation has failed.
 	- `min`
 	- `max`
 
@@ -177,6 +195,9 @@ Basic example of a deferred validator.
 		- **Default:** true,
 		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
+		- **Type:** string,
+		- **Required:** true,
+		- **Description:** Text to display when validation has failed.
 	- `max`
 
 ### proveMin
@@ -192,6 +213,9 @@ Basic example of a deferred validator.
 		- **Default:** true,
 		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
+		- **Type:** string,
+		- **Required:** true,
+		- **Description:** Text to display when validation has failed.
 	- `min`
 
 ### provePattern
@@ -207,6 +231,9 @@ Basic example of a deferred validator.
 		- **Default:** true,
 		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
+		- **Type:** string,
+		- **Required:** true,
+		- **Description:** Text to display when validation has failed.
 	- `regex`
 
 ### provePrecision
@@ -222,6 +249,9 @@ Basic example of a deferred validator.
 		- **Default:** true,
 		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
+		- **Type:** string,
+		- **Required:** true,
+		- **Description:** Text to display when validation has failed.
 
 ### proveRequired
 - options:
@@ -236,6 +266,9 @@ Basic example of a deferred validator.
 		- **Default:** true,
 		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
+		- **Type:** string,
+		- **Required:** true,
+		- **Description:** Text to display when validation has failed.
 	- `prefix`
 
 ### proveUnique
@@ -251,4 +284,7 @@ Basic example of a deferred validator.
 		- **Default:** true,
 		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
+		- **Type:** string,
+		- **Required:** true,
+		- **Description:** Text to display when validation has failed.
 	- `uniqueTo`
