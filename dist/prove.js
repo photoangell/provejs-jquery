@@ -1108,7 +1108,7 @@
 		var input = $(this);
 		var value = input.vals();
 		var enabled = $('body').booleanator(options.enabled);
-		var validated = (enabled && $.isFunction(options.callback) && options.callback())? 'success' : 'danger';
+		var validated = (enabled && $.isFunction(options.callback) && options.callback(value))? 'success' : 'danger';
 		var validation = (enabled)? validated : 'reset';
 
 		if (options.debug){
