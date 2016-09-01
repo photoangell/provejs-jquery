@@ -98,6 +98,10 @@ Below is an overview of these provided plugins.
 ### proveCompareTo
 - options:
 	- `enabled`
+		- **Type:** [booleanator](../../README.md#booleanator),
+		- **Requied:** false,
+		- **Default:** true,
+		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
 	- `equalTo`
 	- `compareTo`
@@ -112,6 +116,10 @@ Basic example of a deferred validator.
 		- **Default:** false,
 		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
+		- **Type:** [booleanator](../../README.md#booleanator),
+		- **Requied:** false,
+		- **Default:** true,
+		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
 	- `validation`
 
@@ -123,12 +131,20 @@ Basic example of a deferred validator.
 		- **Default:** false,
 		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
+		- **Type:** [booleanator](../../README.md#booleanator),
+		- **Requied:** false,
+		- **Default:** true,
+		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
 	- `url`
 
 ### proveEqualTo
 - options:
 	- `enabled`
+		- **Type:** [booleanator](../../README.md#booleanator),
+		- **Requied:** false,
+		- **Default:** true,
+		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
 	- `equalTo`
 
@@ -140,6 +156,10 @@ Basic example of a deferred validator.
 		- **Default:** false,
 		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
+		- **Type:** [booleanator](../../README.md#booleanator),
+		- **Requied:** false,
+		- **Default:** true,
+		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
 	- `min`
 	- `max`
@@ -152,6 +172,10 @@ Basic example of a deferred validator.
 		- **Default:** false,
 		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
+		- **Type:** [booleanator](../../README.md#booleanator),
+		- **Requied:** false,
+		- **Default:** true,
+		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
 	- `max`
 
@@ -163,6 +187,10 @@ Basic example of a deferred validator.
 		- **Default:** false,
 		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
+		- **Type:** [booleanator](../../README.md#booleanator),
+		- **Requied:** false,
+		- **Default:** true,
+		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
 	- `min`
 
@@ -174,6 +202,10 @@ Basic example of a deferred validator.
 		- **Default:** false,
 		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
+		- **Type:** [booleanator](../../README.md#booleanator),
+		- **Requied:** false,
+		- **Default:** true,
+		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
 	- `regex`
 
@@ -185,6 +217,10 @@ Basic example of a deferred validator.
 		- **Default:** false,
 		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
+		- **Type:** [booleanator](../../README.md#booleanator),
+		- **Requied:** false,
+		- **Default:** true,
+		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
 
 ### proveRequired
@@ -195,6 +231,10 @@ Basic example of a deferred validator.
 		- **Default:** false,
 		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
+		- **Type:** [booleanator](../../README.md#booleanator),
+		- **Requied:** false,
+		- **Default:** true,
+		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
 	- `prefix`
 
@@ -206,5 +246,9 @@ Basic example of a deferred validator.
 		- **Default:** false,
 		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
+		- **Type:** [booleanator](../../README.md#booleanator),
+		- **Requied:** false,
+		- **Default:** true,
+		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
 	- `uniqueTo`
