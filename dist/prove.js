@@ -1142,7 +1142,7 @@
 		var value1 = input.val();
 		var value2 = other.val();
 		var hasValue = input.hasValue();
-		var isSetup = input.hasClass('validator-equalto-setup');
+		var isSetup = input.hasClass('validator-compareto-setup');
 		var enabled = $('body').booleanator(options.enabled);
 		var validation;
 
@@ -1172,9 +1172,9 @@
 
 		//setup event to validate this input when other input value changes
 		if (!isSetup){
-			input.addClass('validator-equalto-setup');
+			input.addClass('validator-compareto-setup');
 			//on blur of other input
-			form.on('focusout', options.equalTo, function(){
+			form.on('focusout', options.compareTo, function(){
 				input.validate();
 			});
 		}
