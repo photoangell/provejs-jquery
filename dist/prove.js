@@ -1293,8 +1293,9 @@
 					result.validation = 'success';
 					dfd.resolve(result);
 				})
-				.fail(function() {
+				.fail(function(xhr) {
 					result.validation = 'danger';
+					if (!options.message) options.message = xhr.responseText;
 					dfd.resolve(result);
 				});
 		}
