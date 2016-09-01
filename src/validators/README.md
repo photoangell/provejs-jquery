@@ -97,6 +97,14 @@ Below is an overview of these provided plugins.
 		- **Required:** true
 		- **Description:** Text to display when validation has failed.
 	- `callback`
+		- **Type:** function(string `fieldValue`) bool `valid`
+		- **Required:** true
+		- **Parameters:**
+			- `value` (value of jquery element)
+				- **Type:** string
+				- value of 
+		- **Return Value:**
+		- **Description:** Function invoked to test whether the field is valid. The function's first parameter is the current value of the field. The return value should be a boolean indicating whether the field passed validation.
 
 ### proveCompareTo
 - options:
