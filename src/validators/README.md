@@ -1,14 +1,14 @@
 # Prove Validators
 
+## Design
 An input validator is a jquery plugin which validates an input's value. There are two types of validators:
 - Synchronous - immediately returns a result object,
 - Asynchronous - returns a deferred/promise that will return a result object in the future.
 
 The validator result object is defined below and is used as the event data which the decorators listen. Therefore, the result object is passed to the decorators to decorate the form inputs.
 
-## Synchronous Validators
-
-A synchronous validators should return the result object below:
+### Synchronous Validators
+Synchronous validators should return the result object below:
 
 ```javascript
 {
@@ -36,8 +36,7 @@ Where `validation` is either:
 	- Indicates the input is valid, but with a warning.
 	- Decorators will decorate for warning.
 
-## Asynchronous Validators
-
+### Asynchronous Validators
 Asynchronous validators can return the following objects:
 - result
 	- Required: true,
@@ -52,14 +51,110 @@ Asynchronous validators can return the following objects:
 	- Description: if ajax error return error object.
 	- Code: dfd.reject(error)
 
-## Message
-
-The message string passed input to the validators can be either:
-- a string representing the actual message to show the user or
+### Message
+The message option passed to the validators can be either:
+- a string representing the actual message to show to the user or
 - an error code which the decorator has a list of predefined messages to decorate the form with (e.g. i18n support).
 
 Your custom validators can change the message value.
 
-## Deferred Validators
+### Deferred Validators
+Creating deferred validators is easy. Please see [$.fn.proveDeferredCallBack()](./deferred-callback.js) for an example.
 
-Creating deferred validators is easy. Please see [$.fn.proveDeferredCallBack()](./deferred.js) for an example. 
+## Reference
+jquery-prove provides some validator plugins out of the box.
+
+```javascript
+form.prove({
+	fields: {
+		field1: {
+			validators: {
+				provePluginName: {
+					// options
+				}
+			}
+		}
+	}
+});
+```
+
+Below is an overview of these provided plugins.
+
+### proveCallback
+- options:
+	- `enabled`
+		- **Type:** [booleanator](../../README.md#booleanator),
+		- **Requied:** false,
+		- **Default:** true,
+		- **Descrption:** will enable the field for validation while the booleanator is true.
+	- `message`
+	- `callback`
+
+### proveCompareTo
+- options:
+	- `enabled`
+	- `message`
+	- `equalTo`
+	- `compareTo`
+	- `ignore`
+
+### proveDeferredCallback
+Basic example of a deferred validator.
+- options:
+	- `enabled`
+	- `message`
+	- `validation`
+
+### proveDeferredRemote
+- options:
+	- `enabled`
+	- `message`
+	- `url`
+
+### proveEqualTo
+- options:
+	- `enabled`
+	- `message`
+	- `equalTo`
+
+### proveLength
+- options:
+	- `enabled`
+	- `message`
+	- `min`
+	- `max`
+
+### proveMax
+- options:
+	- `enabled`
+	- `message`
+	- `max`
+
+### proveMin
+- options:
+	- `enabled`
+	- `message`
+	- `min`
+
+### provePattern
+- options:
+	- `enabled`
+	- `message`
+	- `regex`
+
+### provePrecision
+- options:
+	- `enabled`
+	- `message`
+
+### proveRequired
+- options:
+	- `enabled`
+	- `message`
+	- `prefix`
+
+### proveUnique
+- options:
+	- `enabled`
+	- `message`
+	- `uniqueTo`
