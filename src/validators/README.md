@@ -84,17 +84,17 @@ Below is an overview of these provided plugins.
 - options:
 	- `debug`
 		- **Type:** bool
-		- **Required:** false,
-		- **Default:** false,
+		- **Required:** false
+		- **Default:** false
 		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
 		- **Type:** [booleanator](../../README.md#booleanator),
-		- **Requied:** false,
-		- **Default:** true,
+		- **Required:** false
+		- **Default:** true
 		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
-		- **Type:** string,
-		- **Required:** true,
+		- **Type:** string
+		- **Required:** true
 		- **Description:** Text to display when validation has failed.
 	- `callback`
 
@@ -102,12 +102,12 @@ Below is an overview of these provided plugins.
 - options:
 	- `enabled`
 		- **Type:** [booleanator](../../README.md#booleanator),
-		- **Requied:** false,
-		- **Default:** true,
+		- **Required:** false
+		- **Default:** true
 		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
-		- **Type:** string,
-		- **Required:** true,
+		- **Type:** string
+		- **Required:** true
 		- **Description:** Text to display when validation has failed.
 	- `compareTo`
 	- `ignore`
@@ -117,17 +117,17 @@ Basic example of a deferred validator.
 - options:
 	- `debug`
 		- **Type:** bool
-		- **Required:** false,
-		- **Default:** false,
+		- **Required:** false
+		- **Default:** false
 		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
 		- **Type:** [booleanator](../../README.md#booleanator),
-		- **Requied:** false,
-		- **Default:** true,
+		- **Required:** false
+		- **Default:** true
 		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
-		- **Type:** string,
-		- **Required:** true,
+		- **Type:** string
+		- **Required:** true
 		- **Description:** Text to display when validation has failed.
 	- `validation`
 
@@ -135,17 +135,17 @@ Basic example of a deferred validator.
 - options:
 	- `debug`
 		- **Type:** bool
-		- **Required:** false,
-		- **Default:** false,
+		- **Required:** false
+		- **Default:** false
 		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
 		- **Type:** [booleanator](../../README.md#booleanator),
-		- **Requied:** false,
-		- **Default:** true,
+		- **Required:** false
+		- **Default:** true
 		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
-		- **Type:** string,
-		- **Required:** false,
+		- **Type:** string
+		- **Required:** false
 		- **Description:** Text to display when validation has failed.
 	- `url`
 
@@ -153,12 +153,12 @@ Basic example of a deferred validator.
 - options:
 	- `enabled`
 		- **Type:** [booleanator](../../README.md#booleanator),
-		- **Requied:** false,
-		- **Default:** true,
+		- **Required:** false
+		- **Default:** true
 		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
-		- **Type:** string,
-		- **Required:** true,
+		- **Type:** string
+		- **Required:** true
 		- **Description:** Text to display when validation has failed.
 	- `equalTo`
 
@@ -166,17 +166,17 @@ Basic example of a deferred validator.
 - options:
 	- `debug`
 		- **Type:** bool
-		- **Required:** false,
-		- **Default:** false,
+		- **Required:** false
+		- **Default:** false
 		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
 		- **Type:** [booleanator](../../README.md#booleanator),
-		- **Requied:** false,
-		- **Default:** true,
+		- **Required:** false
+		- **Default:** true
 		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
-		- **Type:** string,
-		- **Required:** true,
+		- **Type:** string
+		- **Required:** true
 		- **Description:** Text to display when validation has failed.
 	- `min`
 	- `max`
@@ -185,17 +185,17 @@ Basic example of a deferred validator.
 - options:
 	- `debug`
 		- **Type:** bool
-		- **Required:** false,
-		- **Default:** false,
+		- **Required:** false
+		- **Default:** false
 		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
 		- **Type:** [booleanator](../../README.md#booleanator),
-		- **Requied:** false,
-		- **Default:** true,
+		- **Required:** false
+		- **Default:** true
 		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
-		- **Type:** string,
-		- **Required:** true,
+		- **Type:** string
+		- **Required:** true
 		- **Description:** Text to display when validation has failed.
 	- `max`
 
@@ -203,17 +203,17 @@ Basic example of a deferred validator.
 - options:
 	- `debug`
 		- **Type:** bool
-		- **Required:** false,
-		- **Default:** false,
+		- **Required:** false
+		- **Default:** false
 		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
 		- **Type:** [booleanator](../../README.md#booleanator),
-		- **Requied:** false,
-		- **Default:** true,
+		- **Required:** false
+		- **Default:** true
 		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
-		- **Type:** string,
-		- **Required:** true,
+		- **Type:** string
+		- **Required:** true
 		- **Description:** Text to display when validation has failed.
 	- `min`
 
@@ -221,17 +221,17 @@ Basic example of a deferred validator.
 - options:
 	- `debug`
 		- **Type:** bool
-		- **Required:** false,
-		- **Default:** false,
+		- **Required:** false
+		- **Default:** false
 		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
 		- **Type:** [booleanator](../../README.md#booleanator),
-		- **Requied:** false,
-		- **Default:** true,
+		- **Required:** false
+		- **Default:** true
 		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
-		- **Type:** string,
-		- **Required:** true,
+		- **Type:** string
+		- **Required:** true
 		- **Description:** Text to display when validation has failed.
 	- `regex`
 
@@ -239,34 +239,34 @@ Basic example of a deferred validator.
 - options:
 	- `debug`
 		- **Type:** bool
-		- **Required:** false,
-		- **Default:** false,
+		- **Required:** false
+		- **Default:** false
 		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
 		- **Type:** [booleanator](../../README.md#booleanator),
-		- **Requied:** false,
-		- **Default:** true,
+		- **Required:** false
+		- **Default:** true
 		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
-		- **Type:** string,
-		- **Required:** true,
+		- **Type:** string
+		- **Required:** true
 		- **Description:** Text to display when validation has failed.
 
 ### proveRequired
 - options:
 	- `debug`
 		- **Type:** bool
-		- **Required:** false,
-		- **Default:** false,
+		- **Required:** false
+		- **Default:** false
 		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
 		- **Type:** [booleanator](../../README.md#booleanator),
-		- **Requied:** false,
-		- **Default:** true,
+		- **Required:** false
+		- **Default:** true
 		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
-		- **Type:** string,
-		- **Required:** true,
+		- **Type:** string
+		- **Required:** true
 		- **Description:** Text to display when validation has failed.
 	- `prefix`
 
@@ -274,16 +274,16 @@ Basic example of a deferred validator.
 - options:
 	- `debug`
 		- **Type:** bool
-		- **Required:** false,
-		- **Default:** false,
+		- **Required:** false
+		- **Default:** false
 		- **Description:** will print out some debug info in the developer console.
 	- `enabled`
 		- **Type:** [booleanator](../../README.md#booleanator),
-		- **Requied:** false,
-		- **Default:** true,
+		- **Required:** false
+		- **Default:** true
 		- **Descrption:** will enable the field for validation while the booleanator is true.
 	- `message`
-		- **Type:** string,
-		- **Required:** true,
+		- **Type:** string
+		- **Required:** true
 		- **Description:** Text to display when validation has failed.
 	- `uniqueTo`

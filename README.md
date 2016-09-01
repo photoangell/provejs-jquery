@@ -98,7 +98,7 @@ form.prove({
 	- **Description:** will print out some debug info in the developer console. Debug defaults to false.
 - `enabled`
 	- **Type:** booleanator,
-	- **Requied:** false,
+	- **Required:** false,
 	- **Default:** true,
 	- **Descrption:** will enable the field for validation. A value of ':visible' will only validate the input if the input if visible. A [booleanator](#booleanator) is something (bool, selector, sudo-selector, function) that evaluates to either true or false. So for example, you specify enabled: ':visible' and the field config will be enabled when the input is visible. Or perhaps, enable validation when the input is not empty by setting enabled to ':filled'.
 - `selector`
