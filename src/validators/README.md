@@ -118,7 +118,17 @@ Below is an overview of these provided plugins.
 		- **Required:** true
 		- **Description:** Text to display when validation has failed.
 	- `compareTo`
+		- **Type:** selector
+		- **Required:** true
+		- **Description:** Selector for an element whose value will be compared to the field.
+	- `comparison`
+		- **Type:** string
+		- **Required:** true
+		- **Description:** Arithmetic operator to use to compare the value of the main field to the value of `compareTo`.
 	- `ignore`
+		- **Type:** string
+		- **Required:** false
+		- **Description:** Value to ignore when comparing the two fields.
 
 ### proveDeferredCallback
 Basic example of a deferred validator.
