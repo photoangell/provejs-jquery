@@ -1108,7 +1108,7 @@
 		var input = $(this);
 		var value = input.vals();
 		var enabled = $('body').booleanator(options.enabled);
-		var validated = (enabled && $.isFunction(options.callback) && options.callback())? 'success' : 'danger';
+		var validated = (enabled && $.isFunction(options.callback) && options.callback(value))? 'success' : 'danger';
 		var validation = (enabled)? validated : 'reset';
 
 		if (options.debug){
@@ -1142,7 +1142,7 @@
 		var value1 = input.val();
 		var value2 = other.val();
 		var hasValue = input.hasValue();
-		var isSetup = input.hasClass('validator-equalto-setup');
+		var isSetup = input.hasClass('validator-compareto-setup');
 		var enabled = $('body').booleanator(options.enabled);
 		var validation;
 
@@ -1172,9 +1172,9 @@
 
 		//setup event to validate this input when other input value changes
 		if (!isSetup){
-			input.addClass('validator-equalto-setup');
+			input.addClass('validator-compareto-setup');
 			//on blur of other input
-			form.on('focusout', options.equalTo, function(){
+			form.on('focusout', options.compareTo, function(){
 				input.validate();
 			});
 		}
@@ -1190,10 +1190,10 @@
 	};
 }(window.jQuery);
 
-!function ($) {
-	"use strict";
+!function($) {
+	'use strict';
 
-	$.fn.proveDeferred = function(options){
+	$.fn.proveDeferredCallback = function(options){
 
 		var input = $(this);
 		var value = input.vals();
@@ -1246,11 +1246,67 @@
 		}
 
 		if (options.debug){
-			console.groupCollapsed('Validator.proveDeferred()', options.field);
+			console.groupCollapsed('Validator.proveDeferredCallback()', options.field);
 				console.log('options', options);
 				console.log('input', input);
 				console.log('value', value);
 				console.log('enabled', enabled);
+				console.log('validation', result.validation);
+			console.groupEnd();
+		}
+
+		return dfd;
+	};
+}(window.jQuery);
+
+!function($) {
+	'use strict';
+
+	$.fn.proveDeferredRemote = function(options) {
+
+		var input = $(this);
+		var value = input.vals();
+		var hasValue = input.hasValue();
+
+		var enabled = $('body').booleanator(options.enabled);
+		var url;
+
+		var dfd = $.Deferred();
+		var result = {
+			field: options.field,
+			validator: options.validator,
+			status: 'validated',
+			message: options.message
+		};
+
+		if (!enabled) {
+			result.validation = 'reset';
+			dfd.resolve(result);
+		} else if (!hasValue) {
+			// All validators are optional except for `required` validator.
+			result.validation = 'success';
+			dfd.resolve(result);
+		} else {
+			url = options.url(value);
+			$.get(url)
+				.done(function() {
+					result.validation = 'success';
+					dfd.resolve(result);
+				})
+				.fail(function(xhr) {
+					result.validation = 'danger';
+					if (!options.message) result.message = xhr.responseText;
+					dfd.resolve(result);
+				});
+		}
+
+		if (options.debug) {
+			console.groupCollapsed('Validator.proveDeferredRemote()', options.field);
+				console.log('options', options);
+				console.log('input', input);
+				console.log('value', value);
+				console.log('enabled', enabled);
+				console.log('url', url);
 				console.log('validation', result.validation);
 			console.groupEnd();
 		}
