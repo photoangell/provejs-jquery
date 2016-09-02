@@ -1,6 +1,7 @@
 !function($) {
 	'use strict';
 
+	// todo: should we delete this?
 	$.fn.proveDeferredCallback = function(options){
 
 		var input = $(this);
@@ -12,7 +13,7 @@
 			field: options.field,
 			validator: options.validator,
 			status: 'validated',
-			message: options.message
+			message: undefined
 		};
 		var progress;
 
@@ -46,6 +47,7 @@
 					dfd.reject(result); // or dfd.resolve(result);
 				} else {
 					result.validation = ($.isFunction(options.validation))? options.validation(value) : options.validation;
+					result.message = options.message;
 					dfd.resolve(result);
 				}
 

@@ -26,6 +26,8 @@
 			});
 		}
 
+		var message = (validation === 'danger')? options.message : undefined;
+
 		if (options.debug){
 			console.groupCollapsed('Validator.proveUnique()', options.field);
 				console.log('options', options);
@@ -39,7 +41,7 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
-			message: options.message
+			message: message
 		};
 	};
 }(window.jQuery);

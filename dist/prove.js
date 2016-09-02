@@ -1110,6 +1110,7 @@
 		var enabled = $('body').booleanator(options.enabled);
 		var validated = (enabled && $.isFunction(options.callback) && options.callback(value))? 'success' : 'danger';
 		var validation = (enabled)? validated : 'reset';
+		var message = (validated === 'danger')? options.message : undefined;
 
 		if (options.debug){
 			console.groupCollapsed('Validator.proveCallback()', options.field);
@@ -1126,7 +1127,7 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
-			message: options.message
+			message: message
 		};
 	};
 }(window.jQuery);
@@ -1170,6 +1171,8 @@
 			//
 		}
 
+		var message = (validation === 'danger')? options.message : undefined;
+
 		//setup event to validate this input when other input value changes
 		if (!isSetup){
 			input.addClass('validator-compareto-setup');
@@ -1185,7 +1188,7 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
-			message: options.message
+			message: message
 		};
 	};
 }(window.jQuery);
@@ -1193,6 +1196,7 @@
 !function($) {
 	'use strict';
 
+	// todo: should we delete this?
 	$.fn.proveDeferredCallback = function(options){
 
 		var input = $(this);
@@ -1204,7 +1208,7 @@
 			field: options.field,
 			validator: options.validator,
 			status: 'validated',
-			message: options.message
+			message: undefined
 		};
 		var progress;
 
@@ -1238,6 +1242,7 @@
 					dfd.reject(result); // or dfd.resolve(result);
 				} else {
 					result.validation = ($.isFunction(options.validation))? options.validation(value) : options.validation;
+					result.message = options.message;
 					dfd.resolve(result);
 				}
 
@@ -1276,7 +1281,7 @@
 			field: options.field,
 			validator: options.validator,
 			status: 'validated',
-			message: options.message
+			message: undefined
 		};
 
 		if (!enabled) {
@@ -1295,7 +1300,11 @@
 				})
 				.fail(function(xhr) {
 					result.validation = 'danger';
-					if (!options.message) result.message = xhr.responseText;
+					if (options.message) {
+						result.message = options.message;
+					} else {
+						result.message = xhr.responseText;
+					}
 					dfd.resolve(result);
 				});
 		}
@@ -1328,6 +1337,7 @@
 		var enabled = $('body').booleanator(options.enabled);
 		var has = (value === other.val())? 'success' : 'danger';
 		var validation = (enabled)?  has : 'reset';
+		var message = (validation === 'danger')? options.message : undefined;
 
 		//setup event to validate this input when other input value changes
 		if (!isSetup){
@@ -1344,7 +1354,7 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
-			message: options.message
+			message: message
 		};
 	};
 }(window.jQuery);
@@ -1373,6 +1383,8 @@
 			validation = 'danger';
 		}
 
+		var message = (validation === 'danger')? options.message : undefined;
+
 		if (options.debug){
 			console.groupCollapsed('Validator.proveLength()', options.field);
 				console.log('options', options);
@@ -1388,7 +1400,7 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
-			message: options.message
+			message: message
 		};
 	};
 }(window.jQuery);
@@ -1414,7 +1426,7 @@
 			field: field,
 			validator: validator,
 			status: 'validated',
-			message: message
+			message: undefined
 		};
 
 		function logInfo(additions) {
@@ -1440,7 +1452,6 @@
 		} else if (!hasValue) {
 			// All validators are optional except for `required` validator.
 			result.validation = 'success';
-			result.message = undefined;
 			if (debug) logInfo();
 			dfd.resolve(result);
 
@@ -1464,7 +1475,6 @@
 
 				if (is_valid && confident) {
 					result.validation = 'success';
-					result.message = undefined;
 
 				} else if (is_valid && !confident) {
 					result.validation = 'warning';
@@ -1472,7 +1482,11 @@
 
 				} else {
 					result.validation = 'danger';
-					if (suggestion) result.message = suggestion;
+					if (options.message) {
+						result.message = options.message;
+					} else {
+						result.message = suggestion;
+					}
 				}
 
 				if (debug) logInfo({data: data});
@@ -1482,7 +1496,11 @@
 				var err = xhr.responseText;
 
 				result.validation = 'danger';
-				if (err) result.message = err;
+				if (options.message) {
+					result.message = options.message;
+				} else {
+					result.message = err;
+				}
 
 				if (debug) logInfo({err: err});
 				dfd.resolve(result);
@@ -1503,6 +1521,7 @@
 		var enabled = $('body').booleanator(options.enabled);
 		var has = (value <= options.max)? 'success' : 'danger';
 		var validation = (enabled)? has : 'reset';
+		var message = (validation === 'danger')? options.message : undefined;
 
 		if (options.debug){
 			console.groupCollapsed('Validator.proveMax()', options.field);
@@ -1519,7 +1538,7 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
-			message: options.message
+			message: message
 		};
 	};
 }(window.jQuery);
@@ -1534,6 +1553,7 @@
 		var enabled = $('body').booleanator(options.enabled);
 		var has = value >= options.min? 'success' : 'danger';
 		var validation = (enabled)? has : 'reset';
+		var message = (validation === 'danger')? options.message : undefined;
 
 		if (options.debug){
 			console.groupCollapsed('Validator.proveMin()', options.field);
@@ -1550,7 +1570,7 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
-			message: options.message
+			message: message
 		};
 	};
 }(window.jQuery);
@@ -1599,10 +1619,13 @@
 			validation = 'danger';
 		}
 
+		var message = (validation === 'danger')? options.message : undefined;
+
 		if (options.debug){
 			console.groupCollapsed('Validator.provePattern()', options.field);
 				console.log('options', options);
 				console.log('validation', validation);
+				console.log('message', message);
 			console.groupEnd();
 		}
 
@@ -1611,7 +1634,7 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
-			message: options.message
+			message: message
 		};
 	};
 
@@ -1628,6 +1651,7 @@
 		var enabled = $('body').booleanator(options.enabled);
 		var has = regex.test(value)? 'success' : 'danger';
 		var validation = (enabled)? has : 'reset';
+		var message = (validation === 'danger')? options.message : undefined;
 
 		if (options.debug){
 			console.groupCollapsed('Validator.provePrecision()', options.field);
@@ -1644,7 +1668,7 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
-			message: options.message
+			message: message
 		};
 	};
 }(window.jQuery);
@@ -1659,6 +1683,7 @@
 		var enabled = $('body').booleanator(options.enabled);
 		var has = input.hasValue(options.prefix)? 'success' : 'danger';
 		var validation = (enabled)? has : 'reset';
+		var message = (has === 'danger')? options.message : undefined;
 
 		if (options.debug){
 			console.groupCollapsed('Validator.proveRequired()', options.field, options.initiator);
@@ -1667,6 +1692,7 @@
 				console.log('value', value);
 				console.log('enabled', enabled);
 				console.log('validation', validation);
+				console.log('message', message);
 			console.groupEnd();
 		}
 
@@ -1675,7 +1701,7 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
-			message: options.message
+			message: message
 		};
 	};
 }(window.jQuery);
@@ -1708,6 +1734,8 @@
 			});
 		}
 
+		var message = (validation === 'danger')? options.message : undefined;
+
 		if (options.debug){
 			console.groupCollapsed('Validator.proveUnique()', options.field);
 				console.log('options', options);
@@ -1721,7 +1749,7 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
-			message: options.message
+			message: message
 		};
 	};
 }(window.jQuery);

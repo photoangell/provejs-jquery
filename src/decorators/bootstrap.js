@@ -83,7 +83,7 @@
 		// remove message on options.valid = 'success'.
 		// remove message on options.valid = 'reset'.
 		el1.garland({
-			validation: inverse(options.validation),
+			// validation: inverse(options.validation),
 			wrapper: '<span class="help-block"></span>',
 			message: options.message
 		});

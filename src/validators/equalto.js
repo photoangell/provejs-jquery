@@ -11,6 +11,7 @@
 		var enabled = $('body').booleanator(options.enabled);
 		var has = (value === other.val())? 'success' : 'danger';
 		var validation = (enabled)?  has : 'reset';
+		var message = (validation === 'danger')? options.message : undefined;
 
 		//setup event to validate this input when other input value changes
 		if (!isSetup){
@@ -27,7 +28,7 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
-			message: options.message
+			message: message
 		};
 	};
 }(window.jQuery);

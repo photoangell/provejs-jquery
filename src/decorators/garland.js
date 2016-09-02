@@ -27,11 +27,13 @@
 			container.find('.garland-wrapper').remove();
 		}
 
-		if (options.validation === 'success') {
-			teardown(input);
-			setup(input, options);
-		} else {
-			teardown(input);
-		}
+		// if (options.validation === 'success') {
+		// 	teardown(input);
+		// 	setup(input, options);
+		// } else {
+		// 	teardown(input);
+		// }
+		teardown(input);
+		if (options.message) setup(input, options);
 	};
 }(window.jQuery);

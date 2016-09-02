@@ -15,7 +15,7 @@
 			field: options.field,
 			validator: options.validator,
 			status: 'validated',
-			message: options.message
+			message: undefined
 		};
 
 		if (!enabled) {
@@ -34,7 +34,11 @@
 				})
 				.fail(function(xhr) {
 					result.validation = 'danger';
-					if (!options.message) result.message = xhr.responseText;
+					if (options.message) {
+						result.message = options.message;
+					} else {
+						result.message = xhr.responseText;
+					}
 					dfd.resolve(result);
 				});
 		}

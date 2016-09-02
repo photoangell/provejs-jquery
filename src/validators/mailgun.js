@@ -9,7 +9,6 @@
 
 		var field = options.field;
 		var validator = options.validator;
-		var message = options.message;
 		var enabled = $('body').booleanator(options.enabled);
 		var debug = options.debug;
 		var apikey = options.apikey;
@@ -19,7 +18,7 @@
 			field: field,
 			validator: validator,
 			status: 'validated',
-			message: message
+			message: undefined
 		};
 
 		function logInfo(additions) {
@@ -45,7 +44,6 @@
 		} else if (!hasValue) {
 			// All validators are optional except for `required` validator.
 			result.validation = 'success';
-			result.message = undefined;
 			if (debug) logInfo();
 			dfd.resolve(result);
 
@@ -63,21 +61,24 @@
 			.done(function(data) {
 				var is_valid = data.is_valid;
 				var did_you_mean = data.did_you_mean;
-				var suggestion;
-				if (did_you_mean) suggestion = 'Did you mean ' + did_you_mean + '?';
-				var confident = !suggestion;
+				var confident = !did_you_mean;
 
 				if (is_valid && confident) {
 					result.validation = 'success';
-					result.message = undefined;
 
 				} else if (is_valid && !confident) {
-					result.validation = 'warning';
-					result.message = suggestion;
+					result.validation = 'success';
+					result.message = 'Valid email, but did you mean ' + did_you_mean + '?';
 
 				} else {
 					result.validation = 'danger';
-					if (suggestion) result.message = suggestion;
+					if (options.message) {
+						result.message = options.message;
+					} else if (did_you_mean) {
+						result.message = 'Invalid email. Did you mean ' + did_you_mean + '?';
+					} else {
+						result.message = 'Invalid email.';
+					}
 				}
 
 				if (debug) logInfo({data: data});
@@ -87,7 +88,11 @@
 				var err = xhr.responseText;
 
 				result.validation = 'danger';
-				if (err) result.message = err;
+				if (options.message) {
+					result.message = options.message;
+				} else {
+					result.message = err;
+				}
 
 				if (debug) logInfo({err: err});
 				dfd.resolve(result);

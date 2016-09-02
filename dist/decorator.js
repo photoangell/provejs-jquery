@@ -83,7 +83,7 @@
 		// remove message on options.valid = 'success'.
 		// remove message on options.valid = 'reset'.
 		el1.garland({
-			validation: inverse(options.validation),
+			// validation: inverse(options.validation),
 			wrapper: '<span class="help-block"></span>',
 			message: options.message
 		});
@@ -206,12 +206,14 @@
 			container.find('.garland-wrapper').remove();
 		}
 
-		if (options.validation === 'success') {
-			teardown(input);
-			setup(input, options);
-		} else {
-			teardown(input);
-		}
+		// if (options.validation === 'success') {
+		// 	teardown(input);
+		// 	setup(input, options);
+		// } else {
+		// 	teardown(input);
+		// }
+		teardown(input);
+		if (options.message) setup(input, options);
 	};
 }(window.jQuery);
 

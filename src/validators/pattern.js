@@ -26,10 +26,13 @@
 			validation = 'danger';
 		}
 
+		var message = (validation === 'danger')? options.message : undefined;
+
 		if (options.debug){
 			console.groupCollapsed('Validator.provePattern()', options.field);
 				console.log('options', options);
 				console.log('validation', validation);
+				console.log('message', message);
 			console.groupEnd();
 		}
 
@@ -38,7 +41,7 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
-			message: options.message
+			message: message
 		};
 	};
 
