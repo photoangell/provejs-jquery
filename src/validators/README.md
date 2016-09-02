@@ -185,6 +185,9 @@ Basic example of a deferred validator.
 		- **Required:** true
 		- **Description:** Text to display when validation has failed.
 	- `equalTo`
+		- **Type:** selector
+		- **Required:** true
+		- **Description:** Selector for an element whose value will be compared to the field.
 
 ### proveLength
 - options:
@@ -203,7 +206,13 @@ Basic example of a deferred validator.
 		- **Required:** true
 		- **Description:** Text to display when validation has failed.
 	- `min`
+		- **Type:** number
+		- **Required:** false
+		- **Description:** Minimum length of a valid field value.
 	- `max`
+		- **Type:** number
+		- **Required:** false
+		- **Description:** Maximum length of a valid field value.
 
 ### proveMax
 - options:
@@ -222,6 +231,9 @@ Basic example of a deferred validator.
 		- **Required:** true
 		- **Description:** Text to display when validation has failed.
 	- `max`
+		- **Type:** number
+		- **Required:** true
+		- **Description:** The field becomes invalid when its numeric value becomes higher than this number.
 
 ### proveMin
 - options:
@@ -240,6 +252,9 @@ Basic example of a deferred validator.
 		- **Required:** true
 		- **Description:** Text to display when validation has failed.
 	- `min`
+		- **Type:** number
+		- **Required:** true
+		- **Description:** The field becomes invalid when its numeric value becomes lower than this number.
 
 ### provePattern
 - options:
@@ -258,8 +273,12 @@ Basic example of a deferred validator.
 		- **Required:** true
 		- **Description:** Text to display when validation has failed.
 	- `regex`
+		- **Type:** string or RegExp object
+		- **Required:** true
+		- **Description:** Regular expression to test on the value of the field.
 
 ### provePrecision
+Basic example of a synchronous validator.
 - options:
 	- `debug`
 		- **Type:** bool
@@ -293,6 +312,9 @@ Basic example of a deferred validator.
 		- **Required:** true
 		- **Description:** Text to display when validation has failed.
 	- `prefix`
+		- **Type:** string
+		- **Required:** false
+		- **Description:** The field's value must begin with this string in order to be valid.
 
 ### proveUnique
 - options:
@@ -311,3 +333,6 @@ Basic example of a deferred validator.
 		- **Required:** true
 		- **Description:** Text to display when validation has failed.
 	- `uniqueTo`
+		- **Type:** selector
+		- **Required:** true
+		- **Description:** All of the elements found with this selector will be tested agaisnt the main field. If any of their values matches the main field's value, the field will become invalid.
