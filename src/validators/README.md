@@ -61,7 +61,7 @@ Your custom validators can change the message value.
 ### Deferred Validators
 Creating deferred validators is easy. Please see [$.fn.proveDeferredCallBack()](./deferred-callback.js) for an example.
 
-## Reference
+# Reference
 jquery-prove provides some validator plugins out of the box.
 
 ```javascript
@@ -80,7 +80,7 @@ form.prove({
 
 Below is an overview of these provided plugins.
 
-### proveCallback
+## proveCallback
 - options:
 	- `debug`
 		- **Type:** bool
@@ -106,7 +106,7 @@ Below is an overview of these provided plugins.
 		- **Return Value:**
 		- **Description:** Function invoked to test whether the field is valid. The function's first parameter is the current value of the field. The return value should be a boolean indicating whether the field passed validation.
 
-### proveCompareTo
+## proveCompareTo
 - options:
 	- `enabled`
 		- **Type:** [booleanator](../../README.md#booleanator),
@@ -130,7 +130,7 @@ Below is an overview of these provided plugins.
 		- **Required:** false
 		- **Description:** Value to ignore when comparing the two fields.
 
-### proveDeferredCallback
+## proveDeferredCallback
 Basic example of a deferred validator.
 - options:
 	- `debug`
@@ -152,7 +152,7 @@ Basic example of a deferred validator.
 		- **Required:** true
 		- **Description:** Function invoked to test whether the field is valid. The function's first parameter is the current value of the field. The return value should be a boolean indicating whether the field passed validation.
 
-### proveDeferredRemote
+## proveDeferredRemote
 - options:
 	- `debug`
 		- **Type:** bool
@@ -173,7 +173,7 @@ Basic example of a deferred validator.
 		- **Required:** true
 		- **Description:** Returns a url to a server endpoint which will test whether the field is valid. The function's first parameter is the current value of the field. The server endpoint must receive GET requests. A response status of 2** marks the field as valid. A status of 4** or 5** marks it as invalid.
 
-### proveEqualTo
+## proveEqualTo
 - options:
 	- `enabled`
 		- **Type:** [booleanator](../../README.md#booleanator),
@@ -189,7 +189,7 @@ Basic example of a deferred validator.
 		- **Required:** true
 		- **Description:** Selector for an element whose value will be compared to the field.
 
-### proveLength
+## proveLength
 - options:
 	- `debug`
 		- **Type:** bool
@@ -214,7 +214,7 @@ Basic example of a deferred validator.
 		- **Required:** false
 		- **Description:** Maximum length of a valid field value.
 
-### proveMax
+## proveMax
 - options:
 	- `debug`
 		- **Type:** bool
@@ -235,7 +235,7 @@ Basic example of a deferred validator.
 		- **Required:** true
 		- **Description:** The field becomes invalid when its numeric value becomes higher than this number.
 
-### proveMin
+## proveMin
 - options:
 	- `debug`
 		- **Type:** bool
@@ -256,7 +256,7 @@ Basic example of a deferred validator.
 		- **Required:** true
 		- **Description:** The field becomes invalid when its numeric value becomes lower than this number.
 
-### provePattern
+## provePattern
 - options:
 	- `debug`
 		- **Type:** bool
@@ -277,7 +277,7 @@ Basic example of a deferred validator.
 		- **Required:** true
 		- **Description:** Regular expression to test on the value of the field.
 
-### provePrecision
+## provePrecision
 Basic example of a synchronous validator.
 - options:
 	- `debug`
@@ -295,7 +295,7 @@ Basic example of a synchronous validator.
 		- **Required:** true
 		- **Description:** Text to display when validation has failed.
 
-### proveRequired
+## proveRequired
 - options:
 	- `debug`
 		- **Type:** bool
@@ -316,7 +316,7 @@ Basic example of a synchronous validator.
 		- **Required:** false
 		- **Description:** The field's value must begin with this string in order to be valid.
 
-### proveUnique
+## proveUnique
 - options:
 	- `debug`
 		- **Type:** bool
