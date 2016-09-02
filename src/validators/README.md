@@ -148,6 +148,9 @@ Basic example of a deferred validator.
 		- **Required:** true
 		- **Description:** Text to display when validation has failed.
 	- `validation`
+		- **Type:** function(string `fieldValue`) bool `valid`
+		- **Required:** true
+		- **Description:** Function invoked to test whether the field is valid. The function's first parameter is the current value of the field. The return value should be a boolean indicating whether the field passed validation.
 
 ### proveDeferredRemote
 - options:
