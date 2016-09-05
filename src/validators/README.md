@@ -81,6 +81,25 @@ form.prove({
 Below is an overview of these provided plugins.
 
 ## proveCallback
+```javascript
+form.prove({
+	fields: {
+		field1: {
+			validators: {
+				proveCallback: {
+					debug: false,
+					enabled: true,
+					message: 'Invalid field value',
+					callback: function(fieldValue) {
+						return false;
+					}
+				}
+			}
+		}
+	}
+});
+```
+
 - options:
 	- `debug`
 		- **Type:** bool
@@ -102,6 +121,24 @@ Below is an overview of these provided plugins.
 		- **Description:** Function invoked to test whether the field is valid. The function's first parameter is the current value of the field. The return value should be a boolean indicating whether the field passed validation.
 
 ## proveCompareTo
+```javascript
+form.prove({
+	fields: {
+		field1: {
+			validators: {
+				proveCompareTo: {
+					enabled: true,
+					message: 'Invalid field value',
+					compareTo: '[name="field2"]',
+					comparison: '!=',
+					ignore: 'This value is ok'
+				}
+			}
+		}
+	}
+});
+```
+
 - options:
 	- `enabled`
 		- **Type:** [booleanator](../../README.md#booleanator),
@@ -127,6 +164,26 @@ Below is an overview of these provided plugins.
 
 ## proveDeferredCallback
 Basic example of a deferred validator.
+
+```javascript
+form.prove({
+	fields: {
+		field1: {
+			validators: {
+				proveDeferredCallback: {
+					debug: false,
+					enabled: true,
+					message: 'Invalid field value',
+					validation: function(fieldValue) {
+						return false;
+					}
+				}
+			}
+		}
+	}
+});
+```
+
 - options:
 	- `debug`
 		- **Type:** bool
@@ -148,6 +205,25 @@ Basic example of a deferred validator.
 		- **Description:** Function invoked to test whether the field is valid. The function's first parameter is the current value of the field. The return value should be a boolean indicating whether the field passed validation.
 
 ## proveDeferredRemote
+```javascript
+form.prove({
+	fields: {
+		field1: {
+			validators: {
+				proveDeferredRemote: {
+					debug: false,
+					enabled: true,
+					message: 'Invalid field value',
+					url: function(fieldValue) {
+						return '/validations/field1/' + fieldValue;
+					}
+				}
+			}
+		}
+	}
+});
+```
+
 - options:
 	- `debug`
 		- **Type:** bool
@@ -169,6 +245,22 @@ Basic example of a deferred validator.
 		- **Description:** Returns a url to a server endpoint which will test whether the field is valid. The function's first parameter is the current value of the field. The server endpoint must receive GET requests. A response status of 2** marks the field as valid. A status of 4** or 5** marks it as invalid.
 
 ## proveEqualTo
+```javascript
+form.prove({
+	fields: {
+		field1: {
+			validators: {
+				proveEqualTo: {
+					enabled: true,
+					message: 'Invalid field value',
+					equalTo: '[name="field2"]'
+				}
+			}
+		}
+	}
+});
+```
+
 - options:
 	- `enabled`
 		- **Type:** [booleanator](../../README.md#booleanator),
@@ -185,6 +277,24 @@ Basic example of a deferred validator.
 		- **Description:** Selector for an element whose value will be compared to the field.
 
 ## proveLength
+```javascript
+form.prove({
+	fields: {
+		field1: {
+			validators: {
+				proveLength: {
+					debug: false,
+					enabled: true,
+					message: 'Invalid field value',
+					min: 6,
+					max: 20
+				}
+			}
+		}
+	}
+});
+```
+
 - options:
 	- `debug`
 		- **Type:** bool
@@ -210,6 +320,23 @@ Basic example of a deferred validator.
 		- **Description:** Maximum length of a valid field value.
 
 ## proveMax
+```javascript
+form.prove({
+	fields: {
+		field1: {
+			validators: {
+				proveMax: {
+					debug: false,
+					enabled: true,
+					message: 'Invalid field value',
+					max: 20
+				}
+			}
+		}
+	}
+});
+```
+
 - options:
 	- `debug`
 		- **Type:** bool
@@ -231,6 +358,23 @@ Basic example of a deferred validator.
 		- **Description:** The field becomes invalid when its numeric value becomes higher than this number.
 
 ## proveMin
+```javascript
+form.prove({
+	fields: {
+		field1: {
+			validators: {
+				proveMin: {
+					debug: false,
+					enabled: true,
+					message: 'Invalid field value',
+					min: 6
+				}
+			}
+		}
+	}
+});
+```
+
 - options:
 	- `debug`
 		- **Type:** bool
@@ -252,6 +396,23 @@ Basic example of a deferred validator.
 		- **Description:** The field becomes invalid when its numeric value becomes lower than this number.
 
 ## provePattern
+```javascript
+form.prove({
+	fields: {
+		field1: {
+			validators: {
+				provePattern: {
+					debug: false,
+					enabled: true,
+					message: 'Invalid field value',
+					regex: /^[-a-z' .,]{1,}$/i
+				}
+			}
+		}
+	}
+});
+```
+
 - options:
 	- `debug`
 		- **Type:** bool
@@ -274,6 +435,23 @@ Basic example of a deferred validator.
 
 ## provePrecision
 Basic example of a synchronous validator.
+
+```javascript
+form.prove({
+	fields: {
+		field1: {
+			validators: {
+				provePrecision: {
+					debug: false,
+					enabled: true,
+					message: 'Invalid field value'
+				}
+			}
+		}
+	}
+});
+```
+
 - options:
 	- `debug`
 		- **Type:** bool
@@ -291,6 +469,23 @@ Basic example of a synchronous validator.
 		- **Description:** Text to display when validation has failed.
 
 ## proveRequired
+```javascript
+form.prove({
+	fields: {
+		field1: {
+			validators: {
+				proveRequired: {
+					debug: false,
+					enabled: true,
+					message: 'Invalid field value',
+					prefix: ''
+				}
+			}
+		}
+	}
+});
+```
+
 - options:
 	- `debug`
 		- **Type:** bool
@@ -309,9 +504,26 @@ Basic example of a synchronous validator.
 	- `prefix`
 		- **Type:** string
 		- **Required:** false
-		- **Description:** The field's value must begin with this string in order to be valid.
+		- **Description:** Ignore the specified text prefix when doing validation. This feature is used when you preload a prefix in a textarea and do not let the user delete the prefix.
 
 ## proveUnique
+```javascript
+form.prove({
+	fields: {
+		field1: {
+			validators: {
+				proveUnique: {
+					debug: false,
+					enabled: true,
+					message: 'Invalid field value',
+					uniqueTo: '.others'
+				}
+			}
+		}
+	}
+});
+```
+
 - options:
 	- `debug`
 		- **Type:** bool
