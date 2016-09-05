@@ -58,9 +58,6 @@ The message option passed to the validators can be either:
 
 Your custom validators can change the message value.
 
-### Deferred Validators
-Creating deferred validators is easy. Please see [$.fn.proveDeferredCallBack()](./deferred-callback.js) for an example.
-
 # Reference
 jquery-prove provides some validator plugins out of the box.
 
