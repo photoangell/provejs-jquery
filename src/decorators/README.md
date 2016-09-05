@@ -51,6 +51,10 @@ Where data.validation is:
 	- Indicates the input is valid,
 	- Decorators should decorate for warning.
 
+### Messages
+
+If the prove event data contains a message property the decorator should display the message. 
+
 ### Utility Decorators
 
 The prove bootstrap decorator uses two ulitity decorators which makes creating decorators easier:
