@@ -12,7 +12,7 @@ jquery-prove is a client-side form validation plugin:
 - Validators share data with decorators via events.
 - Validators can be:
 	- synchronous - return result immediately.
-	- asynchronouscan - return jquery deferred which returns result later.
+	- asynchronous - return jquery deferred which returns result later.
 - Delegated events to the form so the form DOM can be modified at anytime.
 - Explict control over configuration options via dynamic [booleanators](#booleanator).
 - Modular design via a suite of jQuery [utility plugins](./src/utilities).
