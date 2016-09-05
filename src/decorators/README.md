@@ -51,7 +51,7 @@ Where data.validation is:
 	- Indicates the input is valid,
 	- Decorators should decorate for warning.
 
-### Messages
+### Message
 
 If the prove event data contains a message property the decorator should display the message. 
 
