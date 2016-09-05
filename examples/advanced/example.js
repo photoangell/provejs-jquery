@@ -67,7 +67,7 @@
 						regex: regex,
 						message: 'Invalid description.'
 					},
-					proveDeferredCallback: {
+					proveDeferredMockup: {
 						//debug: true,
 						delay: 3000,
 						validation: 'success',

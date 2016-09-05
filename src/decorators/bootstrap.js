@@ -29,7 +29,7 @@
 		if (options.status === 'validating') return;
 
 
-		var tinsel = {
+		tinsel = {
 			validation: options.validation,
 			classSuccess: 'has-success',
 			classFailure: 'has-error',

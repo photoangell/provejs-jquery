@@ -18,7 +18,7 @@
 						regex: '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,63}',
 						message: 'The input is not a valid email address'
 					},
-					proveDeferredCallback: {
+					proveDeferredMockup: {
 						debug: true,
 						delay: 500,
 						validation: function(value){

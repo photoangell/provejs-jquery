@@ -162,15 +162,16 @@ form.prove({
 		- **Required:** false
 		- **Description:** Value to ignore when comparing the two fields.
 
-## proveDeferredCallback
-Basic example of a deferred validator.
+## proveDeferredMockup
+
+Basic example of a deferred validator which is used for testing deferred validators.
 
 ```javascript
 form.prove({
 	fields: {
 		field1: {
 			validators: {
-				proveDeferredCallback: {
+				proveDeferredMockup: {
 					debug: false,
 					enabled: true,
 					message: 'Invalid field value',
