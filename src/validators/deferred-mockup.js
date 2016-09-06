@@ -12,7 +12,7 @@
 			field: options.field,
 			validator: options.validator,
 			status: 'validated',
-			message: options.message
+			message: undefined
 		};
 		var progress;
 
@@ -36,6 +36,7 @@
 					dfd.reject(result); // or dfd.resolve(result);
 				} else {
 					result.validation = ($.isFunction(options.validation))? options.validation(value) : options.validation;
+					result.message = options.message;
 					dfd.resolve(result);
 				}
 

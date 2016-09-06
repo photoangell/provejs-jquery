@@ -8,6 +8,7 @@
 		var enabled = $('body').booleanator(options.enabled);
 		var has = input.hasValue(options.prefix)? 'success' : 'danger';
 		var validation = (enabled)? has : 'reset';
+		var message = (has === 'danger')? options.message : undefined;
 
 		if (options.debug){
 			console.groupCollapsed('Validator.proveRequired()', options.field, options.initiator);
@@ -16,6 +17,7 @@
 				console.log('value', value);
 				console.log('enabled', enabled);
 				console.log('validation', validation);
+				console.log('message', message);
 			console.groupEnd();
 		}
 
@@ -24,7 +26,7 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
-			message: options.message
+			message: message
 		};
 	};
 }(window.jQuery);

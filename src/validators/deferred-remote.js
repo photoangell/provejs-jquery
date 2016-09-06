@@ -9,13 +9,15 @@
 
 		var enabled = $('body').booleanator(options.enabled);
 		var url;
+		var method = options.method || 'GET';
+		var data;
 
 		var dfd = $.Deferred();
 		var result = {
 			field: options.field,
 			validator: options.validator,
 			status: 'validated',
-			message: options.message
+			message: undefined
 		};
 
 		if (!enabled) {
@@ -26,17 +28,27 @@
 			result.validation = 'success';
 			dfd.resolve(result);
 		} else {
-			url = options.url(value);
-			$.get(url)
-				.done(function() {
-					result.validation = 'success';
-					dfd.resolve(result);
-				})
-				.fail(function(xhr) {
-					result.validation = 'danger';
-					if (!options.message) result.message = xhr.responseText;
-					dfd.resolve(result);
-				});
+			url = ($.isFunction(options.url))? options.url(value) : options.url;
+			data = ($.isFunction(options.data))? options.data(value) : options.data;
+
+			$.ajax({
+				url: url,
+				method: method,
+				data: data
+			})
+			.done(function() {
+				result.validation = 'success';
+				dfd.resolve(result);
+			})
+			.fail(function(xhr) {
+				result.validation = 'danger';
+				if (options.message) {
+					result.message = options.message;
+				} else {
+					result.message = xhr.responseText;
+				}
+				dfd.resolve(result);
+			});
 		}
 
 		if (options.debug) {
@@ -46,6 +58,8 @@
 				console.log('value', value);
 				console.log('enabled', enabled);
 				console.log('url', url);
+				console.log('method', method);
+				console.log('data', data);
 				console.log('validation', result.validation);
 			console.groupEnd();
 		}

@@ -9,6 +9,7 @@
 		var enabled = $('body').booleanator(options.enabled);
 		var has = regex.test(value)? 'success' : 'danger';
 		var validation = (enabled)? has : 'reset';
+		var message = (validation === 'danger')? options.message : undefined;
 
 		if (options.debug){
 			console.groupCollapsed('Validator.provePrecision()', options.field);
@@ -25,7 +26,7 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
-			message: options.message
+			message: message
 		};
 	};
 }(window.jQuery);

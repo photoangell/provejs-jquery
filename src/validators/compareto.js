@@ -37,6 +37,8 @@
 			//
 		}
 
+		var message = (validation === 'danger')? options.message : undefined;
+
 		//setup event to validate this input when other input value changes
 		if (!isSetup){
 			input.addClass('validator-compareto-setup');
@@ -52,7 +54,7 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
-			message: options.message
+			message: message
 		};
 	};
 }(window.jQuery);

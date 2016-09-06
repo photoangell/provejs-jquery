@@ -317,6 +317,50 @@ form.prove({
 		- **Required:** false
 		- **Description:** Maximum length of a valid field value.
 
+## proveMailgun
+```javascript
+form.prove({
+	fields: {
+		field1: {
+			validators: {
+				proveMailgun: {
+					debug: false,
+					enabled: true,
+					message: 'Invalid field value',
+					apikey: 'pubkey-uuid',
+					suggestions: true
+				}
+			}
+		}
+	}
+});
+```
+
+- options:
+	- `debug`
+		- **Type:** bool
+		- **Required:** false
+		- **Default:** false
+		- **Description:** will print out some debug info in the developer console.
+	- `enabled`
+		- **Type:** [booleanator](../../README.md#booleanator),
+		- **Required:** false
+		- **Default:** true
+		- **Descrption:** will enable the field for validation while the booleanator is true.
+	- `message`
+		- **Type:** string
+		- **Required:** false
+		- **Description:** Text to display when validation has failed.
+	- `apikey`
+		- **Type:** string
+		- **Required:** true
+		- **Description:** Public API key provided by Mailgun account.
+	- `suggestions`
+		- **Type:** bool,
+		- **Required:** false
+		- **Default:** true
+		- **Descrption:** Show suggestions provided by the Mailgun API.
+
 ## proveMax
 ```javascript
 form.prove({

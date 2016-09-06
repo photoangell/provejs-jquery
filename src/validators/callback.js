@@ -8,6 +8,7 @@
 		var enabled = $('body').booleanator(options.enabled);
 		var validated = (enabled && $.isFunction(options.callback) && options.callback(value))? 'success' : 'danger';
 		var validation = (enabled)? validated : 'reset';
+		var message = (validated === 'danger')? options.message : undefined;
 
 		if (options.debug){
 			console.groupCollapsed('Validator.proveCallback()', options.field);
@@ -24,7 +25,7 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
-			message: options.message
+			message: message
 		};
 	};
 }(window.jQuery);

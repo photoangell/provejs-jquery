@@ -9,17 +9,17 @@
 
 		var field = options.field;
 		var validator = options.validator;
-		var message = options.message;
 		var enabled = $('body').booleanator(options.enabled);
 		var debug = options.debug;
 		var apikey = options.apikey;
+		if (options.suggestions === undefined) options.suggestions = true;
 
 		var dfd = $.Deferred();
 		var result = {
 			field: field,
 			validator: validator,
 			status: 'validated',
-			message: message
+			message: undefined
 		};
 
 		function logInfo(additions) {
@@ -30,6 +30,7 @@
 				console.log('value', value);
 				console.log('enabled', enabled);
 				console.log('apikey', apikey);
+				console.log('suggestions', options.suggestions);
 				console.log('validation', result.validation);
 				$.each(additions, function(name, value) {
 					console.log(name, value);
@@ -45,7 +46,6 @@
 		} else if (!hasValue) {
 			// All validators are optional except for `required` validator.
 			result.validation = 'success';
-			result.message = undefined;
 			if (debug) logInfo();
 			dfd.resolve(result);
 
@@ -63,21 +63,23 @@
 			.done(function(data) {
 				var is_valid = data.is_valid;
 				var did_you_mean = data.did_you_mean;
-				var suggestion;
-				if (did_you_mean) suggestion = 'Did you mean ' + did_you_mean + '?';
-				var confident = !suggestion;
+				var confident = !did_you_mean;
 
 				if (is_valid && confident) {
 					result.validation = 'success';
-					result.message = undefined;
 
 				} else if (is_valid && !confident) {
-					result.validation = 'warning';
-					result.message = suggestion;
+					result.validation = 'success';
+					if (options.suggestions) result.message = 'Valid email, but did you mean ' + did_you_mean + '?';
 
 				} else {
 					result.validation = 'danger';
-					if (suggestion) result.message = suggestion;
+
+					if (options.suggestions && did_you_mean) {
+						result.message = options.message + ' Did you mean ' + did_you_mean + '?';
+					} else {
+						result.message = options.message;
+					}
 				}
 
 				if (debug) logInfo({data: data});
@@ -87,7 +89,11 @@
 				var err = xhr.responseText;
 
 				result.validation = 'danger';
-				if (err) result.message = err;
+				if (options.suggestions) {
+					result.message = err;
+				} else {
+					result.message = options.message;
+				}
 
 				if (debug) logInfo({err: err});
 				dfd.resolve(result);
