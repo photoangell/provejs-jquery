@@ -26,7 +26,7 @@
 			result.validation = 'success';
 			dfd.resolve(result);
 		} else {
-			url = options.url(value);
+			url = ($.isFunction(options.url))? options.url(value) : options.url;
 			$.get(url)
 				.done(function() {
 					result.validation = 'success';
