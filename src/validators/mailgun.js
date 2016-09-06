@@ -30,6 +30,7 @@
 				console.log('value', value);
 				console.log('enabled', enabled);
 				console.log('apikey', apikey);
+				console.log('suggestions', options.suggestions);
 				console.log('validation', result.validation);
 				$.each(additions, function(name, value) {
 					console.log(name, value);
