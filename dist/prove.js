@@ -1196,8 +1196,7 @@
 !function($) {
 	'use strict';
 
-	// todo: should we delete this?
-	$.fn.proveDeferredCallback = function(options){
+	$.fn.proveDeferredMockup = function(options){
 
 		var input = $(this);
 		var value = input.vals();
@@ -1222,16 +1221,6 @@
 			dfd.resolve(result);
 		} else {
 
-/*			// fake some progress updates
-			progress = setInterval(function(){
-				dfd.notify({
-					field: options.field,
-					validator: options.validator,
-					status: 'progress',
-					foo: 'bar'
-				});
-			}, 1000);*/
-
 			// fake async validation on some remote server
 			setTimeout(function(){
 
@@ -1251,7 +1240,7 @@
 		}
 
 		if (options.debug){
-			console.groupCollapsed('Validator.proveDeferredCallback()', options.field);
+			console.groupCollapsed('Validator.proveDeferredMockup()', options.field);
 				console.log('options', options);
 				console.log('input', input);
 				console.log('value', value);

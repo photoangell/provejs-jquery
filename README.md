@@ -12,7 +12,7 @@ jquery-prove is a client-side form validation plugin:
 - Validators share data with decorators via events.
 - Validators can be:
 	- synchronous - return result immediately.
-	- asynchronouscan - return jquery deferred which returns result later.
+	- asynchronous - return jquery deferred which returns result later.
 - Delegated events to the form so the form DOM can be modified at anytime.
 - Explict control over configuration options via dynamic [booleanators](#booleanator).
 - Modular design via a suite of jQuery [utility plugins](./src/utilities).
@@ -340,37 +340,6 @@ grunt build
 ```
 
 ## Roadmap
-
-### Prove Type
-
-Create $.fn.proveType() which returns a string of the type of input:
-- radio
-- select
-- checkbox
-- etc
-
-We could augment the field config with the this input type and use it to dynamically change the live event triggers defined for each field. The user could always over overwrite this by manually setting the field.trigger value.
-
-See: http://stackoverflow.com/questions/3165413/how-to-get-input-type-using-jquery
-
-### Deferred [validators](./src/core/README.md#deferred-validation).
-
-Document and test when the deferred validator should call:
-- dfd.resolve()
-- dfd.notify()
-- dfd.reject()
-
-and what value should be returned in each case?
-
-How should these plugins handle these notify ogress and reject:
-- $.fn.proveInput()
-- $.fn.proveForm()
-
-### Deferred Email Validation with MailGun email validator
-It would be nice to have a real deferred example.
-
-### Warning Decoration
-The bootstrap decorators should be decoratoring for warnings.
 
 ### Unobtrusive Configuration
 

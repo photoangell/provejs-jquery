@@ -58,9 +58,6 @@ The message option passed to the validators can be either:
 
 Your custom validators can change the message value.
 
-### Deferred Validators
-Creating deferred validators is easy. Please see [$.fn.proveDeferredCallBack()](./deferred-callback.js) for an example.
-
 # Reference
 jquery-prove provides some validator plugins out of the box.
 
@@ -162,15 +159,16 @@ form.prove({
 		- **Required:** false
 		- **Description:** Value to ignore when comparing the two fields.
 
-## proveDeferredCallback
-Basic example of a deferred validator.
+## proveDeferredMockup
+
+Basic example of a deferred validator which is used for testing deferred validators.
 
 ```javascript
 form.prove({
 	fields: {
 		field1: {
 			validators: {
-				proveDeferredCallback: {
+				proveDeferredMockup: {
 					debug: false,
 					enabled: true,
 					message: 'Invalid field value',
