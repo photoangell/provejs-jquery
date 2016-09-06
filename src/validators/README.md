@@ -241,6 +241,11 @@ form.prove({
 		- **Type:** function(string `fieldValue`) string `url`
 		- **Required:** true
 		- **Description:** Returns a url to a server endpoint which will test whether the field is valid. The function's first parameter is the current value of the field. The server endpoint must receive GET requests. A response status of 2** marks the field as valid. A status of 4** or 5** marks it as invalid.
+	- `suggestions`
+		- **Type:** bool,
+		- **Required:** false
+		- **Default:** true
+		- **Descrption:** Show suggestions provided by the Mailgun API.
 
 ## proveEqualTo
 ```javascript
