@@ -12,6 +12,7 @@
 		var enabled = $('body').booleanator(options.enabled);
 		var debug = options.debug;
 		var apikey = options.apikey;
+		if (options.suggestions === undefined) options.suggestions = true;
 
 		var dfd = $.Deferred();
 		var result = {
@@ -68,16 +69,15 @@
 
 				} else if (is_valid && !confident) {
 					result.validation = 'success';
-					result.message = 'Valid email, but did you mean ' + did_you_mean + '?';
+					if (options.suggestions) result.message = 'Valid email, but did you mean ' + did_you_mean + '?';
 
 				} else {
 					result.validation = 'danger';
-					if (options.message) {
-						result.message = options.message;
-					} else if (did_you_mean) {
-						result.message = 'Invalid email. Did you mean ' + did_you_mean + '?';
+
+					if (options.suggestions && did_you_mean) {
+						result.message = options.message + ' Did you mean ' + did_you_mean + '?';
 					} else {
-						result.message = 'Invalid email.';
+						result.message = options.message;
 					}
 				}
 
@@ -88,10 +88,10 @@
 				var err = xhr.responseText;
 
 				result.validation = 'danger';
-				if (options.message) {
-					result.message = options.message;
-				} else {
+				if (options.suggestions) {
 					result.message = err;
+				} else {
+					result.message = options.message;
 				}
 
 				if (debug) logInfo({err: err});
