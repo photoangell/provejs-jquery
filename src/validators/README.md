@@ -238,9 +238,20 @@ form.prove({
 		- **Required:** false
 		- **Description:** Text to display when validation has failed.
 	- `url`
-		- **Type:** function(string `fieldValue`) string `url`
+		- **Type:** function(string `fieldValue`) or string `url`
 		- **Required:** true
 		- **Description:** Returns a url to a server endpoint which will test whether the field is valid. The function's first parameter is the current value of the field. The server endpoint must receive GET requests. A response status of 2** marks the field as valid. A status of 4** or 5** marks it as invalid.
+	- `method`
+		- **Type:** string
+		- **Required:** false
+		- **Default:** 'GET'
+		- **Description:** Sets the AJAX http request method.
+	- `data`
+		- **Type:** function(string `fieldValue`) or object literal
+		- **Required:** false
+		- **Default:** false
+		- **Description:** You can specify either an object literal or a function which returns an object literal which is used as the AJAX data value.  
+
 
 ## proveEqualTo
 ```javascript
