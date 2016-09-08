@@ -343,7 +343,7 @@ grunt build
 
 ### Mailcheck
 
-https://github.com/mailcheck/mailcheck
+https://github.com/mailcheck/mailcheck#usage-without-jquery
 
 ### Unobtrusive Configuration
 
