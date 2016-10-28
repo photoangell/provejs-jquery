@@ -366,6 +366,7 @@ Need unit tests.
 * http://digitalbush.com/2011/03/29/testing-jquery-plugins-with-node-js-and-jasmine/
 * https://gist.github.com/yairEO/d281bf017d203556f96c
 * https://github.com/Verba/jquery-readyselector/blob/master/test/jquery.readyselector_spec.js
+* https://sean.is/writing/client-side-testing-with-mocha-and-karma/
 
 ### FAQ
 
