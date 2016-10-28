@@ -368,6 +368,7 @@ Need unit tests.
 * https://gist.github.com/yairEO/d281bf017d203556f96c
 * https://github.com/Verba/jquery-readyselector/blob/master/test/jquery.readyselector_spec.js
 * https://sean.is/writing/client-side-testing-with-mocha-and-karma/
+* http://codeutopia.net/h/subscribe/
 
 ### FAQ
 
