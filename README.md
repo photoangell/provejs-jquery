@@ -362,6 +362,7 @@ input.proveConfig();
 ### Unit Tests
 
 Need unit tests.
+* http://qunitjs.com/
 * https://www.sitepoint.com/unit-test-javascript-mocha-chai/
 * https://github.com/rstacruz/jsdom-global
 * http://digitalbush.com/2011/03/29/testing-jquery-plugins-with-node-js-and-jasmine/
