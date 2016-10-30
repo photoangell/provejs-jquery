@@ -1007,6 +1007,26 @@
 !function ($) {
 	"use strict";
 
+	$.fn.otherTo = function( options ) {
+
+		if (typeof options === 'string') {
+			options = {
+				selector: options,
+				closest: 'form'
+			};
+		}
+
+		var el = $(this);
+		var wrapper = el.closest(options.closest);
+		var other = wrapper.find(options.selector);
+
+		return other;
+	};
+}(window.jQuery);
+
+!function ($) {
+	"use strict";
+
 	/**
 	* Fast UUID generator, RFC4122 version 4 compliant.
 	* @author Jeff Ward (jcward.com).
@@ -1138,7 +1158,7 @@
 	$.fn.proveCompareTo = function( options ) {
 
 		var input = $(this);
-		var other = $(options.compareTo);
+		var other = input.otherTo(options.compareTo);
 		var form = input.closest('form');
 		var value1 = input.val();
 		var value2 = other.val();
@@ -1180,6 +1200,17 @@
 			form.on('focusout', options.compareTo, function(){
 				input.validate();
 			});
+		}
+
+		if (options.debug){
+			console.groupCollapsed('Validator.proveCompareTo()', options.field);
+				console.log('options', options);
+				console.log('input', input);
+				console.log('value1', value1);
+				console.log('value2', value2);
+				console.log('enabled', enabled);
+				console.log('validation', validation);
+			console.groupEnd();
 		}
 
 		//return validation result

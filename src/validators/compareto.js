@@ -4,7 +4,7 @@
 	$.fn.proveCompareTo = function( options ) {
 
 		var input = $(this);
-		var other = $(options.compareTo);
+		var other = input.otherTo(options.compareTo);
 		var form = input.closest('form');
 		var value1 = input.val();
 		var value2 = other.val();
@@ -46,6 +46,17 @@
 			form.on('focusout', options.compareTo, function(){
 				input.validate();
 			});
+		}
+
+		if (options.debug){
+			console.groupCollapsed('Validator.proveCompareTo()', options.field);
+				console.log('options', options);
+				console.log('input', input);
+				console.log('value1', value1);
+				console.log('value2', value2);
+				console.log('enabled', enabled);
+				console.log('validation', validation);
+			console.groupEnd();
 		}
 
 		//return validation result

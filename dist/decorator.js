@@ -1,16 +1,6 @@
 !function ($) {
 	"use strict";
 
-	function inverse(valid){
-		switch (valid) {
-			case 'success': return 'danger';
-			case 'warning': return 'danger';
-			case 'danger': return 'success';
-			case 'reset': return 'reset';
-		}
-		return (valid === undefined)? valid : !valid;
-	}
-
 	$.fn.bootstrap = function(options){
 
 		options = options || {};
