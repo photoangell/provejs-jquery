@@ -110,7 +110,7 @@ form.prove({
 	- **Type:** string or false,
 	- **Required:** false,
 	- **Default:** 'change keyup click blur',
-	- **Description:** The events on which you want to live validation to happen. A value of false will disable live validation.
+	- **Description:** The events on which you want to live validation to happen. A value of false will disable live validation. The default value for trigger changes on two conditions 1) input type and 2) if the input is already in the form DOM at the time `form.prove()` is called. In other words, if you are dynamically inserted your form inputs after `form.prove()` than you should specify the event trigger values. If you are not dynamically inserted form inputs than you can all prove to determine the live event triggers. See $.fn.proveTriggers() for details on the default triggers.
 - `throttle`
 	- **Type:** int,
 	- **Required:** false,
