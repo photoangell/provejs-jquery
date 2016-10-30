@@ -895,7 +895,7 @@
 			} else if (type == 'checkbox' || type == 'radio') {
 				this.checked = false;
 			} else if (tag == 'select') {
-				this.selectedIndex = -1;
+				this.selectedIndex = 0;
 			} else {
 				return $(':input',this).clear();
 			}
