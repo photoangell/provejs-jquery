@@ -1,6 +1,11 @@
 !function ($) {
 	"use strict";
 
+
+	// todo: at somepoint pass in options which toggle `select` selected options between:
+	// 1. setting selected = 0
+	// 2. setting selected = -1
+
 	$.fn.clear = function() {
 		return this.each(function() {
 
