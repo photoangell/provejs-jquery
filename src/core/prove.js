@@ -161,7 +161,7 @@
 
 				var selector = that.domSelector(field, name);
 				var input = that.$form.find(selector);
-				var trigger = input.proveEvents();
+				var trigger = input.proveTriggers();
 
 /*				console.groupCollapsed('setupInputs()');
 				console.log('field', field);

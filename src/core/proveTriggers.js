@@ -2,10 +2,12 @@
 	'use strict';
 
 	//return string of space seperated events used to detect change to the DOM element
-	$.fn.proveEvents = function() {
+	$.fn.proveTriggers = function() {
 
-		var input = $(this);
-		var type = input.attr('type');
+		//var input = $(this);
+		//var type = input.attr('type');
+		var type = this.type;
+		var tag = this.tagName;
 
 		if (type === 'text') {
 			return 'input change keyup blur';
@@ -41,9 +43,9 @@
 			return 'input change keyup blur';
 		} else if (type === 'week') {
 			return 'input change keyup blur';
-		} else if (input.is('select')) {
+		} else if (tag === 'select') {
 			return 'change blur';
-		} else if (input.is('textarea')) {
+		} else if (tag === 'textarea') {
 			return 'input change keyup blur';
 		} else {
 			return 'input change keyup click blur';
