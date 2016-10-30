@@ -11,6 +11,7 @@
 
 			var type = this.type;
 			var tag = this.tagName.toLowerCase();
+			var clear = this.dataset.clear;
 
 			if (type == 'text' || type == 'password' || tag == 'textarea') {
 				this.value = '';
@@ -18,13 +19,20 @@
 				this.checked = false;
 			} else if (tag == 'select') {
 				this.selectedIndex = 0;
+			} else if (clear === 'hide'){
+				this.style.display = 'none';
+			} else if (clear === 'show'){
+				this.style.display = 'block';
 			} else {
-				return $(':input',this).clear();
+				return $(':input, [data-clear]', this).clear();
 			}
+
+			// trigger event to have decorators reset decoration
 			$(this).trigger('status.input.prove', {
 				status: 'validated',
 				validation: 'reset'
 			});
 		});
 	};
+
 }(window.jQuery);
