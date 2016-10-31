@@ -96,9 +96,10 @@
 			// loop validators
 			$.each(validators, function(validator, config){
 
-				config.field = field.name;
+				config.field = field.name; //todo: perhaps config.name = field.name
 				config.validator = validator;
-				config.initiator = initiator;
+				config.initiator = initiator; //event namespace or `prove`
+				config.group = field.group;
 
 				// invoke validator plugin
 				if (!isPlugin(validator)) return false;

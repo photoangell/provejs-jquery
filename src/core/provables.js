@@ -26,7 +26,7 @@
 	};
 
 	// Any field for which you might have multiple inputs of the same name (checkbox, radio, name="fields[]")
-	// for which you want to be validated individually, you can set the field.group = true.
+	// for which you want to be validated individually, you can set the field.group = false.
 	$.fn.filterables = function(field){
 
 		var found = $(this);

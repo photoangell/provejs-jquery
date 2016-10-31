@@ -26,7 +26,7 @@
 	};
 
 	// Any field for which you might have multiple inputs of the same name (checkbox, radio, name="fields[]")
-	// for which you want to be validated individually, you can set the field.group = true.
+	// for which you want to be validated individually, you can set the field.group = false.
 	$.fn.filterables = function(field){
 
 		var found = $(this);
@@ -583,9 +583,10 @@
 			// loop validators
 			$.each(validators, function(validator, config){
 
-				config.field = field.name;
+				config.field = field.name; //todo: perhaps config.name = field.name
 				config.validator = validator;
-				config.initiator = initiator;
+				config.initiator = initiator; //event namespace or `prove`
+				config.group = field.group;
 
 				// invoke validator plugin
 				if (!isPlugin(validator)) return false;
