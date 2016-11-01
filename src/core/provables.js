@@ -42,7 +42,7 @@
 				// ungroup inputs by name if multiple dimensional array of inputs
 				// and the field indicates the inputs should be grouped. This allows us
 				// to support radios and checkboxes in a multiple dimension for inputs.
-				if (names.length > 2 && group) {
+				if (names.length > 1 && group) {
 					// ungroup by name
 					$.each(names, function(index, name){
 						selector = '[name="' + name + '"]';
