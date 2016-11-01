@@ -1,9 +1,11 @@
 !function ($) {
 	"use strict";
 
-	$.fn.vals = function(options) {
+	// if group is group then use multiple selection model.
+	// if group is false then use single selection model.
+	// if group is undefined then use single selection model execept for this.type === radio
 
-		options = options || {};
+	$.fn.vals = function(group) {
 
 		var input = $(this);
 		var type = input.attr('type');
@@ -13,19 +15,36 @@
 		var isNumber = (type === 'number');
 		var isFile = (type === 'file');
 		var name = input.attr('name');
-		var val, idx, selector;
-
-		//todo: why are we not handling multiple values here?
+		var selector = '[name="' + name + '"]';
+		var val, idx;
 
 		if (isSelect){
-			val = input.val();
+			if (group) {
+				// multiple selection model
+				val = input.closest('form').find(selector).val();
+			} else {
+				// single selection model
+				val = input.val();
+			}
 		} else if ( isRadio ) {
-			// single selection model
-			val = input.filter(':checked').val();
-		} else if ( isCheckbox){
-			// multiple selection model
-			selector = '[name="' + name + '"]:checked';
-			val = input.closest('form').find(selector).val();
+			if (group || typeof group === 'undefined') {
+				// multiple selection model
+				selector = selector + ':checked';
+				val = input.closest('form').find(selector).val();
+			} else {
+				// single selection model
+				val = input.filter(':checked').val();
+			}
+		} else if ( isCheckbox ){
+			if (group) {
+				// multiple selection model
+				selector = selector + ':checked';
+				val = input.closest('form').find(selector).val();
+			} else {
+				// single selection model
+				val = input.filter(':checked').val();
+			}
+
 		} else if ( isNumber && typeof input.validity !== 'undefined' ) {
 			val = input.validity.badInput ? NaN : input.val();
 		} else if ( isFile ) {

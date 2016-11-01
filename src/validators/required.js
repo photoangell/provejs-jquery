@@ -4,7 +4,7 @@
 	$.fn.proveRequired = function(options){
 
 		var input = $(this);
-		var value = input.vals();
+		var value = input.vals(options.group);
 		var enabled = $('body').booleanator(options.enabled);
 		var has = input.hasValue(options.prefix)? 'success' : 'danger';
 		var validation = (enabled)? has : 'reset';
