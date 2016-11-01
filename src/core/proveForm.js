@@ -32,16 +32,16 @@
 		var states = prove.states;
 		var options = prove.options;
 		var fields = options.fields;
-		var filter = true;
 		var promises = [];
 		var dfd = $.Deferred();
 		var combined;
 
 		// Loop inputs and validate them. There may be multiple
 		// identical inputs (ie radios) for which we do not want to
-		// validate twice. Therefore, $.fn.provables() will filter
-		// these multiples for us unless less field.group is true.
-		form.provables(fields, filter).each(function(){
+		// validate individually but rather as a group. Therefore,
+		// $.fn.provablesValidation() will filter these multiples
+		// for us unless less field.group is false.
+		form.provablesValidation(fields).each(function(){
 			var input = $(this);
 			var field = fields[this.field];
 			var initiator = 'prove';

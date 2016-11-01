@@ -203,7 +203,7 @@
 
 			var form = this.$form;
 
-			form.provables(this.options.fields).each(function(){
+			form.provablesSetup(this.options.fields).each(function(){
 
 				var input = $(this);
 				var field = this.field;

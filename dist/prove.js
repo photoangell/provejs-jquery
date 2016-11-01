@@ -1,11 +1,8 @@
 !function ($) {
 	"use strict";
 
-	// Called at input setup and while validating entire form.
-	// The `filter` param is a bool.
-	// During input setup filter will be undefined.
-	// During form validation it will be true.
-	$.fn.provables = function(fields, filter) {
+	// Called at input setup.
+	$.fn.provablesSetup = function(fields) {
 
 		var inputs = $();
 		var form = $(this);
@@ -15,9 +12,8 @@
 		$.each(fields, function(name, field){
 
 			var found = form.find(field.selector);
-			var filtered = (filter)? found.filterables(field) : found;
 
-			filtered.each(function(){
+			found.each(function(){
 				this.field = name;
 				inputs.push(this);
 			});
@@ -25,9 +21,71 @@
 		return inputs;
 	};
 
+	// Called during entire form validation.
+	// Filter out multiple inputs like radios and checkboxes
+	$.fn.provablesValidation = function(fields) {
+
+		var inputs = $();
+		var form = $(this);
+		fields = fields || {};
+
+		// build selector
+		$.each(fields, function(fieldIndex, field){
+
+			var group = field.group;
+			var found = form.find(field.selector);
+			var names = found.distincts();
+			var filtered, selector;
+			var flag = true;
+
+			if (flag) {
+				// ungroup inputs by name if multiple dimensional array of inputs
+				// and the field indicates the inputs should be grouped. This allows us
+				// to support radios and checkboxes in a multiple dimension for inputs.
+				if (names.length > 2 && group) {
+					// ungroup by name
+					$.each(names, function(index, name){
+						selector = '[name="' + name + '"]';
+						filtered = found.filter(selector).filterables(group);
+						filtered.each(function(){
+							this.field = fieldIndex;
+							inputs.push(this);
+						});
+					});
+				} else {
+					filtered = found.filterables(group);
+					filtered.each(function(){
+						this.field = fieldIndex;
+						inputs.push(this);
+					});
+				}
+			} else {
+				filtered = found.filterables(group);
+				filtered.each(function(){
+					this.field = fieldIndex;
+					inputs.push(this);
+				});
+			}
+		});
+		return inputs;
+	};
 	// Any field for which you might have multiple inputs of the same name (checkbox, radio, name="fields[]")
 	// for which you want to be validated individually, you can set the field.group = false.
-	$.fn.filterables = function(field){
+
+	// todo
+	// However, in the case of radio inputs which are arrayed `field[index][foobar]` we want to ungroup by name.
+	// For example, you could have inputs with names of:
+	// - `field[0][foobar]`
+	// - `field[0][foobar]`
+	// - `field[1][foobar]`
+	// - `field[1][foobar]`
+	// - `field[2][foobar]`
+	// - `field[2][foobar]`
+
+	// which we would want to ungroup by input name and then apply filter function to
+	// each group of indexed radio inputs.
+
+	$.fn.filterables = function(group){
 
 		var found = $(this);
 		var isRadio = found.is(':radio');
@@ -44,12 +102,12 @@
 				// We are only interested in filter multiple inputs,
 				// so with a single found input nothing to filter here.
 				return true;
-			} else if (field.group === false){
+			} else if (group === false){
 				// Field config indicates we should validate these inputs individually.
 				return true;
-			} else if (field.group === true) {
+			} else if (group === true) {
 				// Field config indicates we should validate these inputs as a collection.
-				// Therefore, only validate the firsts element.
+				// Therefore, only validate the first element.
 				return (index === 0);
 			} else if (isRadio){
 				if (hasAtLeastOneChecked){
@@ -273,7 +331,7 @@
 
 			var form = this.$form;
 
-			form.provables(this.options.fields).each(function(){
+			form.provablesSetup(this.options.fields).each(function(){
 
 				var input = $(this);
 				var field = this.field;
@@ -434,16 +492,16 @@
 		var states = prove.states;
 		var options = prove.options;
 		var fields = options.fields;
-		var filter = true;
 		var promises = [];
 		var dfd = $.Deferred();
 		var combined;
 
 		// Loop inputs and validate them. There may be multiple
 		// identical inputs (ie radios) for which we do not want to
-		// validate twice. Therefore, $.fn.provables() will filter
-		// these multiples for us unless less field.group is true.
-		form.provables(fields, filter).each(function(){
+		// validate individually but rather as a group. Therefore,
+		// $.fn.provablesValidation() will filter these multiples
+		// for us unless less field.group is false.
+		form.provablesValidation(fields).each(function(){
 			var input = $(this);
 			var field = fields[this.field];
 			var initiator = 'prove';
@@ -960,6 +1018,28 @@
 		if (dirty) el.data('prove-hash', hash2);
 		return dirty;
 	};
+}(window.jQuery);
+
+!function ($) {
+	"use strict";
+
+	function contains(str, arr) {
+		return ($.inArray(str, arr) === -1)? false : true;
+	}
+
+	$.fn.distincts = function() {
+
+		var names = [];
+
+		this.each(function() {
+			var name = this.name;
+			var distinct = !contains(name, names);
+			if (distinct) names.push(name);
+		});
+
+		return names;
+	};
+
 }(window.jQuery);
 
 !function ($) {
