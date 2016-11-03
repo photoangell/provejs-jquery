@@ -12,9 +12,10 @@
 			var type = this.type;
 			var tag = this.tagName.toLowerCase();
 			var clear = this.dataset.clear;
+			var value = this.dataset['clear-value'] || '';
 
 			if (type == 'text' || type == 'password' || tag == 'textarea') {
-				this.value =  this['data-clear-value'] || '';
+				this.value =  value;
 			} else if (type == 'checkbox' || type == 'radio') {
 				this.checked = false;
 			} else if (tag == 'select') {
