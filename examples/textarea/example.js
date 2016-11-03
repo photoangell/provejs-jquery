@@ -21,6 +21,7 @@ $.fn.textPrefix = function(options){
 	}
 
 	function setup(){
+		el.data('clear-value', prefix);
 		if (!el.val()) el.val(prefix);
 	}
 
