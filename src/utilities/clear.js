@@ -14,7 +14,7 @@
 			var clear = this.dataset.clear;
 
 			if (type == 'text' || type == 'password' || tag == 'textarea') {
-				this.value = '';
+				this.value =  this['data-clear-value'] || '';
 			} else if (type == 'checkbox' || type == 'radio') {
 				this.checked = false;
 			} else if (tag == 'select') {
