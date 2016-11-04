@@ -955,7 +955,7 @@
 			var type = this.type;
 			var tag = this.tagName.toLowerCase();
 			var clear = el.data('clear');
-			var value = el.data('clear-value');
+			var value = el.data('clear-value') || '';
 
 			if (type == 'text' || type == 'password' || tag == 'textarea') {
 				this.value =  value;
