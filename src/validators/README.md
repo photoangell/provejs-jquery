@@ -1,6 +1,6 @@
 # Prove Validators
 
-ProveJS comes the following standard validators:
+ProveJS comes with the following standard validators:
 * Synchronous
 	* [proveCallback](#provecallback) - a general purpose callback validator.
 	* [proveCompareTo](#provecompareto) - compare current field to another inputs value using comparison operators.
