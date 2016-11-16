@@ -20,8 +20,8 @@ The standard validators should support must use cases. However, you can make you
 
 ## Design
 An input validator is a jquery plugin which validates an input's value. There are two types of validators:
-- Synchronous - immediately returns a result object,
-- Asynchronous - returns a deferred/promise that will return a result object in the future.
+- **Synchronous** - immediately returns a result object,
+- **Asynchronous** - returns a deferred/promise that will return a result object in the future.
 
 The validator result object is defined below and is used as the event data which the decorators listen. Therefore, the result object is passed to the decorators to decorate the form inputs.
 
