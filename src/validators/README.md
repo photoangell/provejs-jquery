@@ -1,5 +1,23 @@
 # Prove Validators
 
+ProveJS comes the following standard validators:
+* Synchronous
+	* [proveCallback](#provecallback) - a general purpose callback validator.
+	* [proveCompareTo](#provecompareto) - compare current field to another inputs value using comparison operators.
+	* [proveEqualTo](#proveequalto) - compare current field to another inputs value.
+	* [proveLength](#provelength) - compare input value's **string** min and max length.
+	* [proveMax](#provemax) - compare **numeric** input value's against a max value.
+	* [proveMin](#provemin) - compare **numeric** input value's against a min value.
+	* [provePattern](#provepattern) - compare input value against a regex value.
+	* [provePrecision](#proveprecision) - compare input **numeric** value for decimal percision.
+	* [proveRequired](#proverequired) - input value will be required.
+	* [proveUnique](#proveunique) - input value must be unique compared to other inputs.
+* Asynchronous
+	* [proveDeferredRemote](#provedeferredremote) - a general purpose asynchronous validator.
+	* [proveMailgu](#provemailgu) - compare input value's against Mailgun's email validation API.
+
+The standard validators should support must use cases. However, you can make your validators (jQuery plugins) in just a couple of minutes.
+
 ## Design
 An input validator is a jquery plugin which validates an input's value. There are two types of validators:
 - Synchronous - immediately returns a result object,
