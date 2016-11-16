@@ -16,7 +16,7 @@ ProveJS comes with the following standard validators:
 	* [proveDeferredRemote](#provedeferredremote) - a general purpose asynchronous validator.
 	* [proveMailgu](#provemailgu) - compare input value's against Mailgun's email validation API.
 
-The standard validators should support must use cases. However, you can make your validators (jQuery plugins) in just a couple of minutes.
+The standard validators should support must use cases. However, you can make your own custom validator (jQuery plugins) in just a couple of minutes.
 
 ## Design
 An input validator is a jquery plugin which validates an input's value. There are two types of validators:
