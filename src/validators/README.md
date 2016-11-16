@@ -1,7 +1,7 @@
 # Prove Validators
 
 ProveJS comes with the following standard validators:
-* Synchronous
+* **Synchronous Validators**
 	* [proveCallback](#provecallback) - a general purpose callback validator.
 	* [proveCompareTo](#provecompareto) - compare current field to another inputs value using comparison operators.
 	* [proveEqualTo](#proveequalto) - compare current field to another inputs value.
@@ -12,7 +12,7 @@ ProveJS comes with the following standard validators:
 	* [provePrecision](#proveprecision) - compare input **numeric** value for decimal percision.
 	* [proveRequired](#proverequired) - input value will be required.
 	* [proveUnique](#proveunique) - input value must be unique compared to other inputs.
-* Asynchronous
+* **Asynchronous Validators**
 	* [proveDeferredRemote](#provedeferredremote) - a general purpose asynchronous validator.
 	* [proveMailgu](#provemailgu) - compare input value's against Mailgun's email validation API.
 
