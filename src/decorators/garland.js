@@ -20,7 +20,9 @@
 			var garland = $(options.wrapper);
 			garland.addClass('garland-wrapper');
 			garland.text(options.message);
-			container.append(garland);
+			//container.append(garland);
+			container.children().not('.form-control-static').last().after(garland);
+			//container.children(':not(".form-control-static"):last').after(garland);
 		}
 
 		function teardown(container){
