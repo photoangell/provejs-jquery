@@ -594,6 +594,7 @@ form.prove({
 	}
 });
 ```
+You can prove uniqueness in two ways. First if the fields you want to test for uniqueness all have the same name attribute then set `group: true` on the field config. If the fields you want to test uniqueness on have different names then use the validator option `uniqueTo` to specify a jquery selector.
 
 - options:
 	- `debug`

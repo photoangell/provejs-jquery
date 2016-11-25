@@ -3,6 +3,7 @@
 	// check related input has a value
 	$.fn.otherDescriptionRequired = function(options){
 
+		var message;
 		var checkbox = $(this);
 		var inputs = checkbox
 			.closest('.form-group')
@@ -14,10 +15,13 @@
 		var validation = 'success';
 		inputs.each(function(){
 			var input = $(this);
-			var hasValue = input.hasValue();
+			var value = input.val();
+			var hasValue = $.hasValue(value);
 			if (!hasValue) validation = 'danger';
 			return hasValue;
 		});
+
+		message = (validation === 'danger')? options.message : undefined;
 
 		if (options.debug){
 			console.groupCollapsed('Validators.otherDescriptionRequired()', options.field);
@@ -31,13 +35,14 @@
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
-			message: options.message
+			message: message
 		};
 	};
 
 	// check related input has a value
 	$.fn.otherDescriptionPattern = function(options){
 
+		var message;
 		var checkbox = $(this);
 		var inputs = checkbox
 			.closest('.form-group')
@@ -62,12 +67,14 @@
 			console.groupEnd();
 		}
 
+		message = (validation === 'danger')? options.message : undefined;
+
 		return {
 			field: options.field,
 			validator: options.validator,
 			status: 'validated',
 			validation: validation,
-			message: options.message
+			message: message
 		};
 	};
 

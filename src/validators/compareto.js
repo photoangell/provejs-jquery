@@ -8,7 +8,7 @@
 		var form = input.closest('form');
 		var value1 = input.val();
 		var value2 = other.val();
-		var hasValue = input.hasValue();
+		var hasValue = $.hasValue(value1);
 		var isSetup = input.hasClass('validator-compareto-setup');
 		var enabled = $('body').booleanator(options.enabled);
 		var validation;

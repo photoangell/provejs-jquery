@@ -5,7 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-		<title>Prove Unique</title>
+		<title>Prove Checkboxes</title>
 
 		<!-- Bootstrap -->
 		<!-- Latest compiled and minified CSS -->
@@ -26,33 +26,52 @@
 
 			<div class="row">
 				<div class="col-sm-6">
-
-
 					<form>
+
 						<fieldset>
-							<legend>Unique Input</legend>
+							<legend>Multiple checkboxes with the same name</legend>
 
-							<div class="alert alert-info">
-								You can prove uniqueness in two ways. First if the fields you want to test for uniqueness all have the same name attribute then set `group: true` on the field config. If the fields you want to test uniqueness on have different names then use the validator option `uniqueTo` to specify a jquery selector.
+							<div class="alert alert-info">Plese note:
+								<ul>
+									<li>For checkboxes inputs set the <code>trigger: 'change'</code> to reduce the number of times live validation happens.</li>
+									<!-- <li>Stateful validation does not work on fields with multiple inputs. Therefore, radio inputs will always be validated on form submit.</li> -->
 							</div>
-
-							<div class="form-group">
-								<label for="email" class="control-label">Email</label>
-								<input type="email" name="emails" class="form-control" placeholder="Unique email">
-							</div>
-							<div class="form-group">
-								<label for="email" class="control-label">Email</label>
-								<input type="email" name="emails" class="form-control" placeholder="Unique email">
-							</div>
-							<div class="form-group">
-								<label for="email" class="control-label">Email</label>
-								<input type="email" name="emails" class="form-control" placeholder="Unique email">
-							</div>
-							<div class="form-group">
-								<label for="email" class="control-label">Email</label>
-								<input type="email" name="emails" class="form-control" placeholder="Unique email">
-							</div>
+							<!-- <div class="form-group"> -->
+							<!-- <div class="form-group m-l-2"> -->
+								<div class="checkbox">
+									<label class="control-label">
+										<input type="checkbox" name="methods" value="CERTIFIED">
+										Certified Mail, RRR
+									</label>
+								</div>
+								<div class="checkbox">
+									<label class="control-label">
+										<input type="checkbox" name="methods" value="HAND">
+										Hand-Delivery
+									</label>
+								</div>
+								<div class="checkbox">
+									<label class="control-label">
+										<input type="checkbox" name="methods" value="FAX">
+										Facsimile
+									</label>
+								</div>
+								<div class="checkbox">
+									<label class="control-label">
+										<input type="checkbox" name="methods" value="EMAIL">
+										Email
+									</label>
+								</div>
+								<div class="checkbox">
+									<label class="control-label">
+										<input type="checkbox" name="methods" value="FIRSTCLASS">
+										First Class Mail
+									</label>
+								</div>
+							<!-- </div> -->
+							<!-- </div> -->
 						</fieldset>
+
 
 						<button type="submit" class="btn btn-default">Validate</button>
 						<span id="form-status" class="label"></span>

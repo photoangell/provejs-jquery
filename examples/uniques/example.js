@@ -3,8 +3,8 @@
 	var email = $('[name="emails[]"]');
 	var cfg = {
 		fields: {
-			'emails[]': {
-				group: false,
+			emails: {
+				group: true,
 				trigger: 'keyup',
 				validators: {
 					provePattern: {
@@ -14,7 +14,7 @@
 					},
 					proveUnique: {
 						debug: true,
-						uniqueTo: '[name="emails[]"]',
+						//uniqueTo: '[name="others"]',
 						message: 'Not unique value.' //optional, passed to decorator
 					}
 				}

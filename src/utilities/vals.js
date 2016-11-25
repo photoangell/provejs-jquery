@@ -21,7 +21,7 @@
 		if (isSelect){
 			if (group) {
 				// multiple selection model
-				val = input.closest('form').find(selector).val();
+				val = input.valsGroup(selector);
 			} else {
 				// single selection model
 				val = input.val();
@@ -30,7 +30,7 @@
 			if (group || typeof group === 'undefined') {
 				// multiple selection model
 				selector = selector + ':checked';
-				val = input.closest('form').find(selector).val();
+				val = input.valsGroup(selector);
 			} else {
 				// single selection model
 				val = input.filter(':checked').val();
@@ -39,7 +39,7 @@
 			if (group) {
 				// multiple selection model
 				selector = selector + ':checked';
-				val = input.closest('form').find(selector).val();
+				val = input.valsGroup(selector);
 			} else {
 				// single selection model
 				val = input.filter(':checked').val();
@@ -64,7 +64,14 @@
 		} else if ( input.attr('contenteditable') ) {
 			val = input.text();
 		} else {
-			val = input.val();
+			//val = input.val();
+			if (group) {
+				// multiple selection model
+				val = input.valsGroup(selector);
+			} else {
+				// single selection model
+				val = input.val();
+			}
 		}
 
 		if ( typeof val === 'string' ) return val.replace( /\r/g, '' );

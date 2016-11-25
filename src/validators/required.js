@@ -6,13 +6,14 @@
 		var input = $(this);
 		var value = input.vals(options.group);
 		var enabled = $('body').booleanator(options.enabled);
-		var has = input.hasValue(options.prefix)? 'success' : 'danger';
+		var has = $.hasValue(value, options.prefix)? 'success' : 'danger';
 		var validation = (enabled)? has : 'reset';
 		var message = (has === 'danger')? options.message : undefined;
 
 		if (options.debug){
 			console.groupCollapsed('Validator.proveRequired()', options.field, options.initiator);
 				console.log('options', options);
+				console.log('group', options.group);
 				console.log('input', input);
 				console.log('value', value);
 				console.log('enabled', enabled);

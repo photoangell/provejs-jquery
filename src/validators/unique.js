@@ -4,8 +4,9 @@
 	$.fn.proveUnique = function(options){
 
 		var input = $(this);
-		var value = input.val();
-		var hasValue = input.hasValue();
+		var value = input.vals(options.group);
+		var hasValue = $.hasValue(value, options.prefix);
+		var hasUnique = $.hasUnique(value);
 		var enabled = $('body').booleanator(options.enabled);
 		var others = $(options.uniqueTo).not(input);
 		var validation = 'success';
@@ -18,12 +19,15 @@
 			// All validators (except proveRequired) should return undefined when there is no value.
 			// Decoraters will teardown any decoration when they receive an `undefined` validation result.
 			validation = 'reset';
-		} else {
+		} else if (options.uniqueTo){
 			// compare against other input values
 			others.each(function(){
 				var other = $(this);
-				if (other.hasValue() && other.val() === value) validation = 'danger';
+				var value2 = other.val();
+				if ($.hasValue(value2) && value2 === value) validation = 'danger';
 			});
+		} else {
+			validation = hasUnique? 'success' : 'danger';
 		}
 
 		var message = (validation === 'danger')? options.message : undefined;
@@ -32,6 +36,7 @@
 			console.groupCollapsed('Validator.proveUnique()', options.field);
 				console.log('options', options);
 				console.log('value', value);
+				console.log('hasUnique', hasUnique);
 				console.log('validation', validation);
 			console.groupEnd();
 		}

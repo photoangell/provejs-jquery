@@ -1,24 +1,24 @@
 !function ($) {
 	"use strict";
 
-	$.fn.hasValue = function(prefix){
+	$.hasValue = function(value, prefix) {
 
-		var input = $(this);
-		var value = input.vals();
-		var isString, isArray, hasValue;
+		var hasValue = false;
+		var arr = $.makeArray(value);
 
-		isString = (typeof value === 'string');
-		isArray = $.isArray(value);
+		//trim values
+		arr = arr.map($.trim);
 
-		//trim string input
-		value = (isString)? $.trim(value) : value;
+		//exclude prefix from values
+		if (prefix) arr = arr.map(function(str) {
+			str = str || '';
+			return str.substring(prefix.length, str.length + 1);
+		});
 
-		//exclude prefix value from string
-		if (isString && typeof prefix === 'string') {
-			value = value.substring(prefix.length - 1, value.length+1);
-		}
-
-		hasValue = ((isString && !!value.length) || (isArray && !!value.length && !!value[0].length));
+		// test values
+		arr.map(function(str) {
+			if (str.length) hasValue = true;
+		});
 		return hasValue;
 	};
 }(window.jQuery);

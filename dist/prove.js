@@ -1049,24 +1049,53 @@
 !function ($) {
 	"use strict";
 
-	$.fn.hasValue = function(prefix){
-
-		var input = $(this);
-		var value = input.vals();
-		var isString, isArray, hasValue;
-
-		isString = (typeof value === 'string');
-		isArray = $.isArray(value);
-
-		//trim string input
-		value = (isString)? $.trim(value) : value;
-
-		//exclude prefix value from string
-		if (isString && typeof prefix === 'string') {
-			value = value.substring(prefix.length - 1, value.length+1);
+	function getUniques(arr) {
+		var n = {};
+		var uniques = [];
+		for (var i = 0; i < arr.length; i++) {
+			var val = arr[i];
+			if (!n[val]) {
+				n[val] = true;
+				uniques.push(val);
+			}
 		}
+		return uniques;
+	}
 
-		hasValue = ((isString && !!value.length) || (isArray && !!value.length && !!value[0].length));
+	function empties(str) {
+		return (str.length > 0);
+	}
+
+	$.hasUnique = function(arr) {
+		arr = $.makeArray(arr);
+		arr = arr.map($.trim);
+		arr = arr.filter(empties);
+		var arr2 = getUniques(arr);
+		return (arr.length === arr2.length);
+	};
+}(window.jQuery);
+
+!function ($) {
+	"use strict";
+
+	$.hasValue = function(value, prefix) {
+
+		var hasValue = false;
+		var arr = $.makeArray(value);
+
+		//trim values
+		arr = arr.map($.trim);
+
+		//exclude prefix from values
+		if (prefix) arr = arr.map(function(str) {
+			str = str || '';
+			return str.substring(prefix.length, str.length + 1);
+		});
+
+		// test values
+		arr.map(function(str) {
+			if (str.length) hasValue = true;
+		});
 		return hasValue;
 	};
 }(window.jQuery);
@@ -1213,7 +1242,7 @@
 		if (isSelect){
 			if (group) {
 				// multiple selection model
-				val = input.closest('form').find(selector).val();
+				val = input.valsGroup(selector);
 			} else {
 				// single selection model
 				val = input.val();
@@ -1222,7 +1251,7 @@
 			if (group || typeof group === 'undefined') {
 				// multiple selection model
 				selector = selector + ':checked';
-				val = input.closest('form').find(selector).val();
+				val = input.valsGroup(selector);
 			} else {
 				// single selection model
 				val = input.filter(':checked').val();
@@ -1231,7 +1260,7 @@
 			if (group) {
 				// multiple selection model
 				selector = selector + ':checked';
-				val = input.closest('form').find(selector).val();
+				val = input.valsGroup(selector);
 			} else {
 				// single selection model
 				val = input.filter(':checked').val();
@@ -1256,12 +1285,32 @@
 		} else if ( input.attr('contenteditable') ) {
 			val = input.text();
 		} else {
-			val = input.val();
+			//val = input.val();
+			if (group) {
+				// multiple selection model
+				val = input.valsGroup(selector);
+			} else {
+				// single selection model
+				val = input.val();
+			}
 		}
 
 		if ( typeof val === 'string' ) return val.replace( /\r/g, '' );
 
 		return val;
+	};
+}(window.jQuery);
+
+!function ($) {
+	"use strict";
+
+	$.fn.valsGroup = function(selector) {
+
+		var input = $(this);
+		var vals = input.closest('form').find(selector).map(function() {
+			return $(this).val();
+		}).toArray();
+		return vals;
 	};
 }(window.jQuery);
 
@@ -1307,7 +1356,7 @@
 		var form = input.closest('form');
 		var value1 = input.val();
 		var value2 = other.val();
-		var hasValue = input.hasValue();
+		var hasValue = $.hasValue(value1);
 		var isSetup = input.hasClass('validator-compareto-setup');
 		var enabled = $('body').booleanator(options.enabled);
 		var validation;
@@ -1376,7 +1425,7 @@
 
 		var input = $(this);
 		var value = input.vals();
-		var hasValue = input.hasValue();
+		var hasValue = $.hasValue(value);
 		var enabled = $('body').booleanator(options.enabled);
 		var dfd = $.Deferred();
 		var result = {
@@ -1436,7 +1485,7 @@
 
 		var input = $(this);
 		var value = input.vals();
-		var hasValue = input.hasValue();
+		var hasValue = $.hasValue(value);
 
 		var enabled = $('body').booleanator(options.enabled);
 		var url;
@@ -1541,14 +1590,14 @@
 
 		var input = $(this);
 		var value = input.vals();
-		var hasValue = input.hasValue();
-		var validation = input.hasValue();
+		var hasValue = $.hasValue(value);
 		var enabled = $('body').booleanator(options.enabled);
 		var okMin = (typeof options.min !== 'undefined')? (value.length >= options.min) : true;
 		var okMax = (typeof options.max !== 'undefined')? (value.length <= options.max) : true;
+		var validation;
 
 		if (!enabled){
-			enabled = 'reset';
+			validation = 'reset';
 		} else if (!hasValue) {
 			// All validators are optional except of `required` validator.
 			validation = 'success';
@@ -1587,7 +1636,7 @@
 
 		var input = $(this);
 		var value = input.vals();
-		var hasValue = input.hasValue();
+		var hasValue = $.hasValue(value);
 
 		var field = options.field;
 		var validator = options.validator;
@@ -1773,7 +1822,7 @@
 
 		var input = $(this);
 		var value = input.val();
-		var hasValue = input.hasValue();
+		var hasValue = $.hasValue(value);
 		var enabled = $('body').booleanator(options.enabled);
 		var regex = (options.regex instanceof RegExp)
 			? options.regex
@@ -1856,13 +1905,14 @@
 		var input = $(this);
 		var value = input.vals(options.group);
 		var enabled = $('body').booleanator(options.enabled);
-		var has = input.hasValue(options.prefix)? 'success' : 'danger';
+		var has = $.hasValue(value, options.prefix)? 'success' : 'danger';
 		var validation = (enabled)? has : 'reset';
 		var message = (has === 'danger')? options.message : undefined;
 
 		if (options.debug){
 			console.groupCollapsed('Validator.proveRequired()', options.field, options.initiator);
 				console.log('options', options);
+				console.log('group', options.group);
 				console.log('input', input);
 				console.log('value', value);
 				console.log('enabled', enabled);
@@ -1887,8 +1937,9 @@
 	$.fn.proveUnique = function(options){
 
 		var input = $(this);
-		var value = input.val();
-		var hasValue = input.hasValue();
+		var value = input.vals(options.group);
+		var hasValue = $.hasValue(value, options.prefix);
+		var hasUnique = $.hasUnique(value);
 		var enabled = $('body').booleanator(options.enabled);
 		var others = $(options.uniqueTo).not(input);
 		var validation = 'success';
@@ -1901,12 +1952,15 @@
 			// All validators (except proveRequired) should return undefined when there is no value.
 			// Decoraters will teardown any decoration when they receive an `undefined` validation result.
 			validation = 'reset';
-		} else {
+		} else if (options.uniqueTo){
 			// compare against other input values
 			others.each(function(){
 				var other = $(this);
-				if (other.hasValue() && other.val() === value) validation = 'danger';
+				var value2 = other.val();
+				if ($.hasValue(value2) && value2 === value) validation = 'danger';
 			});
+		} else {
+			validation = hasUnique? 'success' : 'danger';
 		}
 
 		var message = (validation === 'danger')? options.message : undefined;
@@ -1915,6 +1969,7 @@
 			console.groupCollapsed('Validator.proveUnique()', options.field);
 				console.log('options', options);
 				console.log('value', value);
+				console.log('hasUnique', hasUnique);
 				console.log('validation', validation);
 			console.groupEnd();
 		}

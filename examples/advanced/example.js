@@ -55,7 +55,6 @@
 			'dynamic1[]': {
 				enabled:'#itemize:checked', //booleanator
 				trigger: 'keyup',
-				//group: false,
 				throttle: 1000,
 				validators:{
 					proveRequired: {
@@ -72,7 +71,7 @@
 						delay: 3000,
 						validation: 'success',
 						error: false,
-						message: 'Async validation failed.'
+						message: 'Fake async validation successful.'
 					}
 				}
 			}

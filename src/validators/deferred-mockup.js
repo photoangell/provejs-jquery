@@ -5,7 +5,7 @@
 
 		var input = $(this);
 		var value = input.vals();
-		var hasValue = input.hasValue();
+		var hasValue = $.hasValue(value);
 		var enabled = $('body').booleanator(options.enabled);
 		var dfd = $.Deferred();
 		var result = {

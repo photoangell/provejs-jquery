@@ -5,7 +5,7 @@
 
 		var input = $(this);
 		var value = input.val();
-		var hasValue = input.hasValue();
+		var hasValue = $.hasValue(value);
 		var enabled = $('body').booleanator(options.enabled);
 		var regex = (options.regex instanceof RegExp)
 			? options.regex

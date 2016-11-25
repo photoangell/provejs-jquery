@@ -5,14 +5,14 @@
 
 		var input = $(this);
 		var value = input.vals();
-		var hasValue = input.hasValue();
-		var validation = input.hasValue();
+		var hasValue = $.hasValue(value);
 		var enabled = $('body').booleanator(options.enabled);
 		var okMin = (typeof options.min !== 'undefined')? (value.length >= options.min) : true;
 		var okMax = (typeof options.max !== 'undefined')? (value.length <= options.max) : true;
+		var validation;
 
 		if (!enabled){
-			enabled = 'reset';
+			validation = 'reset';
 		} else if (!hasValue) {
 			// All validators are optional except of `required` validator.
 			validation = 'success';
