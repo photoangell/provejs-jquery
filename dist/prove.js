@@ -1481,6 +1481,19 @@
 !function($) {
 	'use strict';
 
+	/*
+		This validator is a general purpose async validator which assumes the remote server will
+		return the following response:
+		{
+			validation: 'success', // required, 'success', 'danger', 'warning', 'reset'
+		    message: 'Your error message or error code used by the decorator.' // optional
+	 	}
+
+		Your remote server will also need to return a status code of 200. Any other status code
+		this validator assumes there is technical problems with the remote validation. Therefore,
+		validaiton will fail.
+	*/
+
 	$.fn.proveDeferredRemote = function(options) {
 
 		var input = $(this);
@@ -1516,17 +1529,22 @@
 				method: method,
 				data: data
 			})
-			.done(function() {
-				result.validation = 'success';
+			.done(function(data, textStatus, xhr) {
+				if (xhr.status === 200 && data.validation) {
+					result.validation = data.validation;
+					result.message = data.message || options.message;
+				} else if (xhr.status === 302 || xhr.status === 404){
+					result.validation = 'danger';
+					result.message = 'The remote validator endpoint was not found.';
+				} else {
+					result.validation = 'danger';
+					result.message = 'The remote validator return an incorrect response.';
+				}
 				dfd.resolve(result);
 			})
-			.fail(function(xhr) {
+			.fail(function() {
 				result.validation = 'danger';
-				if (options.message) {
-					result.message = options.message;
-				} else {
-					result.message = xhr.responseText;
-				}
+				result.message = 'The remote validator return an incorrect response.';
 				dfd.resolve(result);
 			});
 		}
