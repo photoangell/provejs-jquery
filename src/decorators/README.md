@@ -7,6 +7,18 @@ You can decorate your form using the using the prove bootstrap decorator.
 form.prove(options);
 form.decorate('bootstrap');
 ```
+
+You can prefix your validation messages (e.g. icons).
+```javascript
+form.prove(options);
+form.decorate('bootstrap', {
+	prefixes: {
+		danger: '<i class="fa fa-times"></i> '
+	}
+});
+```
+You can prefix messages of validation types: `success`, `danger`, `warning`, `reset`.
+
 ### Server Side Errors
 
 On initial page load you might need to decorate your form with server-side errors.
