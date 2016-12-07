@@ -64,10 +64,10 @@
 
 		//prefix message
 		if (options.message) {
-			if (prefixes.success) options.message = prefixes.success + options.message;
-			if (prefixes.danger) options.message = prefixes.danger + options.message;
-			if (prefixes.warning) options.message = prefixes.warning + options.message;
-			if (prefixes.reset) options.message = prefixes.reset + options.message;
+			if (prefixes.success && options.validation === 'success') options.message = prefixes.success + options.message;
+			if (prefixes.danger && options.validation === 'danger') options.message = prefixes.danger + options.message;
+			if (prefixes.warning && options.validation === 'warning') options.message = prefixes.warning + options.message;
+			if (prefixes.reset && options.validation === 'reset') options.message = prefixes.reset + options.message;
 		}
 
 		// display message.
