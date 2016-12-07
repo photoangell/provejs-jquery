@@ -69,11 +69,8 @@
 			}
 		}
 
-		// show message on options.validation = 'danger'.
-		// remove message on options.valid = 'success'.
-		// remove message on options.valid = 'reset'.
+		// display message.
 		el1.garland({
-			// validation: inverse(options.validation),
 			wrapper: '<span class="help-block"></span>',
 			message: options.message
 		});
@@ -188,22 +185,14 @@
 		function setup(container){
 			var garland = $(options.wrapper);
 			garland.addClass('garland-wrapper');
-			garland.text(options.message);
-			//container.append(garland);
+			garland.html(options.message);
 			container.children().not('.form-control-static').last().after(garland);
-			//container.children(':not(".form-control-static"):last').after(garland);
 		}
 
 		function teardown(container){
 			container.find('.garland-wrapper').remove();
 		}
-
-		// if (options.validation === 'success') {
-		// 	teardown(input);
-		// 	setup(input, options);
-		// } else {
-		// 	teardown(input);
-		// }
+		
 		teardown(input);
 		if (options.message) setup(input, options);
 	};

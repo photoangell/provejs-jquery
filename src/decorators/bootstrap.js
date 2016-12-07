@@ -69,11 +69,8 @@
 			}
 		}
 
-		// show message on options.validation = 'danger'.
-		// remove message on options.valid = 'success'.
-		// remove message on options.valid = 'reset'.
+		// display message.
 		el1.garland({
-			// validation: inverse(options.validation),
 			wrapper: '<span class="help-block"></span>',
 			message: options.message
 		});
