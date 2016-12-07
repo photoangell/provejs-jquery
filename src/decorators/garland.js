@@ -26,7 +26,7 @@
 		function teardown(container){
 			container.find('.garland-wrapper').remove();
 		}
-		
+
 		teardown(input);
 		if (options.message) setup(input, options);
 	};

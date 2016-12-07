@@ -6,6 +6,7 @@
 		options = options || {};
 		var input = $(this);
 		var parent1, parent2, parent3, el1, el2, group, garland, tinsel;
+		var prefixes = options.prefixes || {};
 
 		if (options.status === 'progress') return;
 
@@ -17,14 +18,6 @@
 		}
 
 		if (options.status === 'validating') return;
-
-
-		tinsel = {
-			validation: options.validation,
-			classSuccess: 'has-success',
-			classFailure: 'has-error',
-			classWarning: 'has-warning'
-		};
 
 		parent1 = input.parent();
 		parent2 = parent1.parent();
@@ -69,6 +62,14 @@
 			}
 		}
 
+		//prefix message
+		if (options.message) {
+			if (prefixes.success) options.message = prefixes.success + options.message;
+			if (prefixes.danger) options.message = prefixes.danger + options.message;
+			if (prefixes.warning) options.message = prefixes.warning + options.message;
+			if (prefixes.reset) options.message = prefixes.reset + options.message;
+		}
+
 		// display message.
 		el1.garland({
 			wrapper: '<span class="help-block"></span>',
@@ -90,9 +91,10 @@
 !function ($) {
 	"use strict";
 
-	$.fn.decorate = function(plugin){
+	$.fn.decorate = function(plugin, options){
 
 		plugin = plugin || 'bootstrap';
+		options = options || {};
 
 		var form = $(this);
 		var exists = ($.isFunction($.fn[plugin]));
@@ -102,6 +104,7 @@
 		// decorate the form
 		form.on('status.input.prove', function(event, data){
 			var input = $(event.target);
+			data = $.extend(data, options);
 			if (exists) input[plugin](data);
 		});
 	};
@@ -192,7 +195,7 @@
 		function teardown(container){
 			container.find('.garland-wrapper').remove();
 		}
-		
+
 		teardown(input);
 		if (options.message) setup(input, options);
 	};

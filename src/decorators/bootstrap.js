@@ -6,6 +6,7 @@
 		options = options || {};
 		var input = $(this);
 		var parent1, parent2, parent3, el1, el2, group, garland, tinsel;
+		var prefixes = options.prefixes || {};
 
 		if (options.status === 'progress') return;
 
@@ -17,14 +18,6 @@
 		}
 
 		if (options.status === 'validating') return;
-
-
-		tinsel = {
-			validation: options.validation,
-			classSuccess: 'has-success',
-			classFailure: 'has-error',
-			classWarning: 'has-warning'
-		};
 
 		parent1 = input.parent();
 		parent2 = parent1.parent();
@@ -67,6 +60,14 @@
 				el1 = parent3;
 				el2 = parent3;
 			}
+		}
+
+		//prefix message
+		if (options.message) {
+			if (prefixes.success) options.message = prefixes.success + options.message;
+			if (prefixes.danger) options.message = prefixes.danger + options.message;
+			if (prefixes.warning) options.message = prefixes.warning + options.message;
+			if (prefixes.reset) options.message = prefixes.reset + options.message;
 		}
 
 		// display message.

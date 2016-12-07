@@ -93,7 +93,11 @@
 	// form plugins
 	// order does not matter
 	form.prove(cfg);
-	form.decorate('bootstrap');
+	form.decorate('bootstrap', {
+		prefixes: {
+			danger: '<i class="fa fa-times"></i> '
+		}
+	});
 
 	select.tagsinput(config1);
 	monies.maskMoney(config2);
