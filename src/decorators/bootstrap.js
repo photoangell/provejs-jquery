@@ -7,6 +7,7 @@
 		var input = $(this);
 		var parent1, parent2, parent3, el1, el2, group, garland, tinsel;
 		var prefixes = options.prefixes || {};
+		var message = options.message;
 
 		if (options.status === 'progress') return;
 
@@ -64,16 +65,16 @@
 
 		//prefix message
 		if (options.message) {
-			if (prefixes.success && options.validation === 'success') options.message = prefixes.success + options.message;
-			if (prefixes.danger && options.validation === 'danger') options.message = prefixes.danger + options.message;
-			if (prefixes.warning && options.validation === 'warning') options.message = prefixes.warning + options.message;
-			if (prefixes.reset && options.validation === 'reset') options.message = prefixes.reset + options.message;
+			if (prefixes.success && options.validation === 'success') message = prefixes.success + message;
+			if (prefixes.danger && options.validation === 'danger') message = prefixes.danger + message;
+			if (prefixes.warning && options.validation === 'warning') message = prefixes.warning + message;
+			if (prefixes.reset && options.validation === 'reset') message = prefixes.reset + message;
 		}
 
 		// display message.
 		el1.garland({
 			wrapper: '<span class="help-block"></span>',
-			message: options.message
+			message: message
 		});
 
 		// add success class on options.validation = 'success'.
