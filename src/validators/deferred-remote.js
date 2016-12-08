@@ -58,13 +58,13 @@
 					result.message = 'The remote validator endpoint was not found.';
 				} else {
 					result.validation = 'danger';
-					result.message = 'The remote validator return an incorrect response.';
+					result.message = 'The remote validator returned an incorrect response.';
 				}
 				dfd.resolve(result);
 			})
 			.fail(function() {
 				result.validation = 'danger';
-				result.message = 'The remote validator return an incorrect response.';
+				result.message = 'The remote validator returned an incorrect response.';
 				dfd.resolve(result);
 			});
 		}
