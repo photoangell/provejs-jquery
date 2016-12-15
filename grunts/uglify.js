@@ -13,7 +13,11 @@ module.exports = function(grunt) {
 		prove: {
 			options: {
 				sourceMap: true,
-				sourceMapName: 'dist/prove.map'
+				sourceMapName: 'dist/prove.map',
+				compress: {
+					dead_code: true,
+					drop_console: true
+				}
 			},
 			dest: 'dist/prove.min.js',
 			src: [
@@ -23,7 +27,11 @@ module.exports = function(grunt) {
 		decorator: {
 			options: {
 				sourceMap: true,
-				sourceMapName: 'dist/decorator.map'
+				sourceMapName: 'dist/decorator.map',
+				compress: {
+					dead_code: true,
+					drop_console: true
+				}
 			},
 			dest: 'dist/decorator.min.js',
 			src: [
