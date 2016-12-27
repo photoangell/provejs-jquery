@@ -1,13 +1,13 @@
 !function ($) {
 	"use strict";
 
-	$.fn.tinsel = function(options){
+	$.fn.classy = function(options){
 
 		options = options || {};
 		var input = $(this);
 
 		if (options.debug){
-			console.groupCollapsed('Decorators.tinsel()', options.validation);
+			console.groupCollapsed('Decorators.classy()', options.validation);
 				console.log('input', input);
 				console.log('validation', options.validation);
 				console.log('classSuccess', options.classSuccess);

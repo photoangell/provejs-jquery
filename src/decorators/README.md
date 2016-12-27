@@ -65,13 +65,13 @@ Where data.validation is:
 
 ### Message
 
-If the prove event data contains a message property the decorator should display the message. 
+If the prove event data contains a message property the decorator should display the message.
 
 ### Utility Decorators
 
 The prove bootstrap decorator uses two ulitity decorators which makes creating decorators easier:
-- $.fn.garland - displays messages on form inputs.
-- $.fn.tinsel - changes form CSS classes.
+- $.fn.texty - displays messages on form inputs.
+- $.fn.classy - changes form CSS classes.
 
 If you make your own decorator consider using these utility decorators to aid your development.
 

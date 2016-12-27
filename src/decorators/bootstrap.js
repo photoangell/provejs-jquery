@@ -5,7 +5,7 @@
 
 		options = options || {};
 		var input = $(this);
-		var parent1, parent2, parent3, el1, el2, group, garland, tinsel;
+		var parent1, parent2, parent3, el1, el2, group, texty, classy;
 		var prefixes = options.prefixes || {};
 		var message = options.message;
 
@@ -23,13 +23,13 @@
 		parent1 = input.parent();
 		parent2 = parent1.parent();
 		parent3 = parent2.parent();
-		garland = input.closest('.garland');
-		tinsel = input.closest('.tinsel');
+		texty = input.closest('.texty');
+		classy = input.closest('.classy');
 
 		//placement
-		if (garland.length && tinsel.length) {
-			el1 = garland;
-			el2 = tinsel;
+		if (texty.length && classy.length) {
+			el1 = texty;
+			el2 = classy;
 		} else if (parent1.hasClass('form-group')){
 			el1 = parent1;
 			el2 = parent1;
@@ -72,7 +72,7 @@
 		}
 
 		// display message.
-		el1.garland({
+		el1.texty({
 			wrapper: '<span class="help-block"></span>',
 			message: message
 		});
@@ -80,7 +80,7 @@
 		// add success class on options.validation = 'success'.
 		// add failure class on options.validation = 'danger'.
 		// remove success and failure classes on options.validation = 'reset'
-		el2.tinsel({
+		el2.classy({
 			validation: options.validation,
 			classSuccess: 'has-success',
 			classFailure: 'has-error',

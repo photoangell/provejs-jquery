@@ -1,13 +1,13 @@
 !function ($) {
 	"use strict";
 
-	$.fn.garland = function(options){
+	$.fn.texty = function(options){
 
 		options = options || {};
 		var input = $(this);
 
 		if (options.debug){
-			console.groupCollapsed('Decorators.garland()');
+			console.groupCollapsed('Decorators.texty()');
 				console.log('input', input);
 				console.log('validation', options.validation);
 				console.log('wrapper', options.wrapper);
@@ -17,14 +17,14 @@
 		}
 
 		function setup(container){
-			var garland = $(options.wrapper);
-			garland.addClass('garland-wrapper');
-			garland.html(options.message);
-			container.children().not('.form-control-static').last().after(garland);
+			var texty = $(options.wrapper);
+			texty.addClass('texty-wrapper');
+			texty.html(options.message);
+			container.children().not('.form-control-static').last().after(texty);
 		}
 
 		function teardown(container){
-			container.find('.garland-wrapper').remove();
+			container.find('.texty-wrapper').remove();
 		}
 
 		teardown(input);
