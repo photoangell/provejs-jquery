@@ -225,12 +225,14 @@ form.submit(function(e) {
 	// stop form from submitting without validation
 	e.preventDefault();
 
+	// validate entire form
 	var url = '/your/server/path';
 	var dfd = form.validate();
 	var data = {
 		field1: field1.val()
 	};
 
+	// wait for validation to complete
 	dfd.done(function(isValid){
 		if (isValid !== false) {
 			// submit data via ajax
