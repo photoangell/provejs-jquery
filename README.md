@@ -218,6 +218,31 @@ form.submit(function(event){
 });
 ```
 
+Should you want to have a form with no submit button you will need to submit the form via ajax. You can do this by adding a form submit handler.
+```js
+form.submit(function(e) {
+
+	// stop form from submitting without validation
+	e.preventDefault();
+
+	var url = '/your/server/path';
+	var dfd = form.validate();
+	var data = {
+		field1: field1.val()
+	};
+
+	dfd.done(function(isValid){
+		if (isValid !== false) {
+			// submit data via ajax
+			$.post(url, data);
+			
+			// update ui here
+		}
+	});
+});
+```
+
+
 ## Prove Validators
 
 Input validation is handled by jQuery [validator plugins](./src/validators).
