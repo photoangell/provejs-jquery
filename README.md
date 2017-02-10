@@ -18,6 +18,7 @@ jquery-prove is a client-side form validation plugin:
 - Modular design via a suite of jQuery [utility plugins](./src/utilities).
 - Live and form submit validation.
 - Stateful validations.
+- Meets accessibility standards Section 508 and WCAG 2.0 (A, AAA, AAAA).
 - Open source MIT license.
 
 ## Table Contents
@@ -237,7 +238,7 @@ form.submit(function(e) {
 		if (isValid !== false) {
 			// submit data via ajax
 			$.post(url, data);
-			
+
 			// update ui here
 		}
 	});
@@ -386,13 +387,6 @@ form.prove(options);
 input.proveConfig();
 ```
 
-### ARIA Support
-- Add `aria-invalid="true"` to form-controls when validation = 'danger'.
-- Add `aria-invalid="false"` to form-controls when validation = 'success'.
-- Del `aria-invalid` when validation = 'reset'.
-- Add `aria-describedby="helpBlock2"` to form-controls when showing texty message.
-
-
 ### Unit Tests
 
 Need unit tests.
@@ -409,5 +403,3 @@ Need unit tests.
 ### FAQ
 
 Create an FAQ of frequenty asked questions and answers.
-
-
