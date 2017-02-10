@@ -386,6 +386,11 @@ form.prove(options);
 input.proveConfig();
 ```
 
+### ARIA Support
+- Add `aria-invalid="true"` to form-controls when validation = 'danger'.
+- Add `aria-invalid="false"` to form-controls when validation = 'success'.
+- Del `aria-invalid` when validation = 'reset'.
+- Add `aria-describedby="helpBlock2"` to form-controls when showing texty message.
 ### Unit Tests
 
 Need unit tests.
