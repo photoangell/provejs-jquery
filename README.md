@@ -209,7 +209,7 @@ Where:
 	- **Default**: true,
 	- **Description**: Enables the form to submit after it validates true.
 
-Should you want to stop the normally form submission you will need to bind a handler to the form submit event:
+Should you want to stop the normal form submission you will need to bind a handler to the form submit event:
 
 ```javascript
 form.submit(function(event){
