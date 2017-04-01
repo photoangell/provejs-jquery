@@ -18,6 +18,7 @@ jquery-prove is a client-side form validation plugin:
 - Modular design via a suite of jQuery [utility plugins](./src/utilities).
 - Live and form submit validation.
 - Stateful validations.
+- Input sanitization.
 - Meets accessibility standards Section 508 and WCAG 2.0 (A, AAA, AAAA).
 - Open source MIT license.
 
@@ -77,6 +78,7 @@ form.prove({
 			selector: '[name="field1"]',
 			trigger: 'click change',
 			stateful: true,
+			sanitize: true,
 			group: false,
 			validators: {
 				// see validator options
@@ -122,6 +124,11 @@ form.prove({
 	- **Required:** false,
 	- **Default:** true,
 	- **Description:** jquery-prove is a stateful validator. You can disable stateful validation by setting stateful to false. Prove hashes the input value to determine if the input value has changed since last validation. Prove does this stateful validation without keeping a DOM reference to any inputs.
+- `sanitize`
+	- **Type:** bool or string,
+	- **Required:** false,
+	- **Default:** false,
+	- **Description:** jquery-prove can sanitize your input values. jquery-prove has a default sanitizer plugin ($.fn.sanitize) which replaces common MS Word unicode characters with their equivalent ASCII characters. You can replace the default sanitizer plugin with your own or specify a specific sanitizer for each input field using a string value which represents the plugin name.
 - `group`
 	- **Type:** bool,
 	- **Required:** false,

@@ -8,7 +8,7 @@
 	var table = form.find('table#itemization');
 	var wrapper1 = form.find('#wrapper-statement-attached');
 	var wrapper2 = form.find('#wrapper-itemized-amounts');
-	var regex = /^[-a-zA-Z0-9,.)( ]*$/;
+	var regex = /^[-a-zA-Z0-9,.)( "!]*$/;
 	var isItemization;
 
 	var cfg = {
@@ -53,9 +53,11 @@
 			// This field config will match zero or more form inputs. By default prove will
 			// validate multiple matched inputs individually.
 			'dynamic1[]': {
+				//debug: true,
 				enabled: '#itemize:checked', //booleanator
 				trigger: 'keyup',
-				throttle: 1000,
+				throttle: 100,
+				sanitize: true,
 				validators: {
 					proveRequired: {
 						//debug: true,

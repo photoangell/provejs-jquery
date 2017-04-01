@@ -35,7 +35,7 @@
 
 	function isPlugin(plugin) {
 		var exist = ($.isFunction($.fn[plugin]));
-		if (!exist) console.error('Missing validator plugin "%s".', plugin);
+		if (!exist) console.error('Missing plugin "%s".', plugin);
 		return exist;
 	}
 
@@ -55,6 +55,7 @@
 		var enabled = input.booleanator(field.enabled);
 		var stateful = input.booleanator(field.stateful);
 		var dirty = input.dirty(field.group);
+		var sanitize = field.sanitize;
 		var uuid = input.uuid();
 		var state = states[uuid];
 		var result = {
@@ -92,6 +93,15 @@
 			dfd.resolve(state.validation);
 			return dfd;
 		} else {
+
+			// sanitize input
+			if (sanitize) {
+				if (sanitize === true) {
+					input.sanitize();
+				} else if (isPlugin(sanitize)) {
+					input[sanitize]();
+				}
+			}
 
 			// loop validators
 			$.each(validators, function(validator, config) {
