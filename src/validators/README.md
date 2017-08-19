@@ -5,6 +5,7 @@ ProveJS comes with the following standard validators:
 	* [proveCallback](#provecallback) - a general purpose callback validator.
 	* [proveCompareTo](#provecompareto) - compare current field to another inputs value using comparison operators.
 	* [proveEqualTo](#proveequalto) - compare current field to another inputs value.
+	* [proveHtml](#provehtml) - input value must only contain allowed html tags.
 	* [proveLength](#provelength) - compare input value's **string** min and max length.
 	* [proveMax](#provemax) - compare **numeric** input value's against a max value.
 	* [proveMin](#provemin) - compare **numeric** input value's against a min value.
@@ -306,6 +307,41 @@ form.prove({
 		- **Type:** selector
 		- **Required:** true
 		- **Description:** Selector for an element whose value will be compared to the field.
+
+## proveHtml
+```javascript
+form.prove({
+	fields: {
+		field1: {
+			validators: {
+				proveHtml: {
+					enabled: true,
+					tags: ['B', 'P'],
+					message: function(allowed, invalids) {
+						return 'Unsupported html tags of: ' + invalids.join(', ');
+					}
+				}
+			}
+		}
+	}
+});
+```
+
+- options:
+	- `enabled`
+		- **Type:** [booleanator](../../README.md#booleanator),
+		- **Required:** false
+		- **Default:** true
+		- **Descrption:** will enable the field for validation while the booleanator is true.
+	- `message`
+		- **Type:** string | function
+		- **Required:** true
+		- **Description:** Text to display when validation has failed.
+	- `tags`
+		- **Type:** array
+		- **Required:** true
+		- **Description:** Array of html tag names to allow.
+
 
 ## proveLength
 ```javascript
