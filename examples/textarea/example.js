@@ -52,10 +52,12 @@ $.fn.textPrefix = function(options) {
 					//	message: 'Invalid comment.' //optional, passed to decorator
 					//},
 					proveHtml: {
-						debug: true,
+						//debug: true,
 						//enabled: false,
-						message: 'Tag is not allowed.',
-						//tags: ['B', 'P']
+						tags: ['B', 'P'],
+						message: function(allowed, invalids) {
+							return 'Unsupported html tags of: ' + invalids.join(', ');
+						}
 					}
 				}
 			}

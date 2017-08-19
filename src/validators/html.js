@@ -54,6 +54,18 @@
 		return arr.slice(0).map(clean);
 	}
 
+	function difference(arr1, arr2) {
+		return $(arr2).not(arr1).get();
+	}
+
+	function customMessage(message, allowed, invalids) {
+		if ($.isFunction(message)) {
+			return message(allowed, invalids);
+		} else {
+			return message;
+		}
+	}
+
 	$.fn.proveHtml = function(options) {
 
 		options.tags = options.tags || [];
@@ -66,7 +78,10 @@
 		var valid = (enabled)? test(nodes, allowed) : undefined;
 		var has = valid? 'success' : 'danger';
 		var validation = (enabled)? has : 'reset';
-		var message = (validation === 'danger') ? options.message : undefined;
+		var invalids = difference(allowed, nodes);
+		var custom = customMessage(options.message, allowed, invalids);
+		var message = (validation === 'danger') ? custom : undefined;
+
 
 		if (options.debug) {
 			console.groupCollapsed('Validator.proveTags()', options.field, options.initiator); /* eslint-disable indent */
@@ -76,6 +91,7 @@
 			console.log('nodes', nodes);
 			console.log('validation', validation);
 			console.log('enabled', enabled);
+			console.log('invalids', invalids);
 			console.log('message', message);
 			console.groupEnd(); /* eslint-enable indent */
 		}
