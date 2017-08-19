@@ -84,7 +84,7 @@
 
 
 		if (options.debug) {
-			console.groupCollapsed('Validator.proveTags()', options.field, options.initiator); /* eslint-disable indent */
+			console.groupCollapsed('Validator.proveHtml()', options.field, options.initiator); /* eslint-disable indent */
 			//console.log('options', options);
 			//console.log('input', input);
 			console.log('allowed', allowed);
