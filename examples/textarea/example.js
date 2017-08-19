@@ -34,8 +34,8 @@ $.fn.textPrefix = function(options) {
 
 (function() {
 	var form = $('form');
-	var textarea = form.find('textarea');
-	//var prefix = 'Finally, ';
+	// var textarea = form.find('textarea');
+	// var prefix = 'Finally, ';
 	var cfg = {
 		fields: {
 			comment: {
@@ -52,8 +52,10 @@ $.fn.textPrefix = function(options) {
 					//	message: 'Invalid comment.' //optional, passed to decorator
 					//},
 					proveHtml: {
+						debug: true,
+						//enabled: false,
 						message: 'Tag is not allowed.',
-						goodtags: ['B','P']
+						//tags: ['B', 'P']
 					}
 				}
 			}
