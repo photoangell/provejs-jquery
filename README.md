@@ -23,6 +23,7 @@ provejs-jquery is a client-side form validation plugin:
 - Open source MIT license.
 
 ## Table Contents
+- [Installation](#install)
 - [Examples](#examples)
 - [Options](#prove-options)
 - [Validators](#prove-validators)
@@ -31,6 +32,14 @@ provejs-jquery is a client-side form validation plugin:
 - [Events](#prove-events)
 - [Destroy](#destory)
 - [Roadmap](#roadmap)
+
+## Install
+
+You can install `provejs-jquery` in your project using `npm` or directly downloading the distribution files.
+
+```bash
+npm install provejs-jquery --save
+```
 
 ## Examples
 
