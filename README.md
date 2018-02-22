@@ -38,8 +38,10 @@ provejs-jquery is a client-side form validation plugin:
 You can install `provejs-jquery` in your project using `npm` or directly downloading the distribution files.
 
 ```bash
-npm install provejs-jquery --save
+npm install provejs-jquery --save-dev
 ```
+
+After using using npm install you should include the distribution files in your project's build process.
 
 ## Examples
 
