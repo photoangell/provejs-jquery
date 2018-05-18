@@ -75,6 +75,20 @@ The prove bootstrap decorator uses two ulitity decorators which makes creating d
 
 If you make your own decorator consider using these utility decorators to aid your development.
 
+### Data Attribute Decorator
+
+If you are not using Bootstrap, you can specify an element to display the error message. Value of the attribute is the field name. This will hold the error message.
+
+Example
+```javascript
+$('#form1').decorate('dataAttribute', {
+	attribute: 'data-for',
+    classSuccess: 'good work',
+    classFailure: 'baaad',
+    classWarning: 'ruh roh'
+});  
+```
+
 ### Making Your Own Decorators
 
 Making your own decorator is simple. First create your jQuery plugin decorator.
