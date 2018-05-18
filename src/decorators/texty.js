@@ -21,7 +21,9 @@
 			var texty = $(options.wrapper);
 			texty.addClass('texty-wrapper');
 			texty.html(options.message);
-			group.children().not('.form-control-static').last().after(texty);
+			if (!(group.children().not('.form-control-static').last().after(texty).length)) {
+				group.append(texty);
+			}
 
 			// aria
 			var invalid = (options.validation === 'danger')? 'true' : 'false';
